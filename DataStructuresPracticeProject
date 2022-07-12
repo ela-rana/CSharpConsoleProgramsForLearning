@@ -1,0 +1,197 @@
+using System;
+using System.Collections.Generic;
+
+namespace DataStructuresPracticeProject
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //A method has been created to test out and practice each type of data structure.
+            //Simply uncomment the method for the data structure you want to test and run the 
+            //code to see how each data structure works
+
+            //TestArray();
+            //TestStack();
+            //TestQueue();
+            //TestLinkedList();
+            //TestSort();
+            //TestSearch();
+        }
+
+        /// <summary>
+        /// A method to help us pratice using the data structure- Array
+        /// </summary>
+        public static void TestArray()
+        {
+            string[] names = { "John", "Julie", "Jenny", "Jan" };
+            Console.WriteLine("The third name is: {0}", names[2]);
+            names[3] = "Janet";
+            Console.WriteLine("Jan's name was changed to: {0}", names[3]);
+        }
+
+        /// <summary>
+        /// A method to help us practice using the data structure- Stack
+        /// </summary>
+        public static void TestStack()
+        {
+            Stack<int> myNums = new Stack<int>();   //creates a stack of integers
+            myNums.Push(1);     //enters the value 1 into stack, now stack has 1
+            myNums.Push(2);     //enters 2 into stack, now stack has 2,1 (LIFO order)
+            myNums.Push(3);     //now stack has 3, 2, 1
+            myNums.Push(4);     //now stack has 4, 3, 2, 1
+
+            myNums.Pop();       //now 4 is popped out. So the stack has 3, 2, 1
+
+            Console.WriteLine(myNums.Pop()); //now the last value is popped out of the stack
+                                             //and the popped value is displayed so 3 is displayed
+                                             //and now after this, the stack has 2, 1
+
+
+            Console.WriteLine(myNums.Peek());   //the last value of the stack is displayed: 2
+            //but it is only looked at or peeked, it is not popped out. So the stack still has 2, 1
+
+            //for every item that is still in the stack, this foreach block displays it
+            //following the principle of LIFO (Last in first out), the last value that was
+            //entered into the stack will be displayed first and so on.
+            foreach (int i in myNums)
+            {
+                Console.Write(i + "\t");    //"\t" is the escape character for tab. It adds a tab
+                                            // displays 2       1    (with tab between the 2 and 1)
+            }
+
+        }
+
+        /// <summary>
+        /// A method to help us practice using the data structure- Queue
+        /// </summary>
+        public static void TestQueue()
+        {
+            Queue<double> myQ = new Queue<double>(); //creates a queue of double values
+
+            for (double d = 2.2; d <= 20; d *= 2)
+                myQ.Enqueue(d);     //adds to the queue: 2.2, 4.4, 8.8, 17.6
+
+            Console.WriteLine(myQ.Count);   //displays how many values in Queue, which is 4
+
+            Console.WriteLine(myQ.Dequeue());   //remove the first in item in the queue, which is 2.2
+                                                //and displays it, so displays 2.2
+                                                //now queue has 4.4, 8.8, 17.6
+
+            //Queues are FIFO, first in first out, so the first item that enters the queue is the first item
+            //that gets called or diplayed or popped or peeked
+
+            Console.WriteLine(myQ.Peek());      //peeks at (looks into) the first in item in the queue
+                                                //which is 4.4
+
+            foreach (double q in myQ)
+                Console.WriteLine(q);           //displays each item in the queue in FIFO order:
+                                                          // so:   4.4
+                                                          //        8.8
+                                                          //        17.6
+
+        }
+
+        /// <summary>
+        /// A method to help us practice using the data structure- Linked List
+        /// </summary>
+        /// <returns></returns>
+        public static void TestLinkedList()
+        {
+            LinkedList<string> myList = new LinkedList<string>();
+
+            myList.AddLast("red");          //List now has:     red
+            myList.AddLast("green");      //List now has:     red, green
+            myList.AddLast("orange");    //List now has:     red, green, orange
+            myList.AddLast("blue");        //List now has:     red, green,orange, blue
+            //Since the AddLast method was used the list keeps adding to the end of the list
+
+            myList.AddFirst("yellow");     //List now has:     yellow, red, green, orange, blue
+            //This time AddFirst method was used, so the list adds the new string to the beginning
+
+            myList.Remove("orange");    //If the value "orange" is in the list, it is now removed
+                                                     //List now has:     yellow, red, green, blue
+
+            try
+            {
+                myList.Remove("Yellow");
+                //the code will attempt to find the value "Yellow" in the list
+                //and if found it will be removed
+                //I have purposely used a Capital letter Y in Yellow because the link has 
+                //"yellow" not "Yellow"
+
+                //Since the value Yellow doesn't already exist, the list stays unchanged and no value
+                //is removed
+
+                //I put this try block in case the code errors when I try to remove "Yellow"
+                //which doesn't already exist in the list, but when I ran it, the try block succeeded and
+                //no exception occured, which means if you try to remove a value from the list that doesn't 
+                //match any value already in the list then no action is taken
+
+                //List now has:     yellow, red, green, blue
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            myList.RemoveLast();        //Since the last value "blue" is removed
+                                                    //List now has:     yellow, red, green
+
+            foreach (string s in myList)        //to display every item in list 
+            {
+                Console.WriteLine(s);       //Displays:  yellow
+                                                      //               red
+                                                      //               green
+            }
+        }
+
+        /// <summary>
+        /// A method to help us practice using the data structure- Sort
+       /// </summary>
+        public static void TestSort()
+        {
+            string[] names = { "John", "Amber", "Louis", "Jenna" };
+
+            Array.Sort(names);                      //sorts the array in alphabetical order
+            foreach (string s in names)           
+                Console.WriteLine(s);               //displays each item in the array
+                                                              //since the array is already in alphabetical order
+                                                              //it will display:        Amber
+                                                              //                            Jenna
+                                                              //                            John
+                                                              //                            Louis
+
+
+            Console.WriteLine("\n\n");          //Add two blank lines, just tow space out the result displayed
+                                                            //The"\n" escape character adds a new line
+
+            Array.Reverse(names);               //Now this method sorts the array in reverse alphabetical order
+            foreach(string t in names)
+                Console.WriteLine(t);               //displays each item in array
+                                                             //It will display:         Louis
+                                                             //                             John
+                                                             //                             Jenna
+                                                             //                             Amber
+        }
+
+        /// <summary>
+        /// A method to help us practice using the data structure- Search
+        /// </summary>
+        public static void TestSearch()
+        {
+            string[] names = { "John", "Joe", "Ann", "Roman" };
+
+            var searchResult = Array.Find(names, element => element.StartsWith("A"));
+            Console.WriteLine(searchResult);
+
+            searchResult = Array.Find(names, element =>element.StartsWith("J"));
+            Console.WriteLine(searchResult);
+
+            string[] searchResult2 = Array.FindAll(names, element => element.StartsWith("J"));
+            
+            foreach (string s in searchResult2)
+                Console.WriteLine(s);
+        }
+    }
+}
