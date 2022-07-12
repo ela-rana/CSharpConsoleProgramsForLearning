@@ -1,0 +1,70 @@
+//Coded using C# and .NET Framework 4.8
+//A program to practice using the while loop and the switch statement
+//--The switch statement takes user input of favorite text color for typed text
+//         and uses the switch statement to set the text color to user choice
+//--The while loop is placed outside the switch statement to allow user to keep going through the
+//         switch multiple times if "y" for yes is entered
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Switch&WhileLoopPractice
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string favColor = null;     //to declare a string variable to store the prefered favorite text color of the user
+                                        //and to initialize it to a null value
+            char choice = 'y';
+            while (choice == 'Y' || choice == 'y')
+            {
+                Console.WriteLine("Enter the text color you prefer for this window:");
+                favColor = Console.ReadLine();
+                favColor = favColor.ToLower();
+                Console.ResetColor();
+                switch (favColor)
+                {
+                    case "red":
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("The text is now red as you prefer.");
+                        break;
+                    case "blue":
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("The text is now blue as you prefer.");
+                        break;
+                    case "green":
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("The text is now green as you prefer.");
+                        break;
+                    case "yellow":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("The text is now yellow as you prefer.");
+                        break;
+                    case "black":
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.WriteLine("The text is now black as you prefer.");
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("The color you entered is not within our choices.\nColor has been set to default color white");
+                        break;
+                }
+                Console.WriteLine("Do you want to try to change text color again?\nType Y or y for  yes or any other single character for no");
+                choice = Convert.ToChar(Console.ReadLine());            
+                //Note to self: The above line needs exception handling it only works if you enter 1 character.
+                //If you leave blank or put more than one character runtime error is thrown (error occurs while running the program)
+                //To do task for later
+            }
+
+            Console.ResetColor();
+            Console.WriteLine("Application complete. All colors have been reset to default. \nPress any key to continue...");
+            Console.ReadKey(); //waits for user to press any key to continue
+        }
+
+    }
+}
