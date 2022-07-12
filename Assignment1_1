@@ -1,0 +1,104 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Assignment1_1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //The following 2 lines of code changes text and text background color for all code that follows it
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            
+            //The following section of code (separated from future sections by a comment line made of dashes)
+            //consists of an example of how data can be received and read from user input and then displayed
+            Console.WriteLine("BIOGRAPHICAL DATA ENTRY EXAMPLE\n\n");
+
+            string name;    //a string variable that holds a user's entered name
+            decimal age;    //a decimal variable that holds a user's entered age
+            string address; //a string variable that holds a user's entered mailing address
+
+            Console.WriteLine("Please enter your name: ");  //asks user to enter their name
+            name = Console.ReadLine();      //gets the name inputted by user and saves it as a string and assigns it to the variable "name"
+
+            Console.WriteLine("Please enter your age (Must be a number): ");    //asks user to enter their age
+            age = decimal.Parse(Console.ReadLine());    //gets the age inputted by user and saves it as a string,
+                                                                                    //then the decimal.Parse method converts the string to a decimal and assigns it to the variable "age"
+
+            Console.WriteLine("Please enter your address: ");    //asks user to enter their address
+            address = Console.ReadLine();       //gets the mailing address inputted by user and saves it as a string and assigns it to the variable "address"
+
+            Console.WriteLine("\n\nHere is your biographical data: \n\nName: {0}\nAge: {1}\nAddress: {2}", 
+                                            name, age, address);    //displays all data entered by the user
+
+            Console.ReadKey(); //waits for user to press any key to continue
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+            //The following 2 lines of code changes text and text background color for all code that follows it
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+
+            //The following section of code (separated from future sections by a comment line made of dashes)
+            //consists of an example of how various common datatypes in C# can be declared and utilized
+            Console.WriteLine("\n\nDECLARING BASIC DATATYPES EXAMPLE\n\n");
+
+            int myInteger;                  //a variable named myInteger is declared (meaning created) to store an int type value
+            float myFloatingPoint;    //a variable named myFloatingPoint is declared (meaning created) to store a float type value
+            decimal myDecimal;       //a variable named myDecimal is declared (meaning created) to store a decimal type value
+            double myDouble;          //a variable named myDouble is declared (meaning created) to store a double type value
+
+            Console.WriteLine("Please enter an integer: ");     //user is asked to enter an integer
+            myInteger = Int32.Parse(Console.ReadLine());      //user entered value is stored as a string, then converted to an int using the Parse method,
+                                                                                            //then the resulting int value is stored in the myInteger variable
+            
+            Console.WriteLine("Please enter a floating point number: ");     //user is asked to enter a float
+            myFloatingPoint = Single.Parse(Console.ReadLine());  //user entered value is stored as a string, then converted to a float using the Parse method,
+                                                                                                      //then the resulting float value is stored in the myFloatingPoint variable
+
+            Console.WriteLine("Please enter a decimal number: ");    //user is asked to enter a decimal
+            myDecimal = Decimal.Parse(Console.ReadLine());           //user entered value is stored as a string, then converted to a decimal using the Parse method,
+                                                                                                          //then the resulting decimal value is stored in the myDecimal variable
+
+            Console.WriteLine("Please enter a double floating point number: ");    //user is asked to enter a float
+            myDouble = Double.Parse(Console.ReadLine());  //user entered value is stored as a string, then converted to a double using the Parse method,
+                                                                                            //then the resulting double value is stored in the myDouble variable
+
+            Console.WriteLine("\n\nHere are the values you entered: \n\nInteger: {0}\nFloating point number: {1}\nDecimal: {2}\nDouble point number: {3}",
+                                            myInteger, myFloatingPoint, myDecimal, myDouble);   //displays all data entered by the user
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+            //The following 2 lines of code changes text and text background color for all code that follows it
+            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            //The following section of code displays the minimum and maximum values of various common datatypes in C#
+            Console.WriteLine("\n\nDISPLAYING MINIMUM AND MAXIMUM VALUES OF VARIOUS DATATYPES");
+            Console.WriteLine("(Press any key to view)\n\n"); 
+            Console.ReadKey();   //waits for user to press any key before results are displayed
+
+            Console.WriteLine("The minimum value of an int is: {0}", int.MinValue);   //displays the smallest possible value of datatype int
+            Console.WriteLine("The maximum value of an int is: {0}\n", int.MaxValue);   //displays the largest possible value of datatype int
+            Console.WriteLine("The minimum value of a short is: {0}", short.MinValue);   //displays the smallest possible value of datatype short
+            Console.WriteLine("The maximum value of a short is: {0}\n", short.MaxValue);   //displays the largest possible value of datatype short
+            Console.WriteLine("The minimum value of a ushort is: {0}", ushort.MinValue);   //displays the smallest possible value of datatype ushort (unsigned short)
+            Console.WriteLine("The maximum value of a ushort is: {0}\n", ushort.MaxValue);   //displays the largest possible value of datatype ushort (unsigned short) 
+            Console.WriteLine("The minimum value of a float is: {0}", float.MinValue);   //displays the smallest possible value of datatype float
+            Console.WriteLine("The maximum value of a float is: {0}\n", float.MaxValue);   //displays the smallest possible value of datatype float
+            Console.WriteLine("The minimum value of a double is: {0}", double.MinValue);   //displays the smallest possible value of datatype int
+            Console.WriteLine("The maximum value of a double is: {0}\n", double.MaxValue);   //displays the smallest possible value of datatype int
+            Console.WriteLine("The minimum value of a decimal is: {0}", decimal.MinValue);   //displays the smallest possible value of datatype int
+            Console.WriteLine("The maximum value of a decimal is: {0}\n", decimal.MaxValue);   //displays the smallest possible value of datatype int
+            Console.WriteLine("The minimum value of a char is: {0}", char.MinValue);   //displays the smallest possible value of datatype int
+            Console.WriteLine("The maximum value of a char is: {0}\n", char.MaxValue);   //displays the smallest possible value of datatype int
+
+            Console.WriteLine("Application complete. Press any key to exit...");
+            Console.ReadKey();
+        }
+    }
+}
