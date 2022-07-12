@@ -1,3 +1,10 @@
+//Coded using C# and .NET Framework 4.8
+//A program to practice doing the following:
+//--change display text and text background color
+//--receive user input and display it
+//--practice declaring various common datatypes
+//--display minimum and maximum possible value for various common C# datatypes
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
