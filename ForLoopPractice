@@ -1,0 +1,27 @@
+//Coded using C# and .NET Framework 4.8
+//A program to practice using the for loop
+//First for loop is used to take the sum of the first 10 integers from 1 to 10
+//Then another for loop is used to add numbers entered by user
+
+using System;
+
+namespace ForLoopPractice
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int sum = 0;
+            for (int i = 1; i <= 10; i++)
+            {
+                Console.Write($"{i} + ")
+                sum = sum + i;
+            }
+            Console.WriteLine($"The sum of all whole numbers from 1 to 10 is {sum}");
+
+            Console.WriteLine("Application complete. All colors have been reset to default. \nPress any key to continue...");
+            Console.ReadKey(); //waits for user to press any key to continue
+        }
+
+    }
+}
