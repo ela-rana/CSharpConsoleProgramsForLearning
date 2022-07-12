@@ -1,0 +1,88 @@
+//Coded using C# and .NET Framework 4.8
+//A program to practice doing the following:
+//--create functions
+//--receive user inputted name and display it within a function
+//--receive user inputted 2 numbers and add it within a function and return the sum
+//--receive user inputted 3 numbers and multiply it within a function and return the product
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CreatingFunctionsPractice
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            PrintName();    //calls the function/method named PrintName().
+            //It will execute everything within that function before returning back to here
+
+
+            int num1 = 0;  //creates a variable to store a number to add or multiply  and initializes it with a default value of 0
+            int num2 = 0;  //creates a variable to store a number to add or multiply  and initializes it with a default value of 0
+            int num3 = 0;  //creates a variable to store a number to add or multiply  and initializes it with a default value of 0
+
+            Console.WriteLine("Enter three integers that you want to add and multiply (Press enter after each value):");
+            num1 = Convert.ToInt32(Console.ReadLine());  //reads the first entered value and assigns it to variable 'num1'
+            num2 = Convert.ToInt32(Console.ReadLine());  //reads the second entered value and assigns it to variable 'num2'
+            num3 = Convert.ToInt32(Console.ReadLine());  //reads the third entered value and assigns it to variable 'num3'
+
+            int sum = SumOfTwoNumbers(num1, num2);   //calls the function SumOfTwoNumbers
+                                                     //and assigns returned sum value to the created variable 'sum'
+            Console.WriteLine($"The sum of the first 2 numbers is {sum}");
+
+
+            int product = ProductOfThreeNumbers(num1, num2, num3);   //calls the function ProductOfThreeNumbers
+                                                                     //and assigns returned product to the created variable 'product'
+            Console.WriteLine($"The product of the 3 numbers is {product}");
+
+
+            Console.WriteLine("Application complete. Press any key to continue...");
+            Console.ReadKey(); //waits for user to press any key to continue
+        }
+
+        /// <summary>
+        /// A function that asks a user to enter their first and last names, and then displays Hello to the user's entered full name
+        /// </summary>
+        static void PrintName()
+        {
+            string firstName;    //a string variable that holds a user's entered first name
+            string lastName;    //a string variable that holds a user's entered last name
+
+            Console.WriteLine("Please enter your first name: ");  //asks user to enter their first name
+            firstName = Console.ReadLine();      //gets the name inputted by user and saves it as a string and assigns it to the variable "firstName"
+
+            Console.WriteLine("Please enter your last name: ");  //asks user to enter their last name
+            lastName = Console.ReadLine();      //gets the name inputted by user and saves it as a string and assigns it to the variable "lastName"
+
+            Console.WriteLine($"\n\nHello {firstName} {lastName}!");    //displays the name entered by the user
+        }
+
+        /// <summary>
+        /// Receives two integers as parameters and returns their sum
+        /// </summary>
+        /// <param name="num1">First integer to add</param>
+        /// <param name="num2">Second integer to add</param>
+        /// <returns>Sum of  2 parameters entered</returns>
+        static int SumOfTwoNumbers(int num1, int num2)
+        {
+            return num1 + num2;
+        }
+
+        /// <summary>
+        ///  Receives three integers as parameters and returns their product
+        /// </summary>
+        /// <param name="num1">First integer to multiply</param>
+        /// <param name="num2">Second integer to multiply</param>
+        /// <param name="num3">Third integer to multiply</param>
+        /// <returns>Product of the entered 3 numbers</returns>
+        static int ProductOfThreeNumbers(int num1, int num2, int num3)
+        {
+            return num1 * num2 * num3;
+        }
+    }
+}
