@@ -1,0 +1,148 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A simple console based calculator program
+//First a menu is displayed of which calculation option the user wants to do
+//Options are addition, subtraction, multiplication, and division
+//User selected calculation action is performed and then the user is asked if they want to return to the main menu to do another calculation
+//NOTE: Mixed calculation actions such as addition and multiplication together is not possible in this practice program
+using System;
+
+namespace SimpleCalculator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //The next 2 statements sets a different text and text background color on the screen for the Application heading
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("CALCULATOR PROGRAM\n");      //Displays application heading: what this application does for user
+            Console.ResetColor();   //resets text color to default after heading is displayed
+
+            char returnToMainMenu = 'y';    //Variable to give user the option to press 'y' or 'Y' to return to the main menu again to do another calculation
+                                                                //Default is set to 'y' so that the while loop (calculation program) runs at least once
+            while (returnToMainMenu == 'y' || returnToMainMenu == 'Y')      //To repeat and return back to main menu to calculate again everytime the user enters y/Y for yes
+            {
+                Console.BackgroundColor= ConsoleColor.Yellow;       //To give a different text and text background color  for the Main Menu of the program
+                Console.ForegroundColor = ConsoleColor.DarkRed;        //to distinguish it from other data
+                //The following 4 statements displays the Calculator Main Menu for the user
+                Console.WriteLine("MAIN MENU");
+                Console.WriteLine("What would you like to do?");
+                Console.WriteLine("\t1.  ADDITION\n\t2.  SUBTRACTION\n\t3.  MULTIPLICATION\n\t4.  DIVISION");
+                Console.WriteLine("Type the number that corresponds to the type of calculation you want to perform:");
+                int choice = 0; //A variable to store the menu selection of the user. Default value set to 0, a value that is not one of the menu choices
+                choice = Convert.ToInt32(Console.ReadLine());       //to convert the user input which by default is saved as a string by C# to an integer and then assign it to choice
+                Console.ResetColor();   //to reset the text colors back to default after the main menu is displayed
+                switch (choice)     //The switch options below direct the application to call the function that performs the action that corresponds to the user's menu selection
+                {
+                    case 1:
+                        Adder();
+                        break;
+                    case 2:
+                        Subtractor();
+                        break;
+                    case 3:
+                        Multiplier();
+                        break;
+                    case 4:
+                        Divider();
+                        break;
+                    default:
+                        Console.WriteLine("Your entered value is not one of the menu numbers. You must type a number between 1 to 4");
+                        break;
+                }
+                Console.WriteLine("\nDo you want to return to the main menu? Type 'y' if yes or any other letter if no:");
+                returnToMainMenu = Convert.ToChar(Console.ReadLine());
+            }
+                Console.WriteLine("Application ended. Press any key to exit...");
+                Console.ReadKey(); //waits for user to press any key to continue
+        }
+
+        /// <summary>
+        /// A function that performs addition.
+        /// This function asks user how many numbers to be added, then asks the user to enter the numbers, 
+        /// then displays the sum of the numbers 
+        /// </summary>
+        static void Adder()
+        {
+            int numberOfValues = 0;
+            Console.WriteLine("How many values are you adding together? Enter the number of values:");
+            numberOfValues = Convert.ToInt32(Console.ReadLine());
+            float sum = 0;
+            for (int i=1; i<=numberOfValues; i++)
+            {
+                Console.WriteLine($"Please enter value {i}: ");
+                sum += float.Parse(Console.ReadLine());
+            }
+            Console.WriteLine($"The sum of your numbers is:  {sum}");
+        }
+
+        /// <summary>
+        /// A function that performs subtraction.
+        /// This function asks user for the original number, then asks user how many numbers to subtract from original, 
+        /// then asks the user to enter the numbers, 
+        /// then displays the subtracted final value 
+        /// </summary>
+        static void Subtractor()
+        {
+            int numberOfValues = 0;
+            float sub = 0;
+            Console.WriteLine("Enter the original value you are subtracting from:");
+            sub = Convert.ToSingle(Console.ReadLine());
+            Console.WriteLine("How many values are you subtracting from your original value? Enter the number of values being subtracted:");
+            numberOfValues = Convert.ToInt32(Console.ReadLine());
+            for (int i = 1; i <= numberOfValues; i++)
+            {
+                    Console.WriteLine($"Please enter value {i} being subtracted from your original: ");
+                sub -= float.Parse(Console.ReadLine());
+            }
+            Console.WriteLine($"Your value after the original is subtracted is:  {sub}");
+        }
+
+        /// <summary>
+        /// A function that performs multiplication.
+        /// This function asks user how many numbers to be multiplied, then asks the user to enter the numbers, 
+        /// then displays the product of the numbers 
+        /// </summary>
+        static void Multiplier()
+        {
+            int numberOfValues = 0;
+            Console.WriteLine("How many values are you multiplying together? Enter the number of values:");
+            numberOfValues = Convert.ToInt32(Console.ReadLine());
+            if(numberOfValues<2)
+            {
+                Console.WriteLine("You must enter 2 or more number of values. Please start over.");
+                return;
+            }
+            float product = 1;
+            for (int i = 1; i <= numberOfValues; i++)
+            {
+                Console.WriteLine($"Please enter value {i}: ");
+                product *= float.Parse(Console.ReadLine());
+            }
+            Console.WriteLine($"The product of your numbers is:  {product}");
+        }
+
+        /// <summary>
+        /// A function that performs division.
+        /// This function asks user for the original number, then asks user how many numbers to divide from original, 
+        /// then asks the user to enter the numbers, 
+        /// then displays the divided final value 
+        /// </summary>
+        static void Divider()
+        {
+            int numberOfValues = 0;
+            float div;
+            Console.WriteLine("Enter the original value you are subtracting from:");
+            div = Convert.ToSingle(Console.ReadLine());
+            Console.WriteLine("How many values are you dividing from your original value? Enter the number of values being divided:");
+            numberOfValues = Convert.ToInt32(Console.ReadLine());
+            for (int i = 1; i <= numberOfValues; i++)
+            {
+                Console.WriteLine($"Please enter value {i} being divided from your original: ");
+                div /= float.Parse(Console.ReadLine());
+            }
+            Console.WriteLine($"Your value after the original is divided is:  {div}");
+        }
+
+    }
+}
