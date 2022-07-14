@@ -1,0 +1,52 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Create a bubble sort algorithm
+using System;
+
+namespace BubbleSort
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("BUBBLE SORT\n");
+
+            int[] myArray = new int[] { 23, 4, 9, 11, 86, 2, 66, 4, 2, 88, 46 };
+            DisplayArray(myArray);
+            myArray=BubbleSort(myArray);
+            Console.WriteLine("Now you will see it after sorting...");
+            DisplayArray(myArray);
+            Console.WriteLine("Application ended. Press any key to exit...");
+            Console.ReadKey(); //waits for user to press any key to continue
+        }
+
+        static int[] BubbleSort(int[] arr)
+        {
+            int temp=0;
+            for (int j = arr.Length; j >=0; j--)
+            {
+                for (int i = 0; i < j - 1; i++)
+                {
+                    if (arr[i] > arr[i + 1])
+                    {
+                        temp = arr[i];
+                        arr[i] = arr[i + 1]; ;
+                        arr[i + 1] = temp;
+                    }
+                }
+            }
+            return arr;
+        }
+
+        static void DisplayArray(int[] arr)
+        {
+            Console.WriteLine("Here is your array: ");
+            foreach(int i in arr)
+            {
+                Console.Write($"{i}   ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
+    
