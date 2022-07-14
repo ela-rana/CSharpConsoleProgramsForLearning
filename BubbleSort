@@ -10,15 +10,18 @@ namespace BubbleSort
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("BUBBLE SORT\n");
+            Console.WriteLine("BUBBLE SORT\n");     //to display the title on the top of the console screen
 
-            int[] myArray = new int[] { 23, 4, 9, 11, 86, 2, 66, 4, 2, 88, 46 };
-            DisplayArray(myArray);
-            myArray=BubbleSortAsc(myArray);
+            int[] myArray = new int[] { 23, 4, 9, 11, 86, 2, 66, 4, 2, 88, 46 };    //to create an int array that we will use
+            DisplayArray(myArray);      //to display the array before sorting it
+            myArray=BubbleSortAsc(myArray); //to call the method that with bubble sort the array, 
+                                            //we pass the array as a parameter, the method returns the sorted array which is assigned back to the myArray
+                                            //variable, so the myArray variable gets updated with its sorted form
             Console.WriteLine("Now you will see it after sorting...");
-            DisplayArray(myArray);
-            Console.WriteLine("Application ended. Press any key to exit...");
-            Console.ReadKey(); //waits for user to press any key to continue
+            DisplayArray(myArray);      //To display the array again after sorting it, so we can see the sorted version of the array
+            
+            Console.WriteLine("Application ended. Press any key to exit...");       //A simple Exit message is diplayed
+            Console.ReadKey(); //waits for user to press any key to continue        //waits for user to press any key before going ahead and exiting application
         }
 
         /// <summary>
