@@ -1,0 +1,44 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Practice using arrays
+using System;
+
+namespace ArrayPracticeReceiveAndDisplayStudentNamesAndGrades
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("STUDENT GRADE ENTRY APPLICATION\n");
+
+            int numberOfStudents;
+            Console.Write("How many students are in your class? Please enter a whole number value: ");
+            numberOfStudents = Convert.ToInt32(Console.ReadLine());
+            int[] studentGrades = new int[numberOfStudents];  //creates an integer array named studentGrades to hold the whole number grades of students in a class
+                                                                                               //size of array is same as numberOfStudents, so that it can hold grades for every student
+            string[] studentNames;      //creates a string array to hold the student names
+            studentNames = new string[numberOfStudents];  //size of array is same as numberOfStudents, so that it can hold names for every student
+            //for studentNames the declaration and instantiation is split into 2 statements, which is another way of doing it compared to studentGrades wheres it is all done at once
+
+            Console.WriteLine("Please enter each student's name and grade (Press enter after each value):");
+            for (int i = 0; i < numberOfStudents; i++)      //to run a loop so we enter data for each student 1 by 1
+            {
+                Console.Write($"Student {i + 1} Name: ");   //Asks user to enter student Name
+                studentNames[i] = Console.ReadLine();       //Takes user input and assigns it to the studentNames array
+                Console.Write($"Student {i + 1} Grade: ");  //Asks user to enter student Grade for same student
+                studentGrades[i] = Int32.Parse(Console.ReadLine());     //Takes user input and assigns it to the studentNames array
+            }
+
+            Console.WriteLine("\nHere are the grades for all students in this class:");     //we will display student data like a table
+            Console.WriteLine("\n__________________________________________________________________________________________");      //to make a border before the heading
+            Console.WriteLine("Student #\t\tName\t\t\t\t\tGrade");      //heading of what is in each column
+            Console.WriteLine("__________________________________________________________________________________________");        //to make a border after the heading
+            for (int i = 0; i < numberOfStudents; i++)
+                Console.WriteLine($"{i+1}\t\t\t{studentNames[i]}\t\t{studentGrades[i]}");       //Displays student number, name, and grade for each student in a new line, separated by tabs to make it look more tabular
+
+            Console.WriteLine("Application ended. Press any key to exit...");
+            Console.ReadKey(); //waits for user to press any key to continue
+        }
+    }
+}
+    
