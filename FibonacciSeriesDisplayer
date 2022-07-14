@@ -1,0 +1,84 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Create an algorithm to display Fibonacci series
+//Fibonacci series is a math series that goes like this: 0 1 1 2 3 5 8 13 21 34 ...
+//Here each value in the series is the sum of the previous two values in the series,except for the first 2 values. The first 2 values are 0 then 1 by default
+//Two methods are used: FibonacciArray and FibonacciDisplay
+//Both methods do the same thing but FibonacciDisplay is more memory efficient because it doesn't require you to create a temporary array to store the values you want to display
+//However, if this code would need to be modified to store the Fibonacci series in an array instead of displaying it in the future then the FibonacciArray method would be more useful in recreating that code
+
+using System;
+
+namespace FibonacciSeriesDisplayer
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("FIBONACCI SERIES\n");
+            Console.WriteLine("This application displays the Fibonacci Series.");
+
+            uint seriesLength = 0;
+            Console.WriteLine("Please type how many elements in the Fibonacci series you want to display: ");
+            seriesLength = Convert.ToUInt32(Console.ReadLine());
+            FibonacciArray(seriesLength);
+            FibonacciDisplay(seriesLength);
+
+            Console.WriteLine("Application ended. Press any key to exit...");   //A simple Exit message is diplayed
+            Console.ReadKey(); //waits for user to press any key to continue
+        }
+
+        /// <summary>
+        /// A method that displays the Fibonacci Series by first entering it in an array then displaying the array
+        /// </summary>
+        /// <param name="len">a whole number 0 or higher to represent how many values of the Fibonacci series the user wants to display</param>
+        static void FibonacciArray(uint len)
+        {
+            switch (len)
+            {
+                case 0:
+                    Console.WriteLine("You entered that you want zero values displayed. Nothing will be displayed.");
+                    break;
+                case 1:
+                    Console.WriteLine("Here is your Fibonacci Series:\n0");
+                    break;
+                case 2:
+                    Console.WriteLine("Here is your Fibonacci Series:\n0  1");
+                    break;
+                default:
+                    int[] FibArray = new int[len];
+                    FibArray[0] = 0;
+                    FibArray[1] = 1;
+                    for (int i = 2; i < len; i++)
+                    {
+                        FibArray[i] = FibArray[i - 1] + FibArray[i - 2];
+                    }
+                    Console.WriteLine("Here is your Fibonacci Series:");
+                    foreach (int i in FibArray)
+                    {
+                        Console.Write($"{i} ");
+                    }
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// A method that displays the Fibonacci Series without first entering it in an array; thus more memory efficient than the FibonacciArray method
+        /// </summary>
+        /// <param name="len">a whole number 0 or higher to represent how many values of the Fibonacci series the user wants to display</param>
+        static void FibonacciDisplay(uint len)
+        {
+            int a = 0, b = 1, temp;
+            Console.Write("Here is your Fibonacci Series:\n0 1 ");
+            for(int i=3;i<=len; i++)
+            {
+                temp = a + b;
+                Console.Write($"{temp} ");
+                a = b;
+                b = temp;
+            }
+            Console.WriteLine();
+        }
+    }
+}
