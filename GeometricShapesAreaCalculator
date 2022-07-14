@@ -1,0 +1,98 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Calculate area of triangle, square and rectangle.
+//A menu is first displayed to choose what shape to display the area of 
+//Each menu item selection leads to a switch statement choice that calls the method that makes that calculation
+
+using System;
+
+namespace GeometricShapesAreaCalculator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //The next 2 statements sets a different text and text background color on the screen for the Application heading
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("GEOMETRIC SHAPES AREA CALCULATOR\n");      //Displays application heading: what this application does for user
+            Console.ResetColor();   //resets text color to default after heading is displayed
+
+            char returnToMainMenu = 'y';    //Variable to give user the option to press 'y' or 'Y' to return to the main menu again to do another calculation
+                                            //Default is set to 'y' so that the while loop (calculation program) runs at least once
+            while (returnToMainMenu == 'y' || returnToMainMenu == 'Y')      //To repeat and return back to main menu to calculate again everytime the user enters y/Y for yes
+            {
+                Console.BackgroundColor = ConsoleColor.Yellow;       //To give a different text and text background color  for the Main Menu of the program
+                Console.ForegroundColor = ConsoleColor.DarkRed;        //to distinguish it from other data
+                //The following 4 statements displays the Area Calculator Main Menu for the user
+                Console.WriteLine("MAIN MENU");
+                Console.WriteLine("What would you like to calculate the area of?");
+                Console.WriteLine("\t1.  TRIANGLE\n\t2.  SQUARE\n\t3.  RECTANGLE");
+                Console.WriteLine("Type the number that corresponds to the shape for which you want to calculate area:");
+                int choice = 0; //A variable to store the menu selection of the user. Default value set to 0, a value that is not one of the menu choices
+                choice = Convert.ToInt32(Console.ReadLine());       //to convert the user input which by default is saved as a string by C# to an integer and then assign it to choice
+                Console.ResetColor();   //to reset the text colors back to default after the main menu is displayed
+                switch (choice)     //The switch options below direct the application to call the function that performs the action that corresponds to the user's menu selection
+                {
+                    case 1:
+                        TriangleAreaCalculator();
+                        break;
+                    case 2:
+                        SquareAreaCalculator();
+                        break;
+                    case 3:
+                        RectangleAreaCalculator();
+                        break;
+                    default:            //To give a default message if the user typed menu choice is not one of the available menu choices
+                        Console.WriteLine("Your entered value is not one of the menu choices. You must type a number between 1 to 3");
+                        break;
+                }
+                Console.WriteLine("\nDo you want to return to the main menu? Type 'y' if yes or any other letter if no:");
+                returnToMainMenu = Convert.ToChar(Console.ReadLine());
+            }
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// A method that calculates and displays area of a triangle after requesting and receiving the base and height from user
+        /// </summary>
+        static void TriangleAreaCalculator()
+        {
+            float triangleArea, triangleBase, triangleHeight;   //variables are declared to hold the base, height, and area of the triangle
+            Console.Write("Please enter the base of the triangle: "); //user is asked to enter the base of the triangle
+            triangleBase = Convert.ToSingle(Console.ReadLine()); //user entered base is read, converted to a float type (since triangleBase is a float) and then assigned to triangleBase
+            Console.Write("Please enter the height of the triangle: ");//user is asked to enter the height of the triangle
+            triangleHeight = Convert.ToSingle(Console.ReadLine());//user entered height is read, converted to a float type (since triangleHeight is a float) and then assigned to triangleHeight
+            triangleArea = Convert.ToSingle(0.5) * triangleBase * triangleHeight;   //Area of a triangle = 1/2 x base x height. That is being calculated here. 1/2 is entered in its decimal form 0.5
+                                                                       //C# by default typecasts decimal values entered as double. Thus it is converted to float to match the triangleArea variable's type, which is float
+            Console.WriteLine("Area of this triangle is: {0}", triangleArea); //the calculated area is displayed
+        }
+
+        /// <summary>
+        /// A method that calculates and displays area of a square after requesting and receiving the side from user
+        /// </summary>
+        static void SquareAreaCalculator()
+        {
+            double squareArea, squareSide;      //two variables are declared to hold the side and the area of the square
+            Console.Write("Please enter the side of the square: ");   //user is asked to enter the side of the square
+            squareSide = Convert.ToDouble(Console.ReadLine());  //user entered side is read, converted to a double type (since squareSide is a double) and then assigned to squareSide
+            squareArea = Math.Pow(squareSide, 2);   //area of a square= side squared. The Math.Pow method is used to get the value of squareSide (the first parameterin the method) to the exponent 2 (the second parameter in the method)
+            Console.WriteLine("Area of this square is: {0}", squareArea);   //the calculated area is displayed
+        }
+
+        /// <summary>
+        /// A method that calculates and displays area of a rectangle after requesting and receiving the width and height from user
+        /// </summary>
+        static void RectangleAreaCalculator()
+        {
+            float rectangleArea, rectangleWidth, rectangleHeight;   //variables are declared to hold the width, height, and area of the rectangle
+            Console.Write("Please enter the width of the rectangle: ");  //user is asked to enter the width of the rectangle
+            rectangleWidth = Convert.ToSingle(Console.ReadLine());  //user entered width is read, converted to a float type (since rectangleWidth is a float) and then assigned to rectangleWidth
+            Console.Write("Please enter the height of the rectangle: "); //user is asked to enter the height of the rectangle
+            rectangleHeight = Convert.ToSingle(Console.ReadLine()); //user entered height is read, converted to a float type (since rectangleHeight is a float) and then assigned to rectangleHeight
+            rectangleArea = rectangleWidth * rectangleHeight;    //Area of a rectangle = width x height. That is being calculated here. 
+            Console.WriteLine("Area of this rectangle is: {0}", rectangleArea); //the calculated area is displayed
+        }
+    }
+}
