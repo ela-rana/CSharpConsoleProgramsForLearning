@@ -1,6 +1,7 @@
 //Coded on Visual Studio using C# language and .NET Framework 4.8
 //A program to do the following:
-//Create a bubble sort algorithm
+//Create a bubble sort algorithm, sort an integer array and display it
+
 using System;
 
 namespace BubbleSort
@@ -13,14 +14,19 @@ namespace BubbleSort
 
             int[] myArray = new int[] { 23, 4, 9, 11, 86, 2, 66, 4, 2, 88, 46 };
             DisplayArray(myArray);
-            myArray=BubbleSort(myArray);
+            myArray=BubbleSortAsc(myArray);
             Console.WriteLine("Now you will see it after sorting...");
             DisplayArray(myArray);
             Console.WriteLine("Application ended. Press any key to exit...");
             Console.ReadKey(); //waits for user to press any key to continue
         }
 
-        static int[] BubbleSort(int[] arr)
+        /// <summary>
+        /// Sorts an entered integer array in ascending order using bubble sort algorithm
+        /// </summary>
+        /// <param name="arr">An integer array that you want to sort in ascending order</param>
+        /// <returns>A sorted integer array is returned (sorted in ascending order)</returns>
+        static int[] BubbleSortAsc(int[] arr)
         {
             int temp=0;
             for (int j = arr.Length; j >=0; j--)
@@ -38,6 +44,10 @@ namespace BubbleSort
             return arr;
         }
 
+        /// <summary>
+        /// Displays all values within an integer array on screen separated by spaces
+        /// </summary>
+        /// <param name="arr">An integer array that you want to display to user</param>
         static void DisplayArray(int[] arr)
         {
             Console.WriteLine("Here is your array: ");
@@ -49,4 +59,3 @@ namespace BubbleSort
         }
     }
 }
-    
