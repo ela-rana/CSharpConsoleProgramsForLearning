@@ -1,0 +1,70 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Practice handling exceptions in C#
+
+using System;
+
+namespace ErrorHandlingPracticeDivisionCalculatorApp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("DIVISION CALCULATOR\n");      //Displays application heading: what this application does for user
+            int num1, num2, result; //to declare 3 variables to perform division (math): num1: numerator, num2: denominator, result: the result of the division 
+            bool flag1, flag2;      //boolean flags to check if parsing user input to int works or not
+            //if user enters a proper int value for num1 and num2, then tryParse will succeed and num1 & num2 will be updated with user entered values
+            //if user enters non int value or enters a blank value, then tryParse fails and the flags get set to false value
+            //then we can use if blocks to error handle if flags are set to false
+        myGoToLabel:                    //myGoToLabel is the name of a label. It is a point in the code that the program goes back when it sees a goto keyword 
+                                                    //call the label name
+            Console.Write("Enter numerator: ");     //asks user to enter the nominator for division
+            flag1 = Int32.TryParse(Console.ReadLine(), out num1);      //tryParse takes the console user input and checks if it can be parsed (converted to a double)
+                                                    //If it can then it is assigned to num1. If not then an error is thrown
+            Console.Write("Enter denominator:  ");  //asks user to enter the nominator for division
+            flag2 = Int32.TryParse(Console.ReadLine(), out num2);  //tryParse takes the console user input and checks if it can be parsed (converted to a double)
+                                                                    //If it can then it is assigned to num1 and flag value is true. If not then the flag value becomes false
+            if(flag1==false || flag2==false)    //a section to handle the tryParse failure which cause the flags to be set to 0
+            {
+                Console.WriteLine("One (or both) of the values you entered is not a whole number or\nit is outside of the allowed range: {0} to {1}", Int32.MinValue, int.MaxValue);
+                Console.WriteLine("Please enter whole number (non-blank) values that are within the allowed range\nLet's try this again...\n");
+                goto myGoToLabel;   //to go back and try entering the numbers again
+            }
+            try     //the try block is where we put the block of code that we think could possibly cause an error
+            {
+                result = num1 / num2;   //result of division is calculated
+                Console.WriteLine("The result for {0} divided by {1} is:  {2}", num1, num2, result); //the division result is displayed
+            }
+            catch (ArithmeticException ex)      //to catch any arithmetic error thrown while executing the block of code within the try block
+            {
+                //Here you type the code of what to do if error occurs
+                Console.WriteLine(ex.Message);  //Displays the error message
+                goto myGoToLabel;  //to go back and try entering the numbers again
+            }
+            catch (Exception ex)    //to catch any error thrown in the try block that the ArithmeticException catch block above did not catch
+            {
+                Console.WriteLine(ex.Message); //Displays the error message
+            }
+            finally     //the finally block always runs whether an error is thrown or not. Thus it is used to put code that we want to run
+                        //whether there is an error or not
+            {
+                Console.WriteLine("Press any key to continue\n");  //A simple continue message is displayed to practice using finally
+                Console.ReadKey(); //waits for user to press any key to continue
+            }
+            Console.WriteLine("Application ended. Press any key to exit...\n");  //A simple exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to exit
+        }
+    }
+}
+
+//We see two catch blocks above. When there are multiple catch blocks for the same try block, the first catch block condition is checked
+//Here the first catch block is checking for ArithmeticException. If there is an ArithmeticException then this is the only catch block that runs
+//and any catch block after it doesn't run
+//if there is no ArithmeticException the the code moves on to the next catch block to check its conditions
+//Here, the second catch block is trying to catch the Exception type error, which is the generic type that catches any type of error thrown
+//So if there is any error, this catch block will definitely catch it
+//Exception is a generic type: it catches any error thrown
+//Specific types (ones to catch certain specific types of errors): examples: ArithmeticException, OverflowException, System.IO.FileNotFoundException, etc.
+//Always put generic Exception catch block at the end if there are multiple catch blocks.
+//That way if we have code for a specific exception the specific catch block runs. If we put generic on top then it will catch all errors so none of the
+//other specific catch blocks will run
