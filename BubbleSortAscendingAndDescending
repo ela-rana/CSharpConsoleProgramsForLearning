@@ -94,10 +94,10 @@ namespace BubbleSortAscendingAndDescending
         /// <param name="arr">An integer array that you want to display to user</param>
         static void DisplayArray(int[] arr)
         {
-            Console.WriteLine("Here is your array: ");
-            foreach (int i in arr)
-                Console.Write($"{i}   ");
-            Console.WriteLine();
+            Console.WriteLine("Here is your array: ");  //A heads up to let you know the array is being displayed
+            foreach (int a in arr)  //to display each value in the array
+                Console.Write("{0}  ", a);      //Each value is displayed separated by spaces
+            Console.WriteLine();    //To refresh to a new line after the entire loop is completed and the entire array is displayed
         }
     }
 }
