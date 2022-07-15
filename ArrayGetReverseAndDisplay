@@ -1,0 +1,86 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Get size of an array, then using a method get values from user for the arrray
+//Then, Display the array as is, reverse the array, then display it again to see the reversed array
+//Ex: if user enters the following array: 5 10  1   2   2   9   6
+//then after reversing it would be: 6   9   2   2   1   10  5
+
+using System;
+
+namespace ArrayGetReverseAndDisplay
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("ARRAY REVERSER\n");      //Displays application heading: what this application does for user
+
+            int arrSize = 0;        //variable to hold the size of the array
+            Console.WriteLine("How many values are in your array?  Please enter a whole number value of 1 or more");
+            //to ask user for array size
+            arrSize = Convert.ToInt32(Console.ReadLine());      //user inputted size is type converted to int and assigned to arrSize
+
+            int[] myArray = new int[arrSize];       //an array is created with the user inputted size
+            myArray = GetArrayValues(myArray);    //this method take the array as a parameter, gets user inputted values for the array
+                                                  //then returns the user inputted array back, which is assigned back to the same array variable to update it
+            DisplayArray(myArray);  //this method simply displays your entire array (all its values)
+            myArray = ReverseArray(myArray); //this method reverses the array values
+            Console.WriteLine("Your array has now been reversed.\n");   //a notification statement is displayed to user to le them know the array has 
+            DisplayArray(myArray);
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// A method that takes an integer array as parameter, fills the array values with a user's input, then returns the filled array
+        /// </summary>
+        /// <param name="arr">an integer array to be filled with user input. 
+        /// It may be blank or may need to have its values overridden</param>
+        /// <returns>an integer array after it is filled with user input values</returns>
+        static int[] GetArrayValues(int[] arr)
+        {
+            Console.WriteLine("Please enter the {0} array values:", arr.Length);    //asks user to start entering values
+            for (int i = 0; i < arr.Length; i++)    //to go through each value in the array using the variable i to represent each index
+            {
+                Console.Write("Value {0}:  ", i + 1);   //asks user to enter each value in the array 1 by 1
+                arr[i] = Int32.Parse(Console.ReadLine());   //gets user input from console (string), converts it to int and assigns to the array value at i location
+            }
+            return arr; //to return the array back after it is filled with user input
+        }
+
+        /// <summary>
+        /// A method to reverse an integer array that is entered as a parameter
+        /// </summary>
+        /// <param name="arr">An integer array that needs to be reversed</param>
+        /// <returns>A reversed integer array. The array entered in the parameter is returned reversed</returns>
+        static int[] ReverseArray(int[] arr)
+        {
+            int temp;   //to hold a temporary value while values are being swapped
+            for (int i = 0; i < arr.Length / 2; i++)    //To go through each index location of the array from the start to the midpoint
+                                                        //to swap it with the values on the other half of the array
+            {
+                temp = arr[i];                                 //to temporarily hold the left value
+                arr[i] = arr[arr.Length - 1 - i];       //to swap the left value with the right value
+                arr[arr.Length - 1 - i] = temp;   //to swap the right value with what was originally in the left value before the swap
+                                                                  //which is now stored within the temp variable  
+            }
+            //using above loop, the leftmost value is swapped with the rightmost value, then the second leftmost value is
+            //swapped with the second rightmost value, and so on til they get to the midpoint. So one by one the whole array is reversed
+            
+            return arr;     //to return the array after it is reversed
+        }
+
+        /// <summary>
+        /// A method to display an integer array that is passed as a parameter
+        /// </summary>
+        /// <param name="arr">Any integer array that needs to be displayed</param>
+        static void DisplayArray(int[] arr)
+        {
+            Console.WriteLine("Here is your array: ");  //A heads up to let you know the array is being displayed
+            foreach (int a in arr)  //to display each value in the array
+                Console.Write("{0}  ", a);      //Each value is displayed separated by spaces
+            Console.WriteLine();    //To refresh to a new line after the entire loop is completed and the entire array is displayed
+        }
+    }
+}
