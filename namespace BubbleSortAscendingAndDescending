@@ -1,0 +1,103 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Create a bubble sort algorithm, sort an integer array with 2 bubble sort algorithms
+//one ascending order and one descending order
+//and to display it
+
+using System;
+
+namespace BubbleSortAscendingAndDescending
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("BUBBLE SORT\n");     //to display the title on the top of the console screen
+
+            int[] myArray = new int[] { 23, 4, 9, 11, 86, 2, 66, 4, 2, 88, 46 };    //to create an int array that we will use
+            DisplayArray(myArray);      //to display the array before sorting it
+            myArray = BubbleSortAsc(myArray); //to call the method that with bubble sort the array, 
+                                              //we pass the array as a parameter, the method returns the ascending sorted array which is assigned back to the myArray
+                                              //variable, so the myArray variable gets updated with its sorted form
+            Console.WriteLine("Now you will see it after sorting in ascending order...");
+            DisplayArray(myArray);      //To display the array again after sorting it, so we can see the sorted version of the array
+
+            myArray = BubbleSortDesc(myArray); //to call the method that with bubble sort the array, 
+                                              //we pass the array as a parameter, the method returns the descending sorted array which is assigned back to the myArray
+                                              //variable, so the myArray variable gets updated with its sorted form
+            Console.WriteLine("Now you will see it after sorting in descending order...");
+            DisplayArray(myArray);      //To display the array again after sorting it, so we can see the sorted version of the array
+
+            Console.WriteLine("Application ended. Press any key to exit...");       //A simple Exit message is diplayed
+            Console.ReadKey(); //waits for user to press any key to continue        //waits for user to press any key before going ahead and exiting application
+        }
+
+        /// <summary>
+        /// Sorts an entered integer array in ascending order using bubble sort algorithm
+        /// </summary>
+        /// <param name="arr">An integer array that you want to sort in ascending order</param>
+        /// <returns>A sorted integer array is returned (sorted in ascending order)</returns>
+        static int[] BubbleSortAsc(int[] arr)
+        {
+            int temp = 0;   //a variable to hold a temporary value while swapping two values
+            for (int j = arr.Length; j >= 0; j--)   //variable j determines upto which index you want to check during each iteration of the bubble sort.
+                                                    //After each iteration the last index in that iteration gets sorted with the largest value of that iteration
+                                                    //So each iteration we can go left by 1 value for j (j--) because we have to check upto 1 less end location than the previous iteration
+            {
+                for (int i = 0; i < j - 1; i++)     //in each j iteration, you go from left to right using i, all the way upto j-1
+                                                    //j is the size so the index of last location would be j-1 since index starts from zero instead of one
+
+                {
+                    if (arr[i] > arr[i + 1])    //for each i you check if the value at i is greater than the value to the right of i
+                                                //and if it is you swap the values so that they become sorted ascending
+                    {
+                        temp = arr[i];      //if swapping you put the value at i in the temp variable
+                        arr[i] = arr[i + 1];    //then you put the right value ino the left location
+                        arr[i + 1] = temp;  //then you put the original left value, which was being stored in temp before the left got updated into the right location
+                    }
+                }
+            }
+            return arr; //to return the ascending bubble sorted array
+        }
+
+        /// <summary>
+        /// Sorts an entered integer array in descending order using bubble sort algorithm
+        /// </summary>
+        /// <param name="arr">An integer array that you want to sort in descending order</param>
+        /// <returns>A sorted integer array is returned (sorted in descending order)</returns>
+        static int[] BubbleSortDesc(int[] arr)
+        {
+            int temp = 0;   //a variable to hold a temporary value while swapping two values
+            for (int j = arr.Length; j >= 0; j--)   //variable j determines upto which index you want to check during each iteration of the bubble sort.
+                                                    //After each iteration the last index in that iteration gets sorted with the smallest value of that iteration
+                                                    //So each iteration we can go left by 1 value for j (j--) because we have to check upto 1 less end location than the previous iteration
+            {
+                for (int i = 0; i < j - 1; i++)     //in each j iteration, you go from left to right using i, all the way upto j-1
+                                                    //j is the size so the index of last location would be j-1 since index starts from zero instead of one
+
+                {
+                    if (arr[i] < arr[i + 1])    //for each i you check if the value at i is less than the value to the right of i
+                                                //and if it is you swap the values so that they become sorted descending
+                    {
+                        temp = arr[i];      //if swapping you put the value at i in the temp variable
+                        arr[i] = arr[i + 1];    //then you put the right value ino the left location
+                        arr[i + 1] = temp;  //then you put the original left value, which was being stored in temp before the left got updated into the right location
+                    }
+                }
+            }
+            return arr; //to return the descending bubble sorted array
+        }
+
+        /// <summary>
+        /// Displays all values within an integer array on screen separated by spaces
+        /// </summary>
+        /// <param name="arr">An integer array that you want to display to user</param>
+        static void DisplayArray(int[] arr)
+        {
+            Console.WriteLine("Here is your array: ");
+            foreach (int i in arr)
+                Console.Write($"{i}   ");
+            Console.WriteLine();
+        }
+    }
+}
