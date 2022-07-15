@@ -1,0 +1,36 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+
+using System;
+
+namespace ErrorHandlingPractice
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("DIVIDER\n");      //Displays application heading: what this application does for user
+            int num1, num2, result;
+        myGoToLabel:
+            Console.Write("Enter numerator: ");
+            bool flag1 = Int32.TryParse(Console.ReadLine(),out num1);
+            Console.Write("Enter denominator:  ");
+            bool flag2 = Int32.TryParse(Console.ReadLine(),out num2);
+            try
+            {
+                //logic
+                result = num1 / num2;
+                Console.WriteLine("The result for {0} divided by {1} is:  {2}",num1,num2,result);
+            }
+            catch(ArithmeticException ex)
+            {
+                //Here you type the code of what to do if error occurs
+                Console.WriteLine(ex.Message);
+                goto myGoToLabel;
+            }
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+}
