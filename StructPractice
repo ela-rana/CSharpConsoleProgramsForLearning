@@ -1,0 +1,57 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//A program to do the following:
+//Create a structure named “Point” and 2 data members: X and Y coordinate. Declare 2 points: P1 and P2. 
+// Determine if P2 is to the right or left of P1 or on same axis, by comparing the x xoordinates. ( if p1.x is more than p2.x , it is to the right )
+
+using System;
+
+namespace StructPractice
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Point P1 = new Point(5.2f, -2);     //Creates a new Point object and enters default X and Y axis values for it of 5.2 & -2
+            Point P2 = new Point();              //Creates a new Point object without initializing it yet
+            bool flagX, flagY;      //boolean flags to check if parsing user input to float works or not
+            float tempX, tempY;     //stores X and Y coordinate values from user input which will later be assigned to a Point object's X and Y
+
+        myGoTo:                    //myGoTo label is used to go back to user's data entry if user enters a non-float number 
+            Console.WriteLine($"Please enter Point P2's coordinates:");
+            Console.Write("X=  ");     //asks user to enter the Point's X axis value
+            flagX = Single.TryParse(Console.ReadLine(), out tempX);      //tryParse takes the console user input and checks if it can be parsed (converted to a float)
+                                                    //If it can then it is assigned to num1 which will be assigned to P2's X. If not then flag becomes false
+            Console.Write("Y=  ");  //asks user to enter the Point's Y axis value
+            flagY = Single.TryParse(Console.ReadLine(), out tempY);  //tryParse takes the console user input and checks if it can be parsed (converted to a double)
+                                                                    //If it can then it is assigned to num1 which will be assigned to P2's Y. If not then flag becomes false
+            if (flagX==false || flagY==false)    //a section to handle the tryParse failure which cause the flags to be set to false
+            {
+                Console.WriteLine("One (or both) of the values you entered is not a decimal number or\nit is outside of the allowed range: {0} to {1}", Single.MinValue, Single.MaxValue);
+                Console.WriteLine("Please enter non-blank values that are within the allowed range\nLet's try this again...\n");
+                goto myGoTo;   //to go back and try entering the numbers again
+            }
+            P2.X= tempX;
+            P2.Y= tempY;
+            Console.WriteLine($"Point P1's coordinates are:\t\tX: {P1.X}   Y: {P1.Y}"); //displays P1's X & Y axis values to user
+            Console.WriteLine($"Point P2's coordinates are:\t\tX: {P2.X}   Y: {P2.Y}"); //displays P2's X & Y axis values to user
+            if(P1.X>P2.X)
+                Console.WriteLine("P1 is to the right of P2");
+            else if(P1.X==P2.X)
+                Console.WriteLine("P1 and P2 are at the same horizontal level. Their X-axis values are the same");
+            else
+                Console.WriteLine("P1 is to the left of P2");
+
+            Console.WriteLine("Application ended. Press any key to exit...\n");  //A simple exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to exit
+        }
+    }
+}
+
+//C# by default casts decimal numbers as a double datatype. Thus if it is a float it needs to have an 'f' at the end of the decimal value and if it is a
+//decimal type, it needs to have an 'm' at the end of the decimal value, for double values, nothing is needed to be added at the end since that is the
+//default type
+//Thus, in the: "Point P1 = new Point(5.2f, -2);" statement above: 5.2 is entered as 5.2f because we want to cast it as a float
+//Thus if we want to enter a value, for example, 234.56.
+//If the datatype is float, enter it as: 234.56f
+//If the datatype is double, enter it as: 234.56
+//If the datatype is decimal, enter it as: 234.56m
