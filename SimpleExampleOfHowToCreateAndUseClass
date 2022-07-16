@@ -1,0 +1,65 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//NOTE: TO RUN THIS FILE, THE FILE Student.cs ON THIS GIT REPOSITORY MUST ALSO BE ADDED TO YOUR PROJECT
+//A program to do the following:
+// A class named “Student” is created in the Student.cs class file
+// with private data members: studentId(int), studentFname(string), studentLname(string), studentGrade(char)
+// and public properties for each data member.
+// In the main method here, we will instantiate the class and assign data to properties, then display the data back on console.
+
+using System;
+
+namespace SimpleExampleOfHowToCreateAndUseClass
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Student student1 = new Student(11222, "John", "Doe", 'B');     //Creates a new Student object and enters default values for it
+            Student student2 = new Student();     //Creates a new Student object without initializing it yet
+
+            bool flagId, flagGrade;      //boolean flags to check if parsing user input to int for ID and char for grade works or not
+            int tempId;     //temporary variable to hold the student ID value in the TryParse method because TryParse output cannot be
+                            //directly written into the student's ID property since it is a reference type and not a value type (TryParse limitation)
+                            //The value in tempID will later be assigned to student's ID property
+            char tempGrade; //same as tempId variable above, but this one is for student's grade
+            Console.WriteLine($"Please enter the student's information:");
+
+        gotoName:
+            Console.Write("First Name: ");  //asks user to enter the student's first name
+            student2.StudentFName = Console.ReadLine(); //saves user entered name to the StudentFName property
+            Console.Write("Last Name: ");  //same for last name
+            student2.StudentLName = Console.ReadLine();
+
+            if(student2.StudentFName=="" ||student2.StudentLName=="")
+            {
+                Console.WriteLine("Name fields cannot be left blank. Please enter a non-blank value.\nLet's try this again...\n");
+                goto gotoName;
+            }
+
+        gotoId:                    //myGoTo label is used to go back to user's data entry if user enters a non-int or non-char value for ID or grade respectively
+            Console.Write("Student ID: ");     //asks user to enter the student's ID
+            flagId = Int32.TryParse(Console.ReadLine(), out tempId);      //tryParse takes the console user input and checks if it can be parsed (converted to int)
+                                                                          //If it can then it is assigned to tempID which will be later be assigned to student's ID . If not then flag becomes false
+            Console.Write("Student Grade: ");     //asks user to enter the student's grade
+            flagGrade = Char.TryParse(Console.ReadLine(), out tempGrade);      //tryParse takes the console user input and checks if it can be parsed (converted to char)
+                                                                          //If it can then it is assigned to tempGrade which will be later be assigned to student's grade . If not then flag becomes false
+
+            if (flagId==false || flagGrade==false)    //a section to handle the tryParse failure which cause the flags to be set to false
+            {
+                //The following 4 statements give out an error message when an incorrect ID or grade value is entered
+                Console.WriteLine("Value entered for ID and/or Grade is not the right type of value.");
+                Console.WriteLine("ID must be a positive non-blank whole number value between 1 and {0}.",Int32.MaxValue);
+                Console.WriteLine("Grade must be a single character non-blank alphabetical value.");
+                Console.WriteLine("Let's try this again...\n");
+                goto gotoId;   //to go back and try entering the ID and grade again
+            }
+            student2.StudentId = tempId;    //assigns the student ID value stored by the TryParse into the student object's ID property
+            student2.StudentGrade = tempGrade; //assigns the grade stored by the TryParse into the student object's grade property
+            student1.DisplayStudent();  //Calls DisplayStudent method of Student class to display all student data for this student object
+            student2.DisplayStudent();  //same for student2 object
+
+            Console.WriteLine("Application ended. Press any key to exit...\n");  //A simple exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to exit
+        }
+    }
+}
