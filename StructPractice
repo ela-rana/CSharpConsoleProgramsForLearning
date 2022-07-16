@@ -1,4 +1,5 @@
 //Coded on Visual Studio using C# language and .NET Framework 4.8
+//NOTE: TO RUN THIS FILE, THE FILE Point.cs ON THIS GIT REPOSITORY MUST ALSO BE ADDED TO YOUR PROJECT
 //A program to do the following:
 //Create a structure named “Point” and 2 data members: X and Y coordinate. Declare 2 points: P1 and P2. 
 // Determine if P2 is to the right or left of P1 or on same axis, by comparing the x xoordinates. ( if p1.x is more than p2.x , it is to the right )
