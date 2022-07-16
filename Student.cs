@@ -4,7 +4,7 @@
 
 using System;
 
-namespace StructAndClassPractice
+namespace SimpleExampleOfHowToCreateAndUseClass
 {
     internal class Student
     {
