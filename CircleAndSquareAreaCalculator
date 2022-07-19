@@ -1,0 +1,98 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//NOTE: TO RUN THIS FILE, THE FILE Shape.cs ON THIS GIT REPOSITORY MUST ALSO BE ADDED TO YOUR PROJECT
+//A program to do the following:
+//Calculate the area of a square or a circle
+//Program is a practice example of the use of classes, inheritance, and virtual methods
+
+using System;
+
+namespace CircleAndSquareAreaCalculator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("CIRCLE AND SQUARE AREA CALCULATOR\n");
+            //To display the application title on top
+
+            char returnToMenu = 'y';    //Variable to give user the option to press 'y' or 'Y' to return to the main menu again to do another calculation
+                                        //Default is set to 'y' so that the while loop (calculation program) runs at least once
+            while (returnToMenu == 'y' || returnToMenu == 'Y')      //To repeat and return back to main menu to calculate again everytime the user enters y/Y for yes
+            {
+                //The following 4 statements displays the Main Menu for the user
+                Console.WriteLine("MAIN MENU");
+                Console.WriteLine("What would you like to calculate the area for?");
+                Console.WriteLine("\t1.  CIRCLE\n\t2.  SQUARE");
+                Console.WriteLine("Type either the value 1 or 2 that corresponds to the type of calculation you want to perform and then press Enter:  ");
+                int choice; //to hold the user's menu choice of 1 or 2
+            enterChoice:        //a label to mark to go back to the data entry point if the user inputs an incorrect format value for menu choice
+                try
+                {
+                    choice = Int32.Parse(Console.ReadLine());       //to convert the user input which is saved as string by C# by default to an integer and then assign it to choice
+                }
+                catch (FormatException ex)      //to catch error if user input for choice is not an integer
+                {
+                    Console.WriteLine(ex.Message);      //to display the error message
+                    Console.WriteLine("Please enter either the number 1 or 2. Those are the only menu choices. To exit press a whole number other than 1 or 2"); 
+                    //to add additional detail to explain required format
+                    goto enterChoice;   //to go back up to the point of the code so the user can re-enter the menu choice
+                }
+                switch (choice)     //The switch options below directs the application to instantiate the class that corresponds to the user's menu selection and gets area calculation
+                {
+                    case 1:
+                        Circle cir = new Circle();  //instantiates the circle class so we can use its properties and methods to calculate area
+                    enterRadius:    //a label to mark to go back to the data entry point if the user inputs an incorrect format value for radius of circle
+                        Console.Write("Please enter the value of the radius of the circle:  ");     //asks user to enter radius
+                        try
+                        {
+                            cir.Radius = Double.Parse(Console.ReadLine());      //user input is parsed to a double and then assigned to the circle object's Radius property
+                        }
+                        catch (FormatException ex)   //to catch error if user input for radius is not a double
+                        {
+                            Console.WriteLine(ex.Message);      //to display the error message
+                            Console.WriteLine("Please enter a numerical value. Value can be a whole number or decimal.");
+                            //to add additional detail to explain required format
+                            goto enterRadius;   //to go back up to the point of the code so the user can re-enter the radius
+                        }
+                        Console.WriteLine($"The area of the circle is: {cir.CalculateArea()}"); //To display the area of the circle. The CalculateArea() function calculates and returns the area 
+                        break;
+                    case 2:
+                        Square s = new Square();  //instantiates the square class so we can use its properties and methods to calculate area
+                    enterSide:   //a label to mark to go back to the data entry point if the user inputs an incorrect format value for side of square
+                        Console.Write("Please enter the value of the side of the square:  ");
+                        try
+                        {
+                            s.Side = Double.Parse(Console.ReadLine());  //user input is parsed to a double and then assigned to the square object's Side property
+                        }
+                        catch (FormatException ex)  //to catch error if user input for side is not a double
+                        {
+                            Console.WriteLine(ex.Message);  //to display the error message
+                            Console.WriteLine("Please enter a numerical value. Value can be a whole number or decimal.");
+                            //to add additional detail to explain required format
+                            goto enterSide;      //to go back up to the point of the code so the user can re-enter the side
+                        }
+                        Console.WriteLine($"The area of the square is: {s.CalculateArea()}"); //To display the area of the square. The CalculateArea() function calculates and returns the area 
+                        break;
+                    default:
+                        Console.WriteLine("Your entered value is not one of the 2 menu choices.");  //default message if a non-menu choice value is entered
+                        break;
+                }
+            enterReturnOption:
+                Console.WriteLine("\nDo you want to return to the main menu? Type 'y' if yes or any other letter if no:");  //asks user if they want to go back to menu to do another calculation
+                try
+                {
+                    returnToMenu = Convert.ToChar(Console.ReadLine());   //user input is parsed to a char to check is they want to return to the main menu
+                }
+                catch (FormatException ex)  //to catch error if user input for returning to the menu is a char or not
+                {
+                    Console.WriteLine(ex.Message);  //to display the error message
+                    Console.WriteLine("Please enter a single character and please do not leave blank.");
+                    //to add additional detail to explain required format
+                    goto enterReturnOption; //to go back up to the point of the code so the user can re-enter whether they want to return to the menu
+                }
+            }
+            Console.WriteLine("Application ended. Press any key to exit...\n");  //A simple exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to exit
+        }
+    }
+}
