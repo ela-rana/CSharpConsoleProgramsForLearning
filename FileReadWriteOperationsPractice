@@ -1,0 +1,143 @@
+//A program to practice using System.IO namespace methods
+
+using System;
+using System.IO;
+
+namespace FileReadWriteOperationsPractice
+{
+    internal class Program
+    {
+        static string filename;
+        const string path = @"C:\Users\user\Desktop\C# Programming\";
+        static void Main(string[] args)
+        {
+            BasicFileIODemo();
+            FileLoggingIODemo();
+            OtherFileIOMethods();
+
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        /// A method to do simple File Input Output operations to practice doing it.
+        /// The method uses StreamReader and StreamWriter form System.IO
+        /// </summary>
+        static void BasicFileIODemo()
+        {
+            Console.WriteLine("Lets create a file to perform basic File IO operations");
+            Console.WriteLine("Please enter a file name:  ");
+            filename = Console.ReadLine() + ".txt";
+            //you can also make it "*.txt" in some other situations but this is used if you
+            //want to browse
+            string temp = path + filename;
+            StreamWriter sw = null;
+            try
+            {
+                if (!File.Exists(temp))  //since we want to create a new file this statement checks
+                                         //to ensure a file by that name doesn't already exist. Because if it
+                                         //does then we would end up opening and overwriting what is already in the file
+                {
+                    sw = File.CreateText(temp); //creates the file and opens it so that
+                                                //it is ready to write into
+                    sw.WriteLine("Line 1 in my file"); //writes this text into the file
+                }
+                else
+                {
+                    sw = new StreamWriter(temp);
+                    sw.WriteLine($"New line written at: {DateTime.Now.ToString()}");
+                    //since it is not is append mode, the above line will overwrite the data in the file
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);  //to display error message if there is an issue creating and  
+                                                //opening the file
+            }
+            finally
+            {
+                if (sw != null)    //to check if a file is open in sw
+                    sw.Close(); //if the file is open this will close it
+            }
+
+            using (StreamReader sr = new StreamReader(temp))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                    Console.WriteLine(line);
+            }
+            //since the scope of the sr is within the above using block, the streamreader cannot be accessed
+            //after the using block ends. Also we do not have to do sr.Close() because the using block takes
+            //care of that as well.  
+            //we could have used this using block for the sw also. If we did that we would not have to close the sw
+        }
+
+        /// <summary>
+        /// A method to store thrown error messages to a log file in your computer
+        /// </summary>
+        static void FileLoggingIODemo()
+        {
+            const string logPath = @"C:\Users\user\Desktop\C# Programming\Log.txt";
+            string username, password;
+            Console.WriteLine("Username:  ");
+            username = Console.ReadLine();
+            Console.WriteLine("Password:  ");
+            password = Console.ReadLine();
+            try
+            {
+                if (username == "username" && password == "password")
+                    Console.WriteLine("Successful attempt");
+                else
+                    throw new LoginException();
+            }
+            catch (LoginException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.Beep(400, 1000);
+                File.AppendAllText(logPath, ex.Message+"\n");
+            }
+
+            Console.WriteLine("Here are the contents of your log file:");
+            ReadLog(logPath);
+        }
+
+        static void ReadLog(string logPath)
+        {
+            StreamReader s = new StreamReader(logPath);
+            string contents = s.ReadToEnd();
+            Console.WriteLine(contents);
+            s.Close();
+        }
+
+        static void OtherFileIOMethods()
+        {
+            DriveInfo driveInfo = new DriveInfo(@"C:\Users\user\Desktop\C# Programming\");  
+            //above statement to get info about the drive that this path is located in. It will return: C drive
+            Console.WriteLine($"Drive Name:  {driveInfo.Name}");    //to display drive name. Will display: C:\
+            Console.WriteLine($"Drive Free Space:  {driveInfo.AvailableFreeSpace}\n");  //will display c drive's free space
+
+            DirectoryInfo[] dirInfos = new DirectoryInfo(@"C:\Users\user\Desktop\C# Programming\").GetDirectories();
+            //an array to hold a list of the directories (meaning folders) at the given path location
+            //only displays folders at this location. Does not display the files
+            foreach(DirectoryInfo dirInf in dirInfos)   //for each folder at this location
+            {
+                //if (dirInf.Name == "MyExampleFolder")    
+                //{
+                //    dirInf.Delete(true);  //if there is a folder named MyExampleFolder at that location, this statement will delete the file
+                //}
+                Console.WriteLine(dirInf.Name + " " + dirInf.CreationTime); //goes through the foreach loop and displays each folder
+                                                                            //at this location and its folder creation date and time
+            }
+            Console.WriteLine("\n");
+            DirectoryInfo directory = new DirectoryInfo(@"C:\Users\user\Desktop\C# Programming\");
+            FileInfo[] files = directory.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                Console.WriteLine(file.Name + " " + file.CreationTime);
+                //if (file.Name == "MyExampleFile.txt")   //you have to write the extension of the file as well
+                //{
+                //    file.Delete();
+                //}
+            }
+        }
+    }
+}
