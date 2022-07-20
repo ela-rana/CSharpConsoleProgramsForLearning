@@ -1,4 +1,7 @@
+//Code on Visual Studio 2022 using C#, Console App, and .NET Framework 4.8
 //A program to practice using System.IO namespace methods
+//THE FILE LoginException.cs WHICH IS LOCATED IN THE SAME REPOSITORY AS THIS FILE MUST BE 
+//INCLUDED IN THIS PROJECT IN ORDER TO PROPERLY RUN THIS CODE
 
 using System;
 using System.IO;
