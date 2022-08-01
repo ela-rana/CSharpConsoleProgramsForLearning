@@ -1,0 +1,70 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following:
+//Practice using DateTime and TimeSpan structs in C# to calculate current dat and time or perform add and subtract 
+//operations on date and time components
+
+using System;
+
+namespace DateTimeExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Get current date and time
+            DateTime d = DateTime.Now;
+            Console.WriteLine("Date and time for now is: {0}", d);
+            //Add or subtract a year
+            Console.WriteLine($"DateTime 5 years ago was {d.AddYears(-5)} and one year in the future will be {d.AddYears(1)}");
+            //similarly to add or subtract months, days, etc. the methods to call would be:
+            //d.AddMonths, d.AddSeconds, d.AddHours, etc. (there is not AddWeeks Method though)
+            Console.WriteLine($"d.Subtract(d.AddDays(7) gives you: {d.Subtract(d.AddDays(7))}");
+            Console.WriteLine("Ticks for the Date and time for now is: {0}", d.Ticks);  //current DateTime  in ticks
+
+            DateTime e = DateTime.Parse("May 7 2022");  //this format Parses
+            DateTime f = DateTime.Parse("5/5/2021 23:59:00");   //this format Parses as well
+            Console.WriteLine("Date and time for e after doing DateTime.Parse(\"May 7 2022\") is: {0}", e); //if no time is entered 
+                                                                               //default time of 12:00:00AM is entered (00:00 time)
+            Console.WriteLine("Date and time for f after doing DateTime.Parse(\"5/5/2021 23:59:00\") is: {0}", f);
+            TimeSpan span = e.Subtract(f);
+            Console.WriteLine($"e-f gives: {span}");    //result: 366.00:01:00 = 366 days and 1 minute
+            Console.WriteLine($"e-f individual values:  Days- {span.Days}   Hours-  {span.Hours}"); //can use for Days, Hours, Minutes, Seconds
+                                                                                                    //cannot use for months, weeks, years
+
+
+            //--------------------------------------------------------------------------
+            //The following portion of the program is an erroneous age calculation functionality
+            //NOTE: Its calculation is not accurate due to only years being subtracted from each other instead of full date
+            Console.WriteLine("Please enter your date of birth in yyyy/mm/dd format:  ");
+            DateTime dob = Convert.ToDateTime(Console.ReadLine());
+            ///bool temp = DateTime.TryParse(Console.ReadLine(), out dob);  //alternate way using tryparse for error handling
+            Console.WriteLine($"You are {CalculateAge(dob)} years old if you already had your birthday this year.");
+            Console.WriteLine($"You are {CalculateAge(dob)-1} years old if you have not yet had your birthday this year.");
+            //This second WriteLine statement covers for the error of subtracting 2 years only instead of subtracting the entire date
+
+
+            //----------------------------------------------------------------------------
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// Calculates and return's a person's age when their date of birth is entered an input
+        /// </summary>
+        /// <param name="dob">Date of birth entered in DateTime format</param>
+        /// <returns>Age in integer format</returns>
+        static int CalculateAge(DateTime dob)
+        {
+            int age = DateTime.Now.Year - dob.Year;
+            return age;
+
+            //NOTE: this is not an accurate calculation because it does not consider whether the birthday has
+            //already passed or not it just gives you the subtraction between the years only, not the full date
+            //To fix it you would have to modify the code to get difference between the two dates in terms of year, month, and days
+            //A good way to do that is by using TimeSpan
+            //And then you would want to return the year portion only of the TimeSpan
+
+            //int months = DateTime.Now.Month - dob.Month;  //example of how to get difference between 2 months
+        }
+    }
+}
