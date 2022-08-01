@@ -1,0 +1,131 @@
+//Coded on Visual Studio using C# language and .NET Framework 4.8
+//Multi-dimensional Array Example
+
+//A program to do the following 2 actions:
+
+//1. Two-Dimensional Array Example: StudentGrade2DArray()
+//We have x students and y courses (x and y are user entered values) We want to store letter grades
+//for each student for each course using a 2-dimensional array
+
+//2. Three-Dimensional Array Example: ThreeDArrayExample()
+//Create and initialize a 3D int array and then display it
+
+//Note: [] means 1D, [,] means 2D, [,,] means 3D and so on
+//Note: for a 5 dimensional array the first dimension is 0, second is 1 and so on
+
+using System;
+
+namespace MultiDimensionalArrayExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            StudentGrade2DArray();
+            //ThreeDArrayExample();
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+        static void StudentGrade2DArray()
+        {
+            int students, courses;
+            int getSizeErrorCounter = 0, getGradeErrorCounter=0;
+        labelGetSize:
+            try
+            {            
+                Console.WriteLine("Enter number of students:  ");
+                students = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter number of courses per student:  ");
+                courses = Convert.ToInt32(Console.ReadLine());
+
+            }
+            catch (Exception ex)
+            {
+                getSizeErrorCounter++;
+                Console.WriteLine(ex.Message);
+                if (getSizeErrorCounter < 5)
+                {
+                    Console.WriteLine("Please enter a non-blank integer value. Let's try again:");
+                    goto labelGetSize;
+                }
+                else
+                {
+                    Console.WriteLine("You have entered invalid values too many times. Terminating application...");
+                    return;
+                }
+            }
+
+            //each row is a student, each column is a different course
+            char[,] grades = new char[students, courses];
+            Console.WriteLine("Please enter the letter grades for the students:");
+            for (int i = 0; i < grades.GetLength(0); i++)  //GetLength(0) means length of the 1st dimension
+            {
+                Console.WriteLine("Enter grades for student {0}:", i + 1);
+                for (int j = 0; j < grades.GetLength(1); j++)  //GetLength(1) means length of 2nd dimension
+                {
+                labelGetGrade:
+                    Console.Write("Grade for course #{0}:  ", j + 1);
+                    try
+                    {
+                        grades[i, j] = Convert.ToChar(Console.ReadLine());
+                    }
+                    catch (Exception ex)
+                    {
+                        getGradeErrorCounter++;
+                        Console.WriteLine(ex.Message);
+                        if (getGradeErrorCounter < 5)
+                        {
+                            Console.WriteLine("Please enter a non-blank single alphabet value. Let's try again:");
+                            goto labelGetGrade;
+                        }
+                        else
+                        {
+                            Console.WriteLine("You have entered invalid values too many times. Terminating application...");
+                            return;
+                        }
+                    }
+                }
+            }
+            DisplayGrades(grades);
+        }
+        static void DisplayGrades(char[,] grades)
+        {
+            Console.WriteLine("\nHere are the grades of the students:");
+            for (int i = 0; i < grades.GetLength(0); i++)
+            {
+                Console.Write("Student {0} |\t", i + 1);
+                for (int j = 0; j < grades.GetLength(1); j++)
+                {
+                    Console.Write(grades[i, j]);
+                    Console.Write("\t");
+                }
+                Console.WriteLine();
+            }
+        }
+        static void ThreeDArrayExample()
+        {
+            int[,,] arr = new int[,,]
+            {
+                    {     { 1, 1 }, { 2, 2 }, { 3, 3 }     },
+                    {     { 4, 4 }, { 5, 5 }, { 6, 6 }     }
+            };
+            //this creates a [2,2,2] length array
+
+            Console.WriteLine("\nHere is your 3D array:");
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                for (int j = 0; j < arr.GetLength(1); j++)
+                {
+                    for (int k = 0; k < arr.GetLength(2); k++)
+                    {
+                        string s = Convert.ToString(arr[i, j, k]);
+                        Console.Write(s);
+                        Console.Write(" ");
+                    }
+                    Console.Write("\t");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
