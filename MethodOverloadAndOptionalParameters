@@ -1,0 +1,39 @@
+using System;
+
+namespace MethodOverloadAndOptionalParameters
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(Add(3, 4));
+            Console.WriteLine(Add(y:3, x:4));
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        static int Add(int x, int y, int z = 5) //z has a default value of 5. So it is an optional 
+                    //parameter. If you enter a value for z, the entered value will be used. And if 
+                    //you don't enter any value for z then value 5 will be used
+        {
+            return x + y+ z;
+        }
+
+        static int Add(int x, int y)
+        {
+            return x + y;
+        }
+
+        //This is an example of ambiguous code. This should be avoided when possible
+        //Here we have 2 overloaded methods. The Add method with 3 parameters can technically 
+        //run with just 2 arguments as well since its z parameter can have the default value of 5
+        //So it becomes confusing which of the 2 overloaded methods will be called if be pass 2 values
+
+        //The answer is the method with 2 parameters (the second Add method) gets called for both the function
+        //calls in the Main function for the Add methods
+
+        //This is because the method with the same number of parameters takes precedence in C# over the one with 
+        //more parameters with default values
+    }
+}
