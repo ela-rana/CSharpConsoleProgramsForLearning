@@ -1,0 +1,34 @@
+using System;
+
+namespace PassingParametersByReferenceOrOutKeyword
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int sum1, prod1;
+           
+            OutOperations(3, 5,out sum1,out prod1);
+            Console.WriteLine($"Sum is {sum1} and product is {prod1}");
+
+            RefOperations(6, 4, ref sum1, ref prod1);
+            Console.WriteLine($"Sum is {sum1} and product is {prod1}");
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        static void OutOperations(int x, int y, out int sum, out int prod)
+        {
+            sum = x + y;
+            prod = x * y;
+        }
+
+        static void RefOperations(int x, int y, ref int sum, ref int prod)
+        {
+            sum = x + y;
+            prod = x * y;
+        }
+
+    }
+}
