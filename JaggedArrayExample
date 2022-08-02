@@ -1,0 +1,141 @@
+using System;
+using System.Linq;
+
+namespace JaggedArrayExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            temperatureArrayWithoutNullable();
+            temperatureArrayWithNullable();
+            jaggedTemperatureArray();
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        static void temperatureArrayWithoutNullable()
+        {
+            int[,] citytemp = new int[5, 10];
+
+            //city 0:
+            citytemp[0, 0] = 40;
+            citytemp[0, 1] = 46;
+            citytemp[0, 2] = 55;
+            citytemp[0, 3] = 60;
+            //city 1:
+            citytemp[1, 0] = 30;
+            citytemp[1, 1] = 66;
+            citytemp[1, 2] = 75;
+            //city 2:
+            citytemp[2, 0] = 40;
+            citytemp[2, 1] = 46;
+            citytemp[2, 2] = 55;
+            citytemp[2, 3] = 60;
+            //city 3:
+            citytemp[3, 0] = 40;
+            citytemp[3, 1] = 46;
+            citytemp[3, 2] = 55;
+            citytemp[3, 3] = 46;
+            citytemp[3, 4] = 53;
+            citytemp[3, 5] = 55;
+            //city 4:
+            citytemp[4, 0] = 40;
+            citytemp[4, 1] = 46;
+            citytemp[4, 2] = 55;
+
+            Console.WriteLine("Temperatures is 5 cities at different times of the day:");
+            for (int i = 0; i < citytemp.GetLength(0); i++)
+            {
+                Console.Write($"City ({i}):  ");
+                for (int j = 0; j < citytemp.GetLength(1); j++)
+                {
+                    Console.Write("|  {0} F  ", citytemp[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void temperatureArrayWithNullable()
+        {
+            Nullable<int>[,] citytemp = new Nullable<int>[5, 10];
+            //if we use int instead of Nullable<int> then for integers, C# by defaut
+            //initializes int to 0. Thus, if value is not entered, it might be confusing
+            //because we don't know if it means 0 degrees Farenheit or if it means no value
+            //If we use Nullable<int>, the non-entered values are initialized as NULL
+
+            //city 0:
+            citytemp[0, 0] = 40;
+            citytemp[0, 1] = 46;
+            citytemp[0, 2] = 55;
+            citytemp[0, 3] = 60;
+            //city 1:
+            citytemp[1, 0] = 30;
+            citytemp[1, 1] = 66;
+            citytemp[1, 2] = 75;
+            //city 2:
+            citytemp[2, 0] = 40;
+            citytemp[2, 1] = 46;
+            citytemp[2, 2] = 55;
+            citytemp[2, 3] = 60;
+            //city 3:
+            citytemp[3, 0] = 40;
+            citytemp[3, 1] = 46;
+            citytemp[3, 2] = 55;
+            citytemp[3, 3] = 46;
+            citytemp[3, 4] = 53;
+            citytemp[3, 5] = 55;
+            //city 4:
+            citytemp[4, 0] = 40;
+            citytemp[4, 1] = 46;
+            citytemp[4, 2] = 55;
+
+            Console.WriteLine("Temperatures is 5 cities at different times of the day:");
+            for (int i = 0; i < citytemp.GetLength(0); i++)
+            {
+                Console.Write($"City ({i}):  ");
+                for (int j = 0; j < citytemp.GetLength(1); j++)
+                {
+                    if (citytemp[i, j] != null)
+                    {
+                        Console.Write("|  {0} F  ", citytemp[i, j]);
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void jaggedTemperatureArray()
+        {
+            //Jagged arrays may also be called ragged arrays in Java, other languages
+
+            int[][] tempcities = new int[3][];  //array of array
+            
+            //INPUT
+            for (int i = 0; i < tempcities.Length; i++)
+            {
+                Console.WriteLine($"How many readings do you want to enter for city #{i + 1}:");
+                int readings = Int32.Parse(Console.ReadLine());
+                tempcities[i] = new int[readings];
+                Console.WriteLine($"Enter {readings} temperatures:");
+                for (int j=0; j < tempcities[i].Length; j++)
+                {
+                    tempcities[i][j] = Int32.Parse(Console.ReadLine());
+                }
+            }
+
+            //OUTPUT
+            Console.WriteLine("Entered Temperatures:");
+            for(int i=0;i<tempcities.Length;i++)    //tempcities.Length returns 4
+            {
+                Console.Write($"For city {i+1}, here is/are the {tempcities[i].Count()} entered reading(s): ");
+                for(int j=0; j < tempcities[i].Length;j++)
+                {
+                    Console.Write(" {0}F ",tempcities[i][j]);
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
