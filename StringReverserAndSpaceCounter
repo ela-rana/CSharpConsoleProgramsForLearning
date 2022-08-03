@@ -1,0 +1,108 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following: 
+//1. Given a string, write a method that returns that string in reverse order.
+//   Example: StringInReverseOrder("qwerty") → "ytrewq" StringInReverseOrder("oe93 kr") → "rk 39eo"
+//2. Create a function to input a string and count number of spaces are in the string.
+//   Example: Please input a string : This is a test string.
+//   Output: "This is a test string." contains 4 spaces
+
+using System;
+using System.Text;
+
+namespace StringReverserAndSpaceCounter
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string myString;    //variable to hold the string that we want to reverse or count spaces for
+            int choice;  //variable to hold menu choice of what string operation user wants to do
+            bool goodParse; //variable to hold whether parsing user input to int works or not
+            int wrongChoiceCounter=0;   //to keep count of how many times user enters a value for menu choice that is 
+                  //not one of the available choices. If user keeps entering incorrect values (5 times), the program terminates
+            char returnToMenu = 'y';    //variable to hold whether user wants to return to menu or not
+            Console.WriteLine("STRING REVERSER AND SPACES COUNTER PROGRAM\n");
+            while (returnToMenu == 'y' || returnToMenu == 'Y') 
+            {
+                Console.ForegroundColor = ConsoleColor.Black;   //to set a different text color for the menu
+                Console.BackgroundColor = ConsoleColor.Cyan; //to set a different text backgroung color for the menu
+                Console.WriteLine("\nWhat would you like to do?");  //Menu
+                Console.WriteLine("1.  Enter a string and display it reversed");
+                Console.WriteLine("2.  Enter a string and display total number of spaces in the string");
+                Console.Write("Enter 1 or 2 to indicate menu choice: ");
+                goodParse = Int32.TryParse(Console.ReadLine(), out choice); //gets user input for menu choice and saves it
+                                              //to choice. Whether the parse succeeds or not is saved in goodParse boolean
+                Console.ResetColor();  //to reset the text colors back to default after the main menu is displayed
+                if (goodParse && (choice == 1 || choice == 2))  //to make sure parse succeeded and the value entered is
+                                                                //one of the menu options
+                {
+                    Console.WriteLine("Please enter the string:");
+                    myString = Console.ReadLine();  //Gets user input for string to reverse
+                    switch (choice)
+                    {
+                        case 1:
+                            Console.WriteLine("\nHere is your string reversed:\n{0}", stringInReverseOrder(myString));
+                            //displays the reversed string returned by the stringInReverseOrder() method
+                            break;
+                        case 2:
+                            Console.WriteLine($"\n\"{myString}\" contains {numberOfSpacesInString(myString)} spaces.");
+                            //displays the string and its count. Count is returned by the numberOfSpacesInString() method
+                            break;
+                        default:
+                            break;
+                    }
+                    Console.WriteLine("Would you like to return to the menu. Type Y for yes or any other key for no: ");
+                    char.TryParse(Console.ReadLine(),out returnToMenu);
+                }
+                else
+                {
+                    wrongChoiceCounter++;
+                    if (wrongChoiceCounter < 5)
+                    {
+                        Console.WriteLine("\nYour entered value is not a menu choice. Please enter the number 1 or 2 for menu choice.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have entered an invalid menu choice multiple times. Program terminating...");
+                        returnToMenu = 'n';
+                    }
+                }
+            }
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// Returns the reverse of the string passed as parameter
+        /// </summary>
+        /// <param name="s">string that you want to reverse</param>
+        /// <returns>reverse of the string entered as argument</returns>
+        static string stringInReverseOrder(string s)
+        {
+            StringBuilder temp=new StringBuilder(); //a temporary StringBuilder variable to hold the reverse of the string 
+            for(int i=s.Length-1; i>=0; i--)    //loop (i) starts with last character's index (s.Length-1) and then works
+                         //its way down to first character's index (0), so that it is added to the temp string in reverse
+            {
+                temp.Append(s[i]);   //adds to (appends) each character s[i] in s string to temp in reverse
+            }
+            return temp.ToString(); //to return reverse of the string stored in the temp StringBuilder
+                    //since we need to return a string and not a StringBuilder the ToString() method is used to convert it to string
+        }
+
+        /// <summary>
+        /// Returns the count of the number of spaces in the string passed as parameter
+        /// </summary>
+        /// <param name="s">string that you want to count spaces for</param>
+        /// <returns>count of the number of spaces in the string passed as parameter</returns>
+        static int numberOfSpacesInString(string s)
+        {
+            int count = 0;
+            for(int i=0;i<s.Length;i++)
+            {
+                if(s[i] == ' ')
+                    count++;
+            }
+            return count;
+        }
+    }
+}
