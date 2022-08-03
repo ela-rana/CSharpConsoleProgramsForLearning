@@ -1,0 +1,43 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following: Reverse a string
+//Given a user input string, this program reverses the original string by passing its reference to 
+//a method reverseString() which reverses it.
+
+using System;
+using System.Text;
+
+namespace StringReverser
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string myString;    //variable to hold the string that we want to reverse
+            Console.WriteLine("Please enter a string that you want to reverse:");
+            myString = Console.ReadLine();  //Gets user input for string to reverse
+            Console.WriteLine("\nHere is your string reversed:");
+            reverseString(ref myString);    //calls the function that will reverse the string stored at that reference location
+            Console.WriteLine(myString);    //Displays the string now after it has been reversed
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// Reverses the string at the reference location passed as a parameter
+        /// </summary>
+        /// <param name="s">the address location of string that you want to reverse. 
+        /// The value saved in the original string passed into the argument will be replaced by its reverse</param>
+        static void reverseString(ref string s)
+        {
+            StringBuilder temp=new StringBuilder(); //a temporary StringBuilder variable to hold the reversed string until
+                                                    //it can be assigned back to the original
+            for(int i=s.Length-1; i>=0; i--)    //loop (i) starts with last character's index (s.Length-1) and then works
+                         //its way down to first character's index (0), so that it is added to the temp string in reverse
+            {
+                temp.Append(s[i]);   //adds to (appends) each character s[i] in s string to temp in reverse
+            }
+            s= temp.ToString(); //to assign the temporary reverse string back to the original string s so that s is reversed
+        }
+    }
+}
