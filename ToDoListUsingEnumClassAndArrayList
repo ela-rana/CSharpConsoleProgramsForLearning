@@ -1,0 +1,58 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//This program must contain the separate file Todo.cs in the project to run 
+//Todo.cs is located in the same repository as this file
+
+using System;
+using System.Collections;   //For ArrayList
+
+namespace ToDoListUsingEnumClassAndArrayList
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            ArrayList todoList = new ArrayList()
+            {
+                new Todo{TaskId = 1, Description = "Do assignment 4.1", EstimatedHours = 2, Status = Status.Completed},
+                new Todo{TaskId = 2, Description = "Clean house", EstimatedHours = 1, Status = Status.InProgress},
+                new Todo{TaskId = 3, Description = "Study databases", EstimatedHours = 5, Status = Status.OnHold},
+                new Todo{TaskId = 4, Description = "Do assignment 4.2", EstimatedHours = 2, Status = Status.NotStarted},
+                new Todo{TaskId = 5, Description = "Do Laundry", EstimatedHours = 1, Status = Status.InProgress}
+            };
+            todoList.Add(new Todo { TaskId = 6, Description = "Study Github", EstimatedHours = 5, Status = Status.Deleted });
+
+            PrintTodos(todoList);
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+        static void PrintTodos(ArrayList todos)
+        {
+            foreach (var todo in todos)
+            {
+                Todo task = (Todo)todo;    //or you can do foreach(Todo todo in todos in the  above)
+                                           //var task = (Todo)todo;  //instead of above statement, we can also use var as the datatype
+                                           //because when todo gets typecast "(Todo)todo" it automatically makes the var variable a Todo type
+                switch (task.Status)
+                {
+                    case Status.InProgress:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+                    case Status.Completed:
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    case Status.Deleted:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+                    case Status.OnHold:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        break;
+                    case Status.NotStarted:
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        break;
+                }
+                Console.WriteLine($"Task # {task.TaskId}\t|  {task.Description}\t|  Takes about {task.EstimatedHours} hours\t|  Status: {task.Status}");
+            }
+        }
+    }   
+}
