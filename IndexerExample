@@ -1,0 +1,57 @@
+using System;
+
+namespace IndexerExample
+{
+    
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            var myTemp=new TemperatureRecord();
+            myTemp[2] = 67.5F;    //set block of this property (indexer)
+            //because of the this property you can treat it like an array
+            for(int i=0;i<myTemp.Length;i++)
+            {
+                Console.WriteLine(myTemp[i]);   //get block of this property
+            }
+            Console.WriteLine(myTemp.Length);
+
+
+            //In below 2 commented statements we are trying to treat our object stud
+            //like an array. It worked above for myTemp because of the this indexer
+            //but if we try to do the same below for stud, it errors out. This is because
+            //it doesn't have the this indexer
+            //var stud = new Student();
+            //stud[0] = 45;
+
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+    internal class TemperatureRecord
+    {
+        float[] temperatures = new float[5]
+        {
+            11.1F, 22.2f, 33.3f, 44.4f, 55  //here f means float not farenheit
+        };
+        public int Length
+        {
+            get { return temperatures.Length; }
+        }
+
+        //indexer
+        public float this[int index]
+        {
+            get { return temperatures[index]; }
+            set { temperatures[index] = value; }
+        }
+
+    }
+
+    class Student
+    {
+        float[] grades = new float[5] { 45, 88, 78, 65, 44 };
+    }
+}
