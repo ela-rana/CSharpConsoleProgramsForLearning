@@ -6,10 +6,6 @@
 //Call the above methods by providing a menu to user.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MethodOverloadingAdderMultiplier
 {
@@ -17,23 +13,110 @@ namespace MethodOverloadingAdderMultiplier
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("ADD and MULTIPLY App");
-            string choice;  //variable to hold whether user wants to add or multiply
-            Console.WriteLine("What would you like to do?\nADD\nMULTIPLY\n Please type one of the above two operations:");
-            choice=Console.ReadLine().ToLower();
-            switch(choice)
+            Console.WriteLine("ADD and MULTIPLY App\n");    //App title displayed
+            int choice=-1;  //variable to hold user menu choice
+            char returnToMenu;  //variable to hold user response to whether they want to return to menu
+        labelMainMenu:     //label to return code operation to main menu
+            returnToMenu = 'n';     //default value stored in variable till user enters 'y' to 
+                                    //state that they want to return to main menu
+            Console.BackgroundColor = ConsoleColor.Cyan;    //to set a different color for menu
+            Console.ForegroundColor = ConsoleColor.Black;   //to set a different color for menu
+            Console.WriteLine("------------------------------------------------------------------");
+            Console.WriteLine("MAIN MENU  (What would you like to do)");
+            Console.WriteLine("1. Add 2 whole numbers");
+            Console.WriteLine("2. Add 3 whole numbers");
+            Console.WriteLine("3. Multiply 2 numbers (whole or decimal)");
+            Console.WriteLine("4. Multiply 3 numbers (whole or decimal)");
+            Console.WriteLine("Any other number for EXIT");
+            Console.WriteLine("------------------------------------------------------------------");
+            Console.ResetColor();   //sets color back to default after menu is displayed
+            Console.Write("Enter your menu choice number: ");
+            Int32.TryParse(Console.ReadLine(),out choice);  //gets user input for menu choice
+            int int1, int2, int3;   //3 integers to hold values for addition
+            float float1, float2, float3;   //3 floats to hold values for multiplication
+            switch (choice) //to set action for each menu choice
             {
-                case "add":
-                    Console.WriteLine();
+                case 1:  //if user enters 1 for menu choice (add 2 num)
+                    Console.WriteLine("Enter the numbers you wish to add:");
+                    try //error handling in case user input for the values to add within this block
+                        //throws an error due to user entering invalid format values
+                    {
+                        Console.Write("Value 1: ");
+                        int1 = Int32.Parse(Console.ReadLine()); //gets first value from user
+                        Console.Write("Value 2: ");
+                        int2 = Int32.Parse(Console.ReadLine()); //gets second value from user
+                        Console.WriteLine("Their sum is: {0}", Add(int1, int2));    //displays their sum
+                    }
+                    catch (FormatException) //to put action to take if format error occurs in above try block
+                    {
+                        Console.WriteLine("Cannot add. Invalid value entered. Your values must be non-blank whole numbers");
+                        //User is informed of formatting error and requirements
+                    }
+                    break;  
+                case 2:
+                    Console.WriteLine("Enter the numbers you wish to add:");
+                    try //error handling in case user input for the values to add within this block
+                        //throws an error due to user entering invalid format values
+                    {
+                        Console.Write("Value 1: ");
+                        int1 = Int32.Parse(Console.ReadLine()); //gets first value from user
+                        Console.Write("Value 2: ");
+                        int2 = Int32.Parse(Console.ReadLine()); //gets second value from user
+                        Console.Write("Value 3: ");
+                        int3 = Int32.Parse(Console.ReadLine()); //gets third value from user
+                        Console.WriteLine("Their sum is: {0}", Add(int1, int2, int3)); //displays their sum
+                    }
+                    catch (FormatException) //action to take if format error occurs in above try block
+                    {
+                        Console.WriteLine("Cannot add. Invalid value entered. Your values must be non-blank whole numbers");
+                        //User is informed of formatting error and requirements
+                    }
                     break;
-                case "subtract":
-
-                    break ;
+                case 3:
+                    Console.WriteLine("Enter the numbers you wish to multiply:");
+                    try //error handling in case user input for the values to add within this block
+                        //throws an error due to user entering invalid format values
+                    {
+                        Console.Write("Value 1: ");
+                        float1 = Single.Parse(Console.ReadLine());
+                        Console.Write("Value 2: ");
+                        float2 = Single.Parse(Console.ReadLine());
+                        Console.WriteLine("Their product is: {0}", Multiply(float1, float2));
+                    }
+                    catch (FormatException) //action to take if format error occurs in above try block
+                    {
+                        Console.WriteLine("Cannot multiply. Invalid value entered. Your values must be non-blank, whole or decimal numbers");
+                    }
+                    break;
+                case 4:
+                    Console.WriteLine("Enter the numbers you wish to multiply:");
+                    try //error handling in case user input for the values to add within this block
+                        //throws an error due to user entering invalid format values
+                    {
+                        Console.Write("Value 1: ");
+                        float1 = Single.Parse(Console.ReadLine());
+                        Console.Write("Value 2: ");
+                        float2 = Single.Parse(Console.ReadLine());
+                        Console.Write("Value 3: ");
+                        float3 = Single.Parse(Console.ReadLine());
+                        Console.WriteLine("Their product is: {0}", Multiply(float1, float2, float3));
+                    }
+                    catch (FormatException) //action to take if format error occurs in above try block
+                    {
+                        Console.WriteLine("Cannot multiply. Invalid value entered. Your values must be non-blank, whole or decimal numbers");
+                        //User is informed of formatting error and requirements
+                    }
+                    break;
                 default:
-                    Console.WriteLine("You did not type either one of the two options \"add\" or \"multiply\". Program will be terminated...");
-                    break ;
+                    Console.WriteLine("You did not enter any of the 4 menu options.");
+                    //User is informed that they did not enter valid menu choice
+                    break;
             }
-
+            Console.WriteLine("Do you want to return to menu?");
+            Console.Write("Type Y or y to return to menu or any other key to exit program: ");
+            Char.TryParse(Console.ReadLine(), out returnToMenu);    //gets user input if they want to return to menu
+            if (returnToMenu == 'y' || returnToMenu == 'Y') //if user enters y or Y, they are returned to the menu
+                goto labelMainMenu; //to go to the labeled location in the code where the main menu appears
 
             Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
             Console.ReadKey(); //waits for user to press any key to Exit
@@ -47,7 +130,7 @@ namespace MethodOverloadingAdderMultiplier
         /// <returns>Sum of the integers passed as arguments</returns>
         static int Add(int a, int b)
         {
-            return a + b;
+            return a + b;  //returns sum
         }
 
         /// <summary>
@@ -59,26 +142,7 @@ namespace MethodOverloadingAdderMultiplier
         /// <returns>Sum of the integers passed as arguments</returns>
         static int Add(int a, int b, int c)
         {
-            return a + b + c;
-        }
-
-        /// <summary>
-        /// returns sum of 4 to 10 integers passed as arguments. At least 4 integers must be passed as arguments
-        /// </summary>
-        /// <param name="a">an integer to be added</param>
-        /// <param name="b">an integer to be added</param>
-        /// <param name="c">an integer to be added</param>
-        /// <param name="d">an integer to be added</param>
-        /// <param name="e">an integer to be added</param>
-        /// <param name="f">an integer to be added</param>
-        /// <param name="g">an integer to be added</param>
-        /// <param name="h">an integer to be added</param>
-        /// <param name="i">an integer to be added</param>
-        /// <param name="j">an integer to be added</param>
-        /// <returns>Sum of the integers passed as arguments</returns>
-        static int Add(int a, int b, int c, int d, int e = 0, int f = 0, int g = 0, int h = 0, int i = 0, int j = 0)
-        {
-            return a + b + c + d + e + f + g + h + i + j;
+            return a + b + c;   //returns sum
         }
 
         /// <summary>
@@ -89,7 +153,7 @@ namespace MethodOverloadingAdderMultiplier
         /// <returns>Product of the floating point numbers passed as arguments</returns>
         static float Multiply(float a, float b)
         {
-            return a * b;
+            return a * b; //returns product
         }
 
         /// <summary>
@@ -101,25 +165,7 @@ namespace MethodOverloadingAdderMultiplier
         /// <returns>Product of the floating point numbers passed as arguments</returns>
         static float Multiply(float a, float b, float c)
         {
-            return a * b * c;
-        }
-
-        /// <summary>
-        /// returns product of 4 to 10 floating point numbers passed as arguments. At least 4 floating point numbers must be passed as arguments
-        /// <param name="a">a floating point number to be multiplied</param>
-        /// <param name="b">a floating point number to be multiplied</param>
-        /// <param name="c">a floating point number to be multiplied</param>
-        /// <param name="d">a floating point number to be multiplied</param>
-        /// <param name="e">a floating point number to be multiplied</param>
-        /// <param name="f">a floating point number to be multiplied</param>
-        /// <param name="g">a floating point number to be multiplied</param>
-        /// <param name="h">a floating point number to be multiplied</param>
-        /// <param name="i">a floating point number to be multiplied</param>
-        /// <param name="j">a floating point number to be multiplied</param>
-        /// <returns>Product of the floating point numbers passed as arguments</returns>
-        static float Multiply(float a, float b, float c, float d, float e = 0, float f = 0, float g = 0, float h = 0, float i = 0, float j = 0)
-        {
-            return a * b * c * d * e * f * g * h * i * j;
+            return a * b * c;  //returns product
         }
     }
 }
