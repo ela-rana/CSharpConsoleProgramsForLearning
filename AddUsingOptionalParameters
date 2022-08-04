@@ -1,0 +1,125 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following:
+//Create a console application to create following overloaded methods:
+//Int Add(int a, int b) , int Add(int a, int b, int c)
+//float Multiply(float a, float b), float Multiply(float a, float b, float c)
+//Call the above methods by providing a menu to user.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MethodOverloadingAdderMultiplyer
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("ADD and MULTIPLY App");
+            string choice;  //variable to hold whether user wants to add or multiply
+            Console.WriteLine("What would you like to do?\nADD\nMULTIPLY\n Please type one of the above two operations:");
+            choice=Console.ReadLine().ToLower();
+            switch(choice)
+            {
+                case "add":
+                    Console.WriteLine();
+                    break;
+                case "subtract":
+
+                    break ;
+                default:
+                    Console.WriteLine("You did not type either one of the two options \"add\" or \"multiply\". Program will be terminated...");
+                    break ;
+            }
+
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// returns sum of 2 integers passed as arguments
+        /// </summary>
+        /// <param name="a">an integer to be added</param>
+        /// <param name="b">an integer to be added</param>
+        /// <returns>Sum of the integers passed as arguments</returns>
+        static int Add(int a, int b)
+        {
+            return a + b;
+        }
+
+        /// <summary>
+        /// returns sum of 3 integers passed as arguments. At least 4 integers must be passed as arguments
+        /// </summary>
+        /// <param name="a">an integer to be added</param>
+        /// <param name="b">an integer to be added</param>
+        /// <param name="c">an integer to be added</param>
+        /// <returns>Sum of the integers passed as arguments</returns>
+        static int Add(int a, int b, int c)
+        {
+            return a + b + c;
+        }
+
+        /// <summary>
+        /// returns sum of 4 to 10 integers passed as arguments. At least 4 integers must be passed as arguments
+        /// </summary>
+        /// <param name="a">an integer to be added</param>
+        /// <param name="b">an integer to be added</param>
+        /// <param name="c">an integer to be added</param>
+        /// <param name="d">an integer to be added</param>
+        /// <param name="e">an integer to be added</param>
+        /// <param name="f">an integer to be added</param>
+        /// <param name="g">an integer to be added</param>
+        /// <param name="h">an integer to be added</param>
+        /// <param name="i">an integer to be added</param>
+        /// <param name="j">an integer to be added</param>
+        /// <returns>Sum of the integers passed as arguments</returns>
+        static int Add(int a, int b, int c, int d, int e = 0, int f = 0, int g = 0, int h = 0, int i = 0, int j = 0)
+        {
+            return a + b + c + d + e + f + g + h + i + j;
+        }
+
+        /// <summary>
+        /// returns product of 2 floating point numbers passed as arguments
+        /// </summary>
+        /// <param name="a">a floating point number to be multiplied</param>
+        /// <param name="b">a floating point number to be multiplied</param>
+        /// <returns>Product of the floating point numbers passed as arguments</returns>
+        static float Multiply(float a, float b)
+        {
+            return a * b;
+        }
+
+        /// <summary>
+        /// returns product of 3 floating point numbers passed as arguments. At least 4 floating point numbers must be passed as arguments
+        /// </summary>
+        /// <param name="a">a floating point number to be multiplied</param>
+        /// <param name="b">a floating point number to be multiplied</param>
+        /// <param name="c">a floating point number to be multiplied</param>
+        /// <returns>Product of the floating point numbers passed as arguments</returns>
+        static float Multiply(float a, float b, float c)
+        {
+            return a * b * c;
+        }
+
+        /// <summary>
+        /// returns product of 4 to 10 floating point numbers passed as arguments. At least 4 floating point numbers must be passed as arguments
+        /// <param name="a">a floating point number to be multiplied</param>
+        /// <param name="b">a floating point number to be multiplied</param>
+        /// <param name="c">a floating point number to be multiplied</param>
+        /// <param name="d">a floating point number to be multiplied</param>
+        /// <param name="e">a floating point number to be multiplied</param>
+        /// <param name="f">a floating point number to be multiplied</param>
+        /// <param name="g">a floating point number to be multiplied</param>
+        /// <param name="h">a floating point number to be multiplied</param>
+        /// <param name="i">a floating point number to be multiplied</param>
+        /// <param name="j">a floating point number to be multiplied</param>
+        /// <returns>Product of the floating point numbers passed as arguments</returns>
+        static float Multiply(float a, float b, float c, float d, float e = 0, float f = 0, float g = 0, float h = 0, float i = 0, float j = 0)
+        {
+            return a * b * c * d * e * f * g * h * i * j;
+        }
+    }
+}
