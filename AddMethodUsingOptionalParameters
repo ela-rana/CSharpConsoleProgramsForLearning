@@ -1,0 +1,42 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following:
+//Add using an Add method with optional parameters
+
+using System;
+
+namespace AddMethodUsingOptionalParameters
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(Add(3, 5, 7));
+            Console.WriteLine(Add(3, 55, 26, 768, 7));
+            Console.WriteLine(Add(4, 7));
+            Console.WriteLine(Add(3, 5, 5, 16));
+
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// returns sum of 4 to 10 integers passed as arguments. At least 4 integers must be passed as arguments
+        /// </summary>
+        /// <param name="a">an integer to be added</param>
+        /// <param name="b">an integer to be added</param>
+        /// <param name="c">an integer to be added</param>
+        /// <param name="d">an integer to be added</param>
+        /// <param name="e">an integer to be added</param>
+        /// <param name="f">an integer to be added</param>
+        /// <param name="g">an integer to be added</param>
+        /// <param name="h">an integer to be added</param>
+        /// <param name="i">an integer to be added</param>
+        /// <param name="j">an integer to be added</param>
+        /// <returns>Sum of the integers passed as arguments</returns>
+        static int Add(int a, int b, int c = 0, int d = 0, int e = 0, int f = 0, int g = 0, int h = 0, int i = 0, int j = 0)
+        {
+            return a + b + c + d + e + f + g + h + i + j;
+        }
+    }
+}
