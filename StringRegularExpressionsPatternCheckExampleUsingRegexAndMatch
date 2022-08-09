@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
+namespace StringRegularExpressions
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(CheckPhoneNumber("+23 587-045-888")); //returns false
+            Console.WriteLine(CheckPhoneNumber("+587-045-888")); //returns false
+            Console.WriteLine(CheckPhoneNumber("+01 334-445-5566")); //returns true
+
+            Console.WriteLine("Please enter email: ");
+            string emailToCheck = Console.ReadLine();
+            if(CheckEmail(emailToCheck))
+            {
+                Console.WriteLine("This is a valid email address");
+            }
+            else
+            {
+                Console.WriteLine("This is not a valid email address");
+            }
+
+            //Alternate method
+            //try
+            //{
+            //    Console.WriteLine("Please enter email: ");
+            //    string emailToCheck=Console.ReadLine();
+            //    CheckEmail(emailToCheck);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+        static bool CheckPhoneNumber(string phoneNum)
+        {
+            Regex regex = new Regex(@"^\+\d{2}\s(\d{3}\-){2}(\d{4})");
+            Match match = regex.Match(phoneNum);
+            return match.Success;
+        }
+
+        static bool CheckEmail(string email)
+        {
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            var result = Regex.Match(email, emailPattern);
+            return result.Success;
+        }
+    }
+}
