@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SearchStringAndStringBuilder
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            StringBuilder sb = new StringBuilder(); //like a string but mutable
+            sb.AppendLine("Hi how are you?\nThis is a new line using the slash n escape character"); //to add a line of text and go to the next line after writing
+            sb.AppendLine("This is a new line because the previous line used AppendLine method");
+
+            sb.Append("This is part one of this line").Append(" and this is the second").AppendLine(
+                "and here is third, then it goes to next line").AppendLine("and this is fourth joint statement");
+
+            Console.WriteLine("Here is my string:");
+            Console.WriteLine(sb.ToString());
+
+            bool hasit = sb.ToString().Contains("you");
+            Console.WriteLine($"\nDoes the string contain 'you'? Answer- {hasit}");
+
+            bool doesitstartwitHi = sb.ToString().StartsWith("Hi"); //if the beginning of your stringbuilder starts with hi
+                                                                    //it returns true otherwise false
+            Console.WriteLine($"\nDoes the string start with 'Hi'? Answer- {doesitstartwitHi}");
+            Console.WriteLine($"\nDoes the string start with 'hi'? Answer- {sb.ToString().StartsWith("hi")}");
+            Console.WriteLine($"\nDoes the string start with 'banana'? Answer- {sb.ToString().StartsWith("banana")}");
+
+            string s = "The dog went that way dog do g dog dog";
+            Console.WriteLine("\n\nHere is my new string:\n\n");
+            Console.WriteLine(s);
+            Console.WriteLine("Now I will print the sub string that starts at location 4 (5th char) and is 6 chars long");
+            Console.WriteLine(s.Substring(4, 6));
+            Console.WriteLine(
+            "Now I will print the sub string that starts at location 2 (3rd char) and is as many digits long as the location of the first 'n'");
+            Console.WriteLine(s.Substring(2, s.IndexOf('n')));
+            Console.WriteLine("Now I will print the sub string that starts at location 2 (3rd char) and ends when it finds 'that'");
+            Console.WriteLine(s.Substring(2, s.IndexOf("that")));
+            bool a = s.Contains("dog"); //returns true if the substring exists in the string
+            int b = s.IndexOf("dog");   //location of d of dog for the first dog in string
+
+
+            string expression = "5.2+6-4*2/1+0.5-3.642";
+            double x = 5.2 + 6 - 4 * 2 / 1 + 0.5 - 3.642;
+            Console.WriteLine(expression);
+            Console.WriteLine(x);
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+}
