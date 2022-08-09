@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InterfacesExampleUsingIComparable
+namespace InterfacesExampleLevel2
 {
     internal class Program
     {
@@ -12,6 +12,7 @@ namespace InterfacesExampleUsingIComparable
         {
             GenericsListPractice();
             GenericsListPracticeWithIComparable();
+            GenericsListPracticeWithIComparableWithIComparer();
             Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
             Console.ReadKey(); //waits for user to press any key to Exit
         }
@@ -24,10 +25,21 @@ namespace InterfacesExampleUsingIComparable
             students.Add(new Student() { Id = 4, Name = "Bob", Grade = 92, Age = 20 });
             students.Add(new Student() { Id = 50, Name = "Alex", Grade = 97, Age = 21 });
             //students.Sort();    //System.InvalidOperationException: 'Failed to compare two elements in the array
-                                //ArgumentException: At least one object must implement IComparable.
+            //ArgumentException: At least one object must implement IComparable.
             //the above statement to sort works for a list of strings, list of numbers, etc. but here it won't work
             //because the program doesn't know what to compare based on so we will fix that in Student2 class by inheriting
             //from the iComparable interface
+            DisplayStudents(students);
+        }
+        static void GenericsListPracticeWithIComparableWithIComparer()
+        {
+            List<Student3> students = new List<Student3>();
+            students.Add(new Student3() { Id = 1, Name = "Joe", Grade = 89, Age = 22 });
+            students.Add(new Student3() { Id = 12, Name = "Madeline", Grade = 70, Age = 21 });
+            students.Add(new Student3() { Id = 21, Name = "Rambo", Grade = 78, Age = 22 });
+            students.Add(new Student3() { Id = 4, Name = "Bob", Grade = 92, Age = 20 });
+            students.Add(new Student3() { Id = 50, Name = "Alex", Grade = 97, Age = 21 });
+            students.Sort(new StudentGradeComparer());    
             DisplayStudents(students);
         }
         static void GenericsListPracticeWithIComparable()
@@ -48,10 +60,18 @@ namespace InterfacesExampleUsingIComparable
                 Console.WriteLine($"ID: {s.Id}, Name: {s.Name}, Grade: {s.Grade}, Age: {s.Age}");
         }
 
-       static void DisplayStudents(List<Student2> slist)   //function overloaded
+        static void DisplayStudents(List<Student2> slist)   //function overloaded
         {
             Console.WriteLine("\nStudents:");
             foreach (Student2 s in slist)
+            {
+                Console.WriteLine($"ID: {s.Id}, Name: {s.Name}, Grade: {s.Grade}, Age: {s.Age}");
+            }
+        }
+        static void DisplayStudents(List<Student3> slist)   //function overloaded
+        {
+            Console.WriteLine("\nStudents:");
+            foreach (Student3 s in slist)
             {
                 Console.WriteLine($"ID: {s.Id}, Name: {s.Name}, Grade: {s.Grade}, Age: {s.Age}");
             }
@@ -73,6 +93,27 @@ namespace InterfacesExampleUsingIComparable
         public int CompareTo(Student2 other)
         {
             return String.Compare(this.Name, other.Name);
+        }
+    }
+    class Student3: IComparable<Student3>       //2 hour mark of video
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public double Grade { get; set; }
+
+        public int CompareTo(Student3 other)
+        {
+            return String.Compare(this.Name, other.Name);
+        }
+    }
+
+    class StudentGradeComparer :IComparer<Student3>
+    {
+        public int Compare(Student3 x, Student3 y)
+        {
+            return (y.Grade.CompareTo(x.Grade));    //for descending order
+           //return (x.Grade.CompareTo(y.Grade)); //for ascending order
         }
     }
 }
