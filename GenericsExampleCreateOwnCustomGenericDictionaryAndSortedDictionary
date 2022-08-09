@@ -1,0 +1,136 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GenericsExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //MakeYourOwnGenericExample();
+            UseDictionaryExample();
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+
+        }
+        static void MakeYourOwnGenericExample()
+        {
+            int num1 = 3, num2 = 8;
+            Console.WriteLine("Int before swap");
+            Data<int> intdata = new Data<int>();
+            intdata.DisplayTheTwo(num1, num2);
+            intdata.Swap(ref num1, ref num2);
+            intdata.DisplayTheTwo(num1, num2);
+
+            char a = 'a', b = 'b';
+            Console.WriteLine("Char before swap");
+            Data<char> chardata = new Data<char>();
+            chardata.DisplayTheTwo(a, b);
+            chardata.Swap(ref a, ref b);
+            chardata.DisplayTheTwo(a, b);
+
+            Person joe = new Person("joe", 40);
+            Person jane = new Person("jane", 20);
+            Data<Person> persondata = new Data<Person>();
+            persondata.DisplayTheTwo(joe, jane); //doesn't work
+            Console.WriteLine($"Name: {joe.Name}, {jane.Name}, Age: {joe.Age}, {jane.Age}");    //so we will do it like this
+            persondata.Swap(ref joe, ref jane); //WORKS
+            persondata.DisplayTheTwo(joe, jane);    //doesn't work
+            Console.WriteLine($"Name: {joe.Name}, {jane.Name}, Age: {joe.Age}, {jane.Age}");
+
+        }
+
+        static void UseDictionaryExample()
+        {
+            //DECLARE AND INITIALIZE  A DICTIONARY
+            //Format: Dictionary<key,value>
+            Dictionary<string, Car> carDict = new Dictionary<string, Car>();
+            carDict.Add("HD123", new Car() { VIN = "HD123", Make = "HarleyDavidson", Model = "X3" });
+            //carDict.Add("HD123"...    //so here HD123 is the key, like a primary key
+            carDict.Add("PD123", new Car() { VIN = "PD123", Make = "HarleyDavidson", Model = "X3" });
+            carDict.Add("ZX245", new Car() { VIN = "ZX245", Make = "Honda", Model = "CRF" });
+            carDict.Add("H123I", new Car() { VIN = "H123I", Make = "Subaru", Model = "Traveler" });
+            //pick something unique in your class object as the key, ex.: if instead of car you were
+            //using person, you could use SSN as key, for student you could use ssn or studentID, etc.
+
+            //ANOTHER WAY TO ADD TO DICTIONARY
+            Car car4 = new Car() { VIN = "asdfg", Make = "Nissan", Model = "speedster" };
+            carDict.Add( "asdfg",car4);
+
+            //DISPLAY CARS
+            foreach (var car in carDict.Values)
+                Console.WriteLine($"Car Vin: {car.VIN}, Make: {car.Make}, model: {car.Model}");
+           
+            //SEARCH FOR CAR
+            Console.WriteLine("Enter vin to search the car: ");
+            string vin = Console.ReadLine();
+            if (carDict.ContainsKey(vin))
+                Console.WriteLine($"Found it:  make: {carDict[vin].Make}, model: {carDict[vin].Model}");
+            else
+                Console.WriteLine("Not Found");
+
+            //SORTED DICTIONARY
+            SortedDictionary<string, Car> carSortedDict = new SortedDictionary<string, Car>();
+            //same as dictionary but values are added to dictionary sorted
+            carSortedDict.Add("PD123", new Car() { VIN = "PD123", Make = "HarleyDavidson", Model = "X3" });
+            carSortedDict.Add("ZX245", new Car() { VIN = "ZX245", Make = "Honda", Model = "CRF" });
+            carSortedDict.Add("H123I", new Car() { VIN = "H123I", Make = "Subaru", Model = "Traveler" });
+            foreach (var car in carSortedDict.Values)
+                Console.WriteLine($"Car Vin: {car.VIN}, Make: {car.Make}, model: {car.Model}");
+
+            
+            //DICTIONARY OF VALUES LIK STRING, NOT OBJECTS LIKE CAR
+            Dictionary<string,string> Recipes = new Dictionary<string,string>();
+            Recipes.Add("Fried Rice", "Put rice in a pan and fry.");
+            Recipes.Add("Soup", "Boil soup ingredients in water and add spices.");
+            
+            //DISPLAY RECIPES
+            Console.WriteLine("Here are all the recipes:");
+            foreach (var item in Recipes)
+                Console.WriteLine(item);    //displays the key and value separated by comma
+
+            //SEARCH RECIPES
+            Console.WriteLine("enter recipe you want to search: ");
+            string rec = Console.ReadLine();
+            if(Recipes.ContainsKey(rec))
+                Console.WriteLine(Recipes[rec]);    //displays only the value at that key
+            else
+                Console.WriteLine("Could not find");
+
+        }
+    }
+    class Data<T>
+    {
+        public void Swap(ref T x, ref T y)
+        {
+            T temp; //a temporary variable to be a placeholder for the value during the swap
+            temp = x;
+            x = y;
+            y = temp;
+        }
+        public void DisplayTheTwo(T val1, T val2)   //this method only works in T is a simple datatype
+        {
+            Console.WriteLine($"Here they are: First: {val1}, Second {val2}");
+        }
+    }
+
+    class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public Person(string name, int age)  //muct set as public so it can be accessed outside class
+        {
+            Name = name;
+            Age = age;
+        }
+    }
+    class Car
+    {
+        public string VIN { get; set; }
+        public string Make { get; set; }
+        public string Model { get; set; }
+    }
+}
