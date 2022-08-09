@@ -1,0 +1,114 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following: practice creating Interfaces
+
+/*Notes:
+In a way interfaces allow multiple inheritance (a subclass deriving from more than one parent)
+Naming convention: we name interfaces starting with capital letter I. Ex: IDisposable, IComparer
+Interfaces allow us to put together related functionality
+Methods written inside interfaces do not have a body
+In-built C# Interface example: IDisposable for garbage collection
+Interfaces cannot be instantiated. For that we need a class
+Advantages of interfaces: It is used to achieve loose-coupling
+It is used for total abstraction  (everything within an interface are like abstract methods; they don't have a body)
+Through it we can achieve multiple inheritance, but it is not called multiple inheritance because its not class
+It is called multiple implementation
+They add a plug and play architecture
+Difference between abstract class and interface: 
+abstract can have fields (instance fields), can have some logic and normal methods as well, cannot allow multiple inheritance
+*/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace InterfacesExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Example C# inbuilt interfaces
+            //IDisposable disposable = null;
+            //IComparer<string> comparer = null;
+            //IEnumerable<string> list = new List<string>();  
+
+            TestClass testClass = new TestClass();
+            testClass.Name = "Joe";
+            Console.WriteLine(testClass.Name);
+            testClass.SameName();
+            testClass.Method1(5);
+            testClass.Method2(5);
+
+            //I2 i2 = new I2();   //this statement gives error because you cannot instantiate interface
+            
+            //But you can do the following:
+            I1 i1 = new TestClass();
+            i1.SameName();
+            i1.Method1(5);
+            //i1.Method2(5);  //this line gives error because since we declare i1 as an I1 type, only the I1 members
+                                //can be accessed even though on the RHS we put new TestClass()
+                                //RHS: right hand side
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+
+    public interface I1     
+    {
+        //cannot write implementation (body) of methods within interface. Declaration only
+        //you cannot write private public protected modifiers for interface fields, properties and methods
+        //by default all items in an interface must be public
+        //because interfaces are made to be used in other classes so of course it should be public
+         
+        void Method1(int i);    //logic (body) will be given by the class that wants to use it
+        void SameName();    
+        string Name { get; set; }
+
+        //int i;    //this statement causes compiler error because we can have methods, properties, and events in
+                    //interfaces, but not fields. Cannot have instance fields because interface cannot be instantiated
+                    //field aka variable aka data member
+
+    }
+
+    interface I2    //no access modifer mentioned here so by default, it will be internal
+                    //C# default for classes, structs, interfaces etc. is internal
+                    //however all the members within this interface are public, because interface members are always public
+    {
+        void Method2(int i);
+
+        void SameName();
+    }
+    public class TestClass : I1 , I2    //multiple inheritance
+    {
+        //Interface members: methods, properties, and events must be implemented in deriving class
+        public string Name { get; set; }
+
+        public void Method1(int i)
+        {
+            Console.WriteLine("Method one");
+        }
+
+        public void Method2(int i)
+        {
+            Console.WriteLine("Method two");
+        }
+
+        public void SameName()
+        {
+            Console.WriteLine("SameName");
+        }
+    }
+}
+
+
+//interfaces is loosely coupled
+//loosely coupled means you have different components being put together,
+//but they can all be tested separately by doing a unit testing or they can be developed separately
+//they are not going to be dependent on each other but they work together at runtime
+//Ex: MVC architecture is a loosely coupled architecture: the M V & C (Model, View, and Controllers) are developed 
+//separately, and can function independently as well. but interactions are possible with each other when you use
+//them in the browser they work together
+//if you want to change one of the components the others do not have to be changed
