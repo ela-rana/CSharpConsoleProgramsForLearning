@@ -1,0 +1,144 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//The file DelegatesExampleClass.cs must be included in this project to run this code.
+//The file DelegatesExampleClass.cs is located in the same repository as this file
+//A program to do the following: practuce using delegates
+//
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DelegatesExample
+{
+    internal class Program
+    {
+        //delegate : a method pointer 
+        //It simply points to another method
+        //when I want to send a function as a parameter to another function, we use delegate to do that
+        //this MyDel can point to functions which follow the signature: return void 
+        public delegate void MyDel(string s);
+
+        static void Main(string[] args)
+        {
+            HelloHiDelegatesExample();
+            EmployeeDelegatesExample();
+            PersonDelegatesExample();
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+        public static void HelloHiDelegatesExample()
+        {
+            MyDel del = new MyDel(SayHello);
+            del("all"); //delegate call         //displays on console: Hello all
+            MyDel hiDel = new MyDel(SayHi);
+            Greetings(del);     //displays on console: Hello greetings!
+            Greetings(hiDel);    //displays on console: Hi greetings!
+        }
+        public static void SayHello(string s)
+        {
+            Console.WriteLine("Hello {0}", s);
+        }
+        public static void SayHi(string s)
+        {
+            Console.WriteLine("Hi {0}", s);
+        }
+        static void Greetings(MyDel my)
+        {
+            my("greetings!");
+        }
+        static void EmployeeDelegatesExample()
+        {
+            IsPromotable delExp = new IsPromotable(PromotableByExp);
+            IsPromotable delGrade = new IsPromotable(PromotableByGrade);
+
+            List<Employee> employees = new List<Employee>();
+            employees.Add(new Employee() { EID = 1, Name = "Ian", YearsExp = 6, Grade = 'B' });
+            employees.Add(new Employee() { EID = 2, Name = "Henry", YearsExp = 4, Grade = 'C' });
+            employees.Add(new Employee() { EID = 3, Name = "Barry", YearsExp = 2, Grade = 'A' });
+            employees.Add(new Employee() { EID = 4, Name = "Nick", YearsExp = 5, Grade = 'C' });
+            employees.Add(new Employee() { EID = 5, Name = "Rambo", YearsExp = 1, Grade = 'A' });
+            employees.Add(new Employee() { EID = 11, Name = "Bob", YearsExp = 3, Grade = 'B' });
+            employees.Add(new Employee() { EID = 12, Name = "Anna", YearsExp = 2, Grade = 'A' });
+            employees.Add(new Employee() { EID = 13, Name = "Joan", YearsExp = 7, Grade = 'A' });
+            employees.Add(new Employee() { EID = 14, Name = "Natalie", YearsExp = 11, Grade = 'A' });
+            employees.Add(new Employee() { EID = 15, Name = "Sita", YearsExp = 5, Grade = 'B' });
+            DisplayEmployees(employees);
+
+            //Example of lambda expression '=>' or goes to
+            //employees.FindAll(x => x.YearsExp > 5);   //example of predicate
+            //delegates can be action delegate or predicate delegate, action is a void type and performs an action
+            //predicate calculates something and returns something
+            DisplayEmployees(employees.FindAll(x => x.YearsExp > 5));
+
+            Console.WriteLine("Employees promoted by years of experience:");
+            Employee.PromoteEmployee(employees, delExp);
+            
+            //Employee.PromoteEmployee(employees, PromotableByExp);
+            //You could technically also directly pass the method instead of using its delegate like the statement above this comment
+            //but it is bad practice to directly pass a method to the other method because of tightly-coupled loosely-coupled principles
+
+            Console.WriteLine("Employees promoted by Grade:");
+            Employee.PromoteEmployee(employees, delGrade);
+        }
+        static bool PromotableByGrade(Employee emp)
+        {
+            if (emp.Grade == 'A')
+                return true;
+            else
+                return false;
+        }
+        static bool PromotableByExp(Employee emp)
+        {
+            if (emp.YearsExp > 5)
+                return true;
+            else
+                return false;
+        }
+        static void DisplayEmployees(List<Employee> list)
+        {
+            Console.WriteLine("Employees List:");
+            foreach(Employee e in list)
+            {
+                Console.WriteLine($"Employee Name: {e.Name}, ID: {e.EID}, Experience (in years): {e.YearsExp}, Grade: {e.Grade}");
+            }
+        }
+        static void PersonDelegatesExample()
+        {
+            List<Person> people = new List<Person>();
+            people.Add(new Person() { Age = 12, Name = "A" });
+            people.Add(new Person() { Age = 32, Name = "B" });
+            people.Add(new Person() { Age = 67, Name = "C" });
+            people.Add(new Person() { Age = 77, Name = "D" });
+
+            DisplayPerson("Seniors", people, IsSenior);
+            DisplayPerson("Minors", people, IsMinor);
+        }
+        public delegate bool Filter(Person person); //delegate declaration
+        static bool IsMinor(Person p)
+        {
+            if (p.Age < 18)
+                return true;
+            else
+                return false;
+        }
+        static bool IsSenior(Person p)
+        {
+            if (p.Age > 64)
+                return true;
+            else
+                return false;
+        }
+        static void DisplayPerson(string title, List<Person> ppl, Filter filter)
+        {
+            Console.WriteLine(title);
+            foreach(Person person in ppl)
+            {
+                if (filter(person))
+                    Console.WriteLine($"Person's name: {person.Name}, age: {person.Age}");
+            }
+        }
+
+    }
+}
