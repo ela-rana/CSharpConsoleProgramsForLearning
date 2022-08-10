@@ -1,0 +1,156 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following:
+//Create 2D arrays, fill them with user input, display them, and add and multiply two of them together and display the sum and matrices
+
+using System;
+
+namespace AddingAndMultiplyingMatrices
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int row = 2;    //to hold row size for the arrays
+            int column = 4; //to hold column size for the arrays
+            int[,] array1 = new int[row,column];    //to create the array to add/multiply
+            int[,] array2 = new int[row,column];    //to create the second array to add/multiply
+
+            Console.WriteLine("ARRAY 1");
+            array1= fillArray(array1);  //to call a method that fills the balnk array with user input
+            Console.WriteLine("ARRAY 2");
+            array2= fillArray(array2); //to call a method that fills the balnk array with user input
+
+            Console.WriteLine("Here is array 1:");
+            displayArray(array1);//to display array1 to user before the sum and product so they can see the original array
+            Console.WriteLine("Here is array 2:");
+            displayArray(array2);//to display array2 to user before the sum and product so they can see the original array
+
+
+            int[,] resultArray = new int[array1.GetLength(0),array1.GetLength(1)];  //an array to hold the sum or product of the 2 arrays
+            if (compatibleArrays(array1, array2))   //we can only add or multiply arrays in this program if they are
+                            //of same dimensions (compatible), thus the if statement checks compatibility
+            {
+                Console.WriteLine("The sum of the two arrays: ");
+                resultArray = addMatrices(array1, array2);  //resultArray is assigned the sum returned by the addMatrices()
+                displayArray(resultArray);//to display the sum in resultArray to user
+                Console.WriteLine("The product of the two arrays: "); 
+                resultArray = multiplyMatrices(array1, array2);  //resultArray is now assigned the product returned by multiplyMatrices()
+                displayArray(resultArray);  //to display the product in resultArray to user
+            }
+            else
+            {
+                Console.WriteLine("The two arrays are not of the same size. They cannot be added or multiplied."); //to inform user
+                        //that the 2 arrays are not of the same size and can thus not be added or multiplied
+            }
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// Gets user input to fill all elements of a two-dimensional (2D) int array passed as parameter and returns it filled
+        /// </summary>
+        /// <param name="arr">the two-dimensional (2D) int array that user wants to fill with user imput.
+        /// If array already has values, the values will be overridden.</param>
+        /// <returns>the two-dimensional (2D) int array passed as parameter filled with use input</returns>
+        static int[,] fillArray(int[,] arr)
+        {
+            Console.WriteLine("Please enter your array elements:"); //Header message to let user know they need to enter array data
+            for (int i = 0; i < arr.GetLength(0); i++)   //to go through each row
+            {
+                for (int j = 0; j < arr.GetLength(1); j++) //to go through each element within each row
+                {
+                    labelTryAgain:  //to label the point of code where data for each element is entered
+                    Console.Write($"Element |{i}|{j}|: ");  //displays to user what row and column element they need to enter
+                    try     //error handling to catch errors if user input is not valid
+                    {
+                        arr[i, j] = Int32.Parse(Console.ReadLine());    //user input is converted to int and assigned to the 
+                                    //element at the i,j row and column location
+                    }
+                    catch(FormatException ex)   //to catch format errors is user enters an invalid value for the integer element
+                    {
+                        Console.WriteLine(ex.Message);  //if invalid format values are entered, error message is displayed
+                        goto labelTryAgain; //then code returns to the entry point for the value so user can try again
+                    }
+                }
+            }
+            return arr; //to return the filled array
+        }
+
+        /// <summary>
+        /// Returns a two-dimensional (2D) int matrix sum of two 2D matrices that are passed as arguments
+        /// </summary>
+        /// <param name="array1">the first 2D int array/matrix to add</param>
+        /// <param name="array2">the second 2D int array/matrix to add</param>
+        /// <returns>the sum of the two int 2D arrays/matrices passed as arguments</returns>
+        static int[,] addMatrices(int[,] array1, int[,] array2)
+        {
+            int[,] sum = new int[array1.GetLength(0), array1.GetLength(1)]; //two create an array to hol the sum
+                  //with the same length as the input array, here  array1 is used but array2 can be used instead as well
+            for (int i = 0; i < sum.GetLength(0); i++)  //to go through each row
+            {
+                for (int j = 0; j < sum.GetLength(1); j++)  //to go through each element within each row
+                {
+                    sum[i, j] = array1[i, j] + array2[i, j];    //each element of sum is assigned the sum of the 
+                                                                //array1 and array2 elements at that same index location
+                }
+            }
+            return sum; //returns the calculated sum matrix
+        }
+        /// <summary>
+        /// Returns a two-dimensional (2D) int matrix product of two 2D matrices that are passed as arguments
+        /// </summary>
+        /// <param name="array1">the first 2D int array/matrix to multiply</param>
+        /// <param name="array2">the second 2D int array/matrix to multiply</param>
+        /// <returns>the product of the two int 2D arrays/matrices passed as arguments</returns>
+        static int[,] multiplyMatrices(int[,] array1, int[,] array2)
+        {
+            int[,] product = new int[array1.GetLength(0), array1.GetLength(1)]; //two create an array to hol the sum
+                 //with the same length as the input array, here  array1 is used but array2 can be used instead as well
+            for (int i = 0; i < product.GetLength(0); i++)  //to go through each row
+            {
+                for (int j = 0; j < product.GetLength(1); j++)  //to go through each element within each row
+                {
+                    product[i, j] = array1[i, j] * array2[i, j];    //each element of sum is assigned the product of the 
+                                                                //array1 and array2 elements at that same index location
+                }
+            }
+            return product; //returns the calculated product matrix
+        }
+
+        /// <summary>
+        /// checks if two passed two-dimensional (2D) int matrices/arrays are equal in row and column size
+        /// </summary>
+        /// <param name="array1">the first 2D int array/matrix to check</param>
+        /// <param name="array2">the second 2D int array/matrix to check with</param>
+        /// <returns>boolean true if both arrays have same dimensions and false if not</returns>
+        static bool compatibleArrays(int[,] array1, int[,] array2)
+        {
+            if (array1.GetLength(0) == array2.GetLength(0) && array1.GetLength(1) == array2.GetLength(1))
+                return true;    //if row size and column size of the two arrays are same, returns true
+            else
+                return false;   //otherwise returns false
+        }
+
+        /// <summary>
+        /// Display's the two-dimensional integer array passed as argument
+        /// </summary>
+        /// <param name="arr">a two-dimensional integer array that user wants to display </param>
+        static void displayArray(int[,] arr)
+        {
+            Console.WriteLine("--------------------------------------------------------------------------------");
+                    //to add a line before the display for better formatted appearance
+            for (int i = 0; i < arr.GetLength(0); i++)    //to go through each row in the array 
+            {
+                for (int j = 0; j < arr.GetLength(1); j++)  //for each row, goes through each column
+                {
+                    Console.Write($"|\t{arr[i, j]}\t"); //to display each element with columns separated by tab and 
+                                            //vertical line using the '|' pipe character and
+                }
+                Console.WriteLine("|"); //adds a vertical line at end of row and starts a new line for each row
+            }
+            Console.WriteLine("--------------------------------------------------------------------------------");
+                    //to add a line before the display for better formatted appearance
+
+        }
+    }
+}
