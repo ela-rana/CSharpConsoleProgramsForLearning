@@ -10,6 +10,12 @@ namespace SearchStringAndStringBuilder
     {
         static void Main(string[] args)
         {
+            String a = "ca";
+            String b = "1a";
+            int c;
+            c = a.CompareTo(b);
+            Console.WriteLine(c);
+            
             StringBuilder sb = new StringBuilder(); //like a string but mutable
             sb.AppendLine("Hi how are you?\nThis is a new line using the slash n escape character"); //to add a line of text and go to the next line after writing
             sb.AppendLine("This is a new line because the previous line used AppendLine method");
