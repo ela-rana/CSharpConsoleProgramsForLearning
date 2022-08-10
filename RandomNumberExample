@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RandomNumberExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Random randNum = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine($"The random number generated between 1 and 10 is: {randNum.Next(1, 10)}");
+            }
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+}
