@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace varAndSqlQueryinCSharpExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            VariableAssignmentImplicitAndExplicitExample();
+            StringAndStringBuilderExample();
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        static void VariableAssignmentImplicitAndExplicitExample()
+        {
+            int num = 234;  //explicitly typed variable, because we have clearly stated that it is int
+            var num1 = 100; //implicit, because var could be anything so when 100 is entered, the system
+                            //implicitly casts it into an int       
+            var word = "Ella";    //word is implicitly casted to string
+            var num2 = 3.2f;  //num2 is implicitly casted to float
+
+            int a = 4; long b = 5;
+            b = a;  //implicit conversion
+            a = (int)b; //explicit conversion
+        }
+
+        static void StringAndStringBuilderExample()
+        {
+            string[] names = new string[] { "apple", "banana", "grape", "guava", "orange" };
+
+            string[] cities = new string[] { "NY", "Charlotte" };
+
+            var resultcity = from cityname in cities
+                             where cityname[0] == 'N'
+                             select cityname;
+
+            //1.  when RHS is unknown, we use var
+            //following query is a LINQ (language integrated query)
+            //LINQ is .NET's modification to SQL queries so that we can query within C#,F#,VB.NET
+            var result = from fruit in names    //from what list
+                         where fruit[0] == 'g'  //condition
+                         select fruit;  //select
+
+            Console.WriteLine("Fruits starting with 'g'");
+            //2
+            foreach (var fruit in result)
+                Console.WriteLine(fruit);
+            //datatype of vare is inferred from RHS
+
+            int[] temp = new int[3] { 1, 2, 3 };
+            foreach (var i in temp)
+                Console.WriteLine(i);
+        }
+    }
+}
+ 
+//RHS(right hand side) 
+//LHS(left hand side) 
