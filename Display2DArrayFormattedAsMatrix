@@ -1,0 +1,129 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following:
+//Create a 2D array to store integers and print them in matrix format with proper formatting.
+//Example format:
+//| 2 | 3 | 4 |
+//| 1 | 4 | 6 |
+
+using System;
+
+namespace Display2DArrayFormattedAsMatrix
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int row, col;//to hold row and column size for the arrays
+            int invalidRowColCounter =0;    //to keep count of how many times user enters an invalid value for row and column
+            labelGetRowColSize: //to label the point of code where data for row and column is entered by user
+            Console.WriteLine("\nEnter your matrix (must be non-blank whole number between 1-30");
+            try  //error handling to catch errors if user input is not valid
+            {
+                Console.Write("Number of rows: ");  //displays to user what they need to enter
+                row =Int32.Parse(Console.ReadLine()); //user input is converted to int and assigned to row
+                Console.Write("Number of columns: ");  //displays to user what they need to enter
+                col =Int32.Parse(Console.ReadLine());  //user input is converted to int and assigned to col
+                if (row > 0 && row <= 30 && col > 0 && col <= 30)   //data validation: ensures array dimension must be a positive value upto 30
+                {
+                    int[,] myArray = new int[row, col];     //to create the 2D array / matrix
+                    myArray = Get2DArrayValues(myArray);  //this method take the 2D array as a parameter, fills it with user input and returns it
+                    DisplayArrayAsMatrix(myArray);  //calls method that displays the passed array on screen, formatted as a matrix
+                }
+                else
+                {
+                    if (++invalidRowColCounter < 3)
+                    {
+                        Console.WriteLine("Number of rows and columns should be between 1 to 30. Please reenter:"); //error message displayed if
+                                 //data validation to ensure array dimension must be a positive value upto 30 is not met
+                        goto labelGetRowColSize;    //then code returns to the entry point for the value so user can try again
+                    }
+                    else    //otherwise, if user keeps entering invalid value or value outside the 1-30 range for the row and column for the third time
+                    {
+                        Console.WriteLine("Invalid values entered multiple times. Terminating program..."); //then user is informed that the program
+                                                                                                            //can no longer move forward
+                    }
+                }
+            }
+            catch (FormatException)      //to catch format errors is user enters an invalid value for 
+            {
+                if (++invalidRowColCounter < 3)
+                {
+                    Console.WriteLine("Number of rows and columns must be a whole number, non-blank value between 1 and 30");//error message displayed 
+                                       //to inform user what type of values to enter
+                    goto labelGetRowColSize; //then code returns to the entry point for the value so user can try again
+                }
+                else //otherwise, if user keeps entering invalid value or value outside the 1-30 range for the row and column for the third time
+                {
+                    Console.WriteLine("Invalid values entered multiple times. Terminating program..."); //then user is informed that the program
+                                                                                                        //can no longer move forward
+                }
+            }
+ 
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// A method that takes a two-dimensional integer array as parameter, fills the array values with user input, then returns the filled array
+        /// </summary>
+        /// <param name="arr">an integer two-dimensional array to be filled with user input. 
+        /// If a non-blank array is passed as argument, its values are overridden</param>
+        /// <returns>an integer 2D array after it is filled with user input values</returns>
+        static int[,] Get2DArrayValues(int[,] arr)
+        {
+            Console.WriteLine("\nPlease enter the 2D array/matrix values:");    //asks user to start entering values
+            for (int i = 0; i < arr.GetLength(0); i++)    //to go through each row in the array 
+            {
+                for (int j = 0; j < arr.GetLength(1); j++)  //for each row, goes through each column
+                {
+                    int invalidValCounter = 0; //to keep count of how many times user enters an invalid value for array element
+                labelEnterArrayVal: //to label the point of code where data for each element is entered
+                    Console.Write("Row {0} Column {1}: ", i + 1, j + 1);   //asks user to enter each value in the array 1 by 1
+                    try
+                    {
+                        arr[i, j] = Int32.Parse(Console.ReadLine());   //gets user input from console (string), converts it to int
+                                                                       //and assigns to the array value at i location
+                    }
+                    catch (FormatException)//to catch format errors is user enters an invalid value for the integer element
+                    {
+                        invalidValCounter++;    //count of invalid value is incremented
+                        if (invalidValCounter < 3)  //as long as user has not kept entering invalid values (over 2 times) user is
+                                                    //redirected in this if block to reenter valid value
+                        {                        
+                            Console.WriteLine("Value must be a non-blank whole number. Please enter again:"); //error message displayed
+                            goto labelEnterArrayVal;    //then code returns to the entry point for the value so user can try again
+                        }
+                        else    //if use enters invalid values more than twice, then the code moves on to the next element to get its data
+                        {
+                            Console.WriteLine("Invalid values entered multiple times. Value 0 will be added.\nMoving on to next element...");
+                            //error message to let user know default zero value will be used for this element since invalid values were entered
+                        }
+                    }
+                }
+            }
+            return arr; //to return the array back after it is filled with user input
+        }
+
+        /// <summary>
+        /// A method to display an integer 2-dimensional array that is passed as a parameter as a formatted matrix
+        /// </summary>
+        /// <param name="arr">Any integer 2-D array that needs to be displayed formatted as a matrix</param>
+        static void DisplayArrayAsMatrix(int[,] arr)
+        {
+            Console.WriteLine("\nHere is your matrix:\n");  //A heads up to let you know the array is being displayed
+            Console.WriteLine("--------------------------------------------------------------------------------");
+            //to add a line before the display for better formatted appearance
+            for (int i = 0; i < arr.GetLength(0); i++)    //to go through each row in the array 
+            {
+                for (int j = 0; j < arr.GetLength(1); j++)  //for each row, goes through each column
+                {
+                    Console.Write($"|\t{arr[i, j]}\t"); //to display each element with columns separated by tab and 
+                                                        //vertical line using the '|' pipe character and
+                }
+                Console.WriteLine("|"); //adds a vertical line at end of row and starts a new line for each row
+            }
+            Console.WriteLine("--------------------------------------------------------------------------------");
+            //to add a line before the display for better formatted appearance
+        }
+    }
+}
