@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
+namespace StringRegexMatchForMathOperators
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            
+                string s = "Plus+ divide/ decrement-- mutiply*";
+                int count = 0;
+                foreach (char c in s)
+                {
+                    if (Regex.IsMatch(c.ToString(), @"[\+\-\/\*]"))
+                    {
+                        count++;
+                    }
+                }
+                Console.WriteLine("Here is my count:\t{0}", count);
+
+                Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+                Console.ReadKey(); //waits for user to press any key to Exit
+            }
+            static bool ContainsNumbers(string s)
+            {
+                return Regex.IsMatch(s, "\\d");
+                //return Regex.IsMatch(s, @"\d"); //this statement is exactly the same as the above statement
+                //the @ symbol before the string disables/enables regex escape characters
+                //return Regex.IsMatch(s, "\d");  //Error: \d is treated like a string instead of like an escape character
+            }
+        }
+
+    }
