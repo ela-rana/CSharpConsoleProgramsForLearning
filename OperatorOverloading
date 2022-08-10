@@ -1,0 +1,72 @@
+using System;
+
+namespace OperatorOverloading
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int num = 5 + 6 + 9;
+            string name = "Hello" + " all";
+
+            Circle c1=new Circle();
+            c1.Radius = 23;
+            Circle c2 = new Circle();
+            c2.Radius = 34;
+
+            Circle c4 = new Circle();
+            c4.Radius = 4;
+
+            var c3 = c1 + c2 + c4;
+            c3.CalculateArea();
+            Console.WriteLine($"Area of the circle after adding is {c3.Area} and its radius is {c3.Radius}");
+
+            c3 = c1 - c2 - c4;
+            //c3.CalculateArea(); //if we skip this line the new area will not be calculated so it will have a default zero value
+            Console.WriteLine($"Area of the circle after subtracting is {c3.Area} and its radius is {c3.Radius}");
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+    internal class Circle
+    {
+        public double Radius { get; set; }
+        public double Area { get; set; }
+
+        public void CalculateArea()
+        {
+            this.Area = Math.PI * this.Radius * this.Radius;
+        }
+
+        //operator overloading + 
+        public static Circle operator +(Circle c1, Circle c2)    //here the word Circle after static is the return type
+        {
+            Circle cnew = new Circle();
+            cnew.Radius = c1.Radius + c2.Radius;
+            return cnew;
+        }
+
+        //operator overloading -
+        public static Circle operator -(Circle c1, Circle c2)    //here the word Circle after static is the return type
+        {
+            Circle cnew = new Circle();
+            cnew.Radius = c1.Radius - c2.Radius;
+            return cnew;
+        }
+    }
+}
+
+//NOTES
+//operator should always be public and static
+//the + symbol means that we are overloading the plus operator
+
+
+//public static Circle operator +(Circle c1)
+//{
+//    Circle cnew = new Circle();
+//    cnew.Radius = c1.Radius;
+//    return cnew;
+//}
+//if you change the above code to this commented block, it still won't cause a compiler error
+//but the code won't work because you need two things to add
