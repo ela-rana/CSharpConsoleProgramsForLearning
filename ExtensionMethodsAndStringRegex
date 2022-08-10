@@ -1,0 +1,49 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;   //for Regex
+
+namespace ExtensionMethodsAndStringRegex
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string s = "My number 1 movie is test";
+            Console.WriteLine("Here is my string:\n{0}",s);
+            Console.WriteLine("Does string contain 'test'?:\t{0}",s.Contains("test"));
+            Console.WriteLine("Does string contain 'numbers'? using our method:\t{0}", ContainsNumbers(s));
+            bool answer = s.ContainsNumbers();  //here we exterded the string functionality with our Extension Method
+            Console.WriteLine("Does string contain 'numbers'? using string extension method:\t{0}", answer);
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+        static bool ContainsNumbers(string s)
+        {
+            return Regex.IsMatch(s, "\\d");
+            //return Regex.IsMatch(s, @"\d"); //this statement is exactly the same as the above statement
+                                            //the @ symbol before the string disables/enables regex escape characters
+            //return Regex.IsMatch(s, "\d");  //Error: \d is treated like a string instead of like an escape character
+        }
+    }
+
+    public static class ExtensionMethods
+    {
+        //step2:
+        public static bool ContainsNumbers(this string s)
+        {
+            return Regex.IsMatch(s, "\\d");
+        }
+        public static void TestMethod(this List<int> i)
+        {
+            //now in Main method we can do
+            //List<int> l = new List<int>();
+            //l.TestMethod();  
+            //because we extended the List<int> type and added this method to it
+            //we extended the functionality of List<int>
+        }
+    }
+}
