@@ -12,20 +12,35 @@ namespace StringRegexMatchForMathOperators
         static void Main(string[] args)
         {
             
-                string s = "Plus+ divide/ decrement-- mutiply*";
-                int count = 0;
+                string s = "5.26*1.5-6/45.2-345.33/34+4";
+                Console.WriteLine($"My string:\n{s}");
+                int countNumAndDec = 0, countMathOperator = 0;
+                Console.Write("Here are the numbers and decimal points in my string:\nValues: ");
                 foreach (char c in s)
                 {
                     if (Regex.IsMatch(c.ToString(), @"[\+\-\/\*]"))
                     {
-                        count++;
+                        countMathOperator++;
+                        Console.Write(c);
                     }
                 }
-                Console.WriteLine("Here is my count:\t{0}", count);
-
+                Console.WriteLine("\nCount: {0}", countMathOperator);
+                
+                Console.Write("Here are the math operators in my string:\nValues: ");
+                foreach (char c in s)
+                {
+                    if (Regex.IsMatch(c.ToString(), @"[\d\.]"))
+                    {
+                        countNumAndDec++;
+                        Console.Write(c);
+                    }
+                }
+                Console.WriteLine("\nCount: {0}", countNumAndDec);
+                              
                 Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
                 Console.ReadKey(); //waits for user to press any key to Exit
             }
+            
             static bool ContainsNumbers(string s)
             {
                 return Regex.IsMatch(s, "\\d");
