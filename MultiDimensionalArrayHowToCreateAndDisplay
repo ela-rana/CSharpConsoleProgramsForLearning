@@ -12,6 +12,7 @@
 
 //Note: [] means 1D, [,] means 2D, [,,] means 3D and so on
 //Note: for a 5 dimensional array the first dimension is 0, second is 1 and so on
+//Note: we can have upto 32-dimensional array
 
 using System;
 
