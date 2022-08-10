@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EnumExample
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Day myDay = (Day)5;  //this statement means the integer 5 is being type cast to a Day enum datatype and then
+                                 //assigned to myDay
+                                 //since the first value was assigned value 1, value 5 will be automatically assigned
+                                 //by the enum to the fifth item in the list in sequence, which is Friday
+            Console.WriteLine(myDay);   //displays Friday
+            
+            DayType2 myDayType2 = (DayType2)1;  //No values were assigned in this enum so by default values start from 0 on
+                                                //so here 1 will be the second value in the list, which is Tuesday.
+                                                //Thus integer 1 will be typcast to Tuesday and assigned to myDayType2
+            Console.WriteLine(myDayType2);  //displays Tuesday
+            myDayType2 = DayType2.Monday;
+            int identifier = (int)myDayType2;
+            Console.WriteLine(identifier);
+
+            DayType3 myDayType3 = (DayType3)2;
+            Console.WriteLine(myDayType3);
+            myDayType3 = (DayType3)10;
+            Console.WriteLine(myDayType3);
+
+
+            foreach (var item in Enum.GetValues(typeof(DayType3)))
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        enum Day
+        {
+            Monday=1,   //Since we identify the first day by value 1, everything below will automatically set to the next digit
+            Tuesday,    //So Tues is automatically 2, Wed 3 and so on evn though we didn't specify it
+            Wednesday,
+            Thursday,
+            Friday,
+            Saturday,
+            Sunday
+        }
+
+        enum DayType2
+        {
+            Monday,     //Since we didn't set identifying value, the first value automatically gets indexed as 0
+            Tuesday,    //Tue=1, Wed=2 and so on
+            Wednesday,
+            Thursday,
+            Friday,
+            Saturday,
+            Sunday
+        }
+        enum DayType3
+        {
+            Monday = 10,
+            Tuesday=10,
+            Wednesday,
+            Thursday=50,
+            Friday,
+            Saturday,
+            Sunday=100
+        }
+
+    }
+}
