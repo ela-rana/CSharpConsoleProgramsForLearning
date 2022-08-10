@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StringVsStringBuilderConcatenateVsNotReverseAndCountSpace
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string address;
+            address = "27";
+            address = address + " Miller Street";
+            address = address + ", New York";
+            //Above 3 statements are an example of string concatenation
+            //It is memory inefficient because it creates multiple temporary strings in the memory 
+            //everytime you concatenate
+            Console.WriteLine(address);
+
+            //A more memory efficient solution to that is to use StringBuilder
+            StringBuilder newaddress = new StringBuilder();
+            newaddress.Append("45");
+            newaddress.Append(" Lincoln Blvd");
+            newaddress.Append(", NYC");
+            Console.WriteLine(newaddress.ToString());
+
+            int count = 0;  //to hold count of spaces
+            foreach (char c in address)
+            {
+                if (c == ' ')
+                {
+                    count++;
+                }
+            }
+            Console.WriteLine($"Count of spaces in the first address is: {count}");
+
+            Console.WriteLine(address.Reverse());   //this statement doesn't work because Reverse() method
+                                                    //returns a char innumerable so it cannot be saved to the string address
+            Console.WriteLine(address.Reverse<char>());   //this statement doesn't work either
+
+            //the following solves the problem of the above 2 statements
+            var reverse = address.Reverse<char>();
+            foreach (char c in reverse)    
+            {       
+                Console.Write(c);
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+}
