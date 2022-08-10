@@ -1,6 +1,4 @@
 //Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
-//This program must contain the separate file Todo.cs in the project to run 
-//Todo.cs is located in the same repository as this file
 
 using System;
 using System.Collections;   //For ArrayList
