@@ -1,0 +1,41 @@
+//Coded using C# Console App on .NET Framework 4.8 on Visual Studio 2022
+//A program to do the following: Return even numbers:
+//Write a method that returns a string of even numbers greater than 0 and less than 100.
+//ReturnEvenNumbers() → "2 4 6 8 10 12 14 16 ...76 78 80 82 84 86 88 90 92 94 96 98"
+
+using System;
+using System.Text;
+
+namespace EvenNumbersDisplayer
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(ReturnEvenNumbers(0,100));  //displays all even numbers greater than 0 (first passed value)
+                                                          //and less than 100 (second passed value)
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        /// <summary>
+        /// Returns a string of even numbers that are greater than the first entered argument and less than the second argument
+        /// </summary>
+        /// <param name="from">start value for the range will be any value greater than this one</param>
+        /// <param name="to">end value for the range will be any value lesser than this one</param>
+        /// <returns>a string of even numbers separated by spaces greater than from parameter and less than to parameter</returns>
+        static string ReturnEvenNumbers(int from, int to)
+        {
+            StringBuilder s = new StringBuilder();
+            for (int i=from+1; i<to; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    s.Append($"{i} ");
+                }
+            }
+            return s.ToString();
+        }
+    }
+}
