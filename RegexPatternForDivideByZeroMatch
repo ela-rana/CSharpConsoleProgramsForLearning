@@ -11,7 +11,7 @@ namespace RegexPatternForDivideByZeroMatch
         {
             string pattern;
 
-            pattern = @"[\/][0]+[\.]?[0]*([\-\+\*\/]+|$)";
+            pattern = @"[\/][0]*[\.]?[0]*([\-\+\*\/]+|$)";
             if (Regex.IsMatch("5/0.01", pattern))
                 Console.WriteLine("This is a divide by zero");
             else
