@@ -1,0 +1,32 @@
+//FINAL MATCH CODE:
+
+using System;
+using System.Text.RegularExpressions;
+
+namespace RegexPatternForDivideByZeroMatch
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string pattern;
+
+            pattern = @"[\/][0]+[\.]?[0]*([\-\+\*\/]+|$)";
+            if (Regex.IsMatch("5/0.01", pattern))
+                Console.WriteLine("This is a divide by zero");
+            else
+                Console.WriteLine("There is no divide by zero");
+            Console.ReadKey();
+        }
+    }
+}
+
+
+//OTHER TEST RUNS:
+//pattern= @"[\/][0]$";	//for /0 then end of string after 0	//DIVIDE BY ZERO
+//pattern = @"[\/][0][\-\+\*\/]+";	//for /0 then an operator (either +,-,*, or /)  //DIVIDE BY ZERO
+//pattern = @"[\/][0]$|[\/][0][\-\+\*\/]+";	//either of the above two //DIVIDE BY ZERO
+      
+//pattern = @"[\/][0]+[1-9]+";	//for / then one or more 0 then at least 1 digit(1-9) after zero eg- /00987	//NOT Divide by zero
+//pattern = @"[\/][0]+[\.][0]*[1-9]+";	//for / then one or more 0 then point then zero or more zero then at least one digit (1-9) 
+//eg- /00.0098 ,/0.34, /00.35         //NOT Divide by zero
