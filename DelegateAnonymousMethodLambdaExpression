@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DelegateAnonymousMethodLambdaExpression
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            DelegateAnonymousMethodLambdaExpressionExample();
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+
+        static void DelegateAnonymousMethodLambdaExpressionExample()
+        {
+            //normal method call
+            bool result = IsGreaterThanHundred(300);
+            //if I only want to call this method, then we don't need a delegate. But if we want more flexibility and ability to 
+            //call different methods in different situations, then we want to use delegate
+            Console.WriteLine("Calling method directly: IsGreaterThanHundred(300). Result is: {0}", result);
+
+            //delegate call
+            MyDel myDel = new MyDel(IsGreaterThanHundred);
+            result = myDel(3045);
+            Console.WriteLine("Calling method IsGreaterThanHundred through delegate myDel(3045). Result is: {0}", result);
+
+            //same delegate calling different method
+            MyDel evenDel = new MyDel(IsEven);
+            result = evenDel(3045);
+            Console.WriteLine("Calling method IsEven through delegate myDel(3045). Result is: {0}", result);
+
+            //anonymous method
+            MyDel pointer = delegate (int num)
+            {
+                return (num > 500);
+            };
+            result = pointer(346);
+            Console.WriteLine("Calling anonymous method that checks if num>500 through delegate pointer(346). Result is: {0}", result);
+
+            //Lambda expression
+            MyDel pointer2 = (num) =>   //if two parameters write as: (num1,num2) but if one param you can write like (num) or just num (parentheses not necessary) for single param
+            //we can omit the keyword delegate and datatype doesn't need to be specified
+            {
+                if (num > 10)
+                    return true;
+                else return false;
+            };
+            result = pointer2(346);
+            Console.WriteLine("Calling lambda expression that checks if num>10 through delegate pointer2(346). Result is: {0}", result);
+
+        }
+        //this delegate can point to any method that take in one int parameter and returns bool
+        public delegate bool MyDel(int num);
+
+        static bool IsGreaterThanHundred(int num)
+        {
+            if (num > 100)
+                return true;
+            else
+                return false;
+        }
+
+        static bool IsEven(int num)
+        {
+            if (num % 2 == 0)
+                return true;
+            else
+                return false;
+        }
+    }
+}
