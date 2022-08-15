@@ -1,0 +1,110 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LINQPractice
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Car> cars = new List<Car>();
+            cars.Add(new Car { VIN = "A2", Make = "Ford", Model = "Explorer", Year = 2019, Price = 25000 });
+            cars.Add(new Car { VIN = "B4", Make = "Honda", Model = "HRV", Year = 2020, Price = 15000 });
+            cars.Add(new Car { VIN = "A34", Make = "Honda", Model = "CRV", Year = 2021, Price = 12000 });
+            cars.Add(new Car { VIN = "K2", Make = "Tesla", Model = "Y", Year = 2005, Price = 5000 });
+            cars.Add(new Car { VIN = "JK35", Make = "BMW", Model = "745I", Year = 2019, Price = 40000 });
+            cars.Add(new Car { VIN = "ARE32", Make = "Audi", Model = "TT", Year = 2022, Price = 40000 });
+            cars.Add(new Car { VIN = "JK85", Make = "BMW", Model = "M5", Year = 2018, Price = 30000 });
+            cars.Add(new Car { VIN = "A23562", Make = "Hyundai", Model = "Elantra", Year = 2001, Price = 3000 });
+
+            //LINQ: deferred query execution
+            var hondas = from c in cars    //c is a temp variable in list
+                         where c.Make == "Honda"    //condition
+                         select c;  //select
+            //all results will be saved in hondas; hondas is a collection/list cast as IEnumerable<Car> type
+
+            //If you want the query to execute right away (Forced Query Execution), do:
+            var hondasForced = (from c in cars    
+                         where c.Make == "Honda"   
+                         select c).ToList();  
+
+            int hondaCount = (from c in cars    
+                             where c.Make == "Honda"    
+                             select c).Count();     //this is also a forced query execution. It returns count of how many records
+                                                    //the query returned
+            //LHS is like a View from a database
+            var orderedCars = from c in cars
+                              orderby c.Price ascending
+                              select c;
+
+            cars.Add(new Car { VIN = "F345", Make = "Honda", Model = "Accord", Year = 2009, Price = 25000 });
+            //here we added another honda after the query, but still this will also be added to the hondas and orderedCars variables
+            //because query execution is by default deferred query execution in LINQ, meaning query doesn't execute till it is actually 
+            //used, which in this case is in the foreach(Car h in hondas) line or foreach(Car h in orderedCars) line below
+
+            Console.WriteLine("\nHere are all the Hondas in our list using Deferred Query Execution:");
+            foreach (Car h in hondas)
+            {
+                Console.WriteLine($"Make: {h.Make}, Model: {h.Model}, Year: {h.Year}, Price: {h.Price}");
+            }
+
+            Console.WriteLine("\nHere are all the Hondas in our list using Forced Query Execution:");
+            foreach (Car h in hondasForced)
+            {
+                Console.WriteLine($"Make: {h.Make}, Model: {h.Model}, Year: {h.Year}, Price: {h.Price}");
+            }
+
+            Console.WriteLine("\nCount (using Forced Query Execution) is: {0}", hondaCount);
+
+            Console.WriteLine("\nHere are all the cars ordered by price in ascending order (Deferred Query Execution:");
+            foreach (Car h in orderedCars)
+            {
+                Console.WriteLine($"VIN: {h.VIN}, Make: {h.Make}, Model: {h.Model}, Year: {h.Year}, Price: {h.Price}");
+            }
+
+            //get all 2019 bmws
+            var bmws2019List = from c in cars
+                               where c.Make == "BMW" && c.Year == 2019
+                               select c;
+
+            //get all cars whose price is more than 30K
+            var highValueCars = from c in cars
+                                where c.Price > 30000
+                                //group c.Make  //this is for group by but it doesn't work because that would be a list of lists
+                                select c;
+
+            var carsOlderThan2019 = cars.FindAll(c => c.Year < 2019);
+            var HondasOver20K = cars.FindAll(c => c.Make=="Honda" && c.Price>20000);
+            
+            double maxPrice = cars.Max(c => c.Price);
+            var maxPricedCar = from c in cars
+                               where c.Price == maxPrice
+                               select c;
+
+            Console.WriteLine("Application ended. Press any key to exit...");  //A simple Exit message is displayed
+            Console.ReadKey(); //waits for user to press any key to Exit
+        }
+    }
+
+    class Car
+    {
+        public string VIN { get; set; }
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+        public double Price { get; set; }
+
+    }
+}
+
+//Queries can also can be used to get Max, Min, Count, etc.
+//SQL Server Query:
+//"SELECT * FROM Car WHERE Make = 'Honda";
+//We could technically have entered SQL Queries as string instead of using LINQ
+//But if we make a typo in the query like: wher instead of where the whole command fails
+//Also vulnerable to SQL Injection attacks
+//So we use C#'s own LINQ to make queries within C#
+
+//Now our code becomes source-independent. As long as we get our results in a list, we can do the same
+//actions on them no matter what source it comes from. We only have to change the source not the functionality
