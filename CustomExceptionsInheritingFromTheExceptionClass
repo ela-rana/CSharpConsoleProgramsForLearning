@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CustomExceptionsInheritingFromTheExceptionClass
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+        }
+    }
+
+    [Obsolete]  //this is an attribute from the System library
+
+    internal class LoyaltyCardNotFound:Exception
+    {
+        public override string Message => base.Message; => "Loyalty card not found!";
+    }
+    class TestAttribute:Attribute
+    {
+
+    }
+    public class CustomList<T>:List<T>
+    {
+
+    }
+}
