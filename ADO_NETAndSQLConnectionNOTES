@@ -1,0 +1,45 @@
+using System;
+using System.Data.SqlClient;    //for database related programming
+
+namespace ADO_NETAndSQLConnectionNOTES
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            SqlConnection conn = new SqlConnection("server=MyServerName,db=MyDatabaseName");
+            conn.Open();
+            SqlCommand cmd = conn.CreateCommand();  
+            //the above statements is the traditional way to connect to the server. It is not used as much anymore
+            //now we use entity frameworks. The way to access the db has changed to entity framework.
+        }
+    }
+}
+
+/*
+ADO: ActiveX Data Object: before there was ADO in the VB.NET era: a set of libraries to
+connect and manipulate DB (database)
+ADO.NET: ADO advanced to this: also a set of libraries to connect to server
+
+ORM: Object related mapper: part of entity framework, it can 
+ORM also prevents SQL injections because of the way it is transferring the query to the server
+The way the query is sent in entity framework is different
+
+EDM: entity data model: the representation of the set of classes to connect to the data source (db)
+
+ADO.NET entity framework provides:
+EDMs
+Entity SQL
+Object Services
+
+ADO.NET entity framework supports:
+-Writing code against a conceptual model
+-Easy updating of applications to a differnt data source: Ex if we switch from SQLServer to PostgreSQL, 
+we just have to use a different set of classes to connect to the different source
+
+ADO.NET EDM tool support:
+-db-first design
+
+
+
+*/
