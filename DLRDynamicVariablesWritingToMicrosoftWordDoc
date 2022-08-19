@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DLRDynamicVariablesWritingToMicrosoftWordDoc
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            UseMSWord doc1 = new UseMSWord();
+            doc1.InvokeWord();
+            doc1.Dispose();
+
+            using (UseMSWord doc2 = new UseMSWord())
+            {
+                doc2.InvokeWord();
+            }
+
+            Console.ReadKey();
+        }
+    }
+
+    internal class UseMSWord : IDisposable  //inherit from IDisposable to add garbage collection since this class has dynamic fields so they will not automatically
+            //be disposed by CLR
+    {
+        //the followng fields are dynamic. DLR will handle (manage) these at runtime
+        private dynamic _word, _doc;
+        string path = "DLRDemoFile.docx";
+        
+        //destructor: nondeterministic method (we don't know when it will be called by the GC (Garbage Collector), but it will at some point of time
+        ~UseMSWord()
+        {
+            _word = null;
+            _doc = null;
+            Console.WriteLine("Disposed in Finalizer");
+        }
+
+        //deterministic method for gc (garbage collector)
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);  //this says don't call destructor because we will code the disposing functionality here
+            _word = null;
+            _doc = null;
+            Console.WriteLine("Disposed in Dispose method");
+        }
+
+        //Good convention to have both a destructor and Dispose, so that if destructor isn't called, Dispose will still take care of GC tasks
+        //if we use a using block, we don't have to call the Dispose method. It gets implicitly called when the using block ends
+
+        public void InvokeWord()
+        {
+            try
+            {
+                _word = new Microsoft.Office.Interop.Word.Application { Visible = false };
+                _doc = _word.Documents.Add();   //no intellisense appears when you type _doc. because it is dynamic so
+                                                //intellisense doesn't work for it
+                _doc.Activate();
+                var currentLocation = _word.ActiveDocument.Range(_word.ActiveDocument.Content.End - 1); //to make sure
+                                                                                                        //data is written at end (appended) instead of overwriting
+                currentLocation.InsertAfter("Sample Text");
+                currentLocation.InsertAfter("\n");
+                currentLocation.InsertAfter("Sample Text line 2");
+                var currentDocument = _word.ActiveDocument;
+                currentDocument.SaveAs(path);
+                currentDocument.Close();
+                Console.WriteLine("Document written");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+
+            }
+        }
+    }
+}
