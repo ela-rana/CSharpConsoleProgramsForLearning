@@ -1,0 +1,41 @@
+//Creating a simple dll class library
+//DLL: Dynamic Linked Library
+//dll: is a collection of user defined types (classes,interfaces, enums, etc.) which can
+//be used in other programs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Mathdll
+{
+    public class MathCls    //your main class that you want accessible to public
+    {
+        public int Add(int i, int j)
+        {
+            Helper helper = new Helper();   //we can use helper classes that are not visible to public
+                //here in our public class //this line is just to give an example of that
+            return i + j;
+        }
+        public int Multiply(int i, int j)
+        {
+            return i * j;
+        }
+    }
+
+    class Helper    //your internal class that helps your main public class but
+                    //cannot be viewed outside this library
+    {
+    }
+}
+
+/*
+ * Differences between exe and dll
+ * Exe has a Main method, dll doesn't
+ * exe can run by itself, dll cannot
+ * exe: client app, dll: server (serve functionality)
+ * exe: memory allocation, thread, process. dll: in proc (in process) meaning it doesn't have its own
+ * space but uses the space of the exe that uses it
+ */
