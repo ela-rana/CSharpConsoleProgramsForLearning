@@ -1,0 +1,45 @@
+//Example program to demonstrate a simple static attribute in a class
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StaticAttributeInClass
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Song s1 = new Song("Baby shark do do");
+            Console.WriteLine(s1.CurrentSongCount()); //outputs 1
+
+            Song s2 = new Song("Wheels on the bus");
+            
+            Console.WriteLine(Song.songCount);
+            Console.WriteLine(s2.CurrentSongCount());
+            Console.WriteLine(s1.CurrentSongCount());
+            //all above 3 statements output 3
+
+            Console.ReadKey();
+        }
+    }
+
+    class Song
+    {
+        public string title;    //regular attribute
+        public static int songCount = 0; //static attribute
+
+        public Song(string title)
+        {
+            this.title = title;
+            songCount++;
+        }
+
+        public int CurrentSongCount()
+        {
+            return songCount;
+        }
+    }
+}
