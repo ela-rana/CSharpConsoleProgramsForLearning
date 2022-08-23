@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.CodeDom; //feature of .net f/w which enables to generate code at run
+using System.CodeDom.Compiler;
+using Microsoft.CSharp;
+using System.IO;
+
+namespace CodeGenerator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var assembly_unit = new CodeCompileUnit();    //this will represent my entire assembly unit
+            var dynamic_namespace = new CodeNamespace("DemoNamespace");
+
+            //now we will import system namespace into this assembly
+            dynamic_namespace.Imports.Add(new CodeNamespaceImport("System"));
+
+            var progtype = new CodeTypeDeclaration("Program");  //class Program
+            dynamic_namespace.Types.Add(progtype);
+            var mainmethod = new CodeEntryPointMethod();    //main method
+            progtype.Members.Add(mainmethod);
+            var expression1 = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression("Console"), "WriteLine", new CodePrimitiveExpression("Hello from new program"));
+            var expression2 = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression("Console"), "WriteLine", new CodePrimitiveExpression("Hello from line two"));
+            var expression3 = new CodeMethodInvokeExpression(new CodeTypeReferenceExpression("Console"), "ReadLine");
+            mainmethod.Statements.Add(expression1);
+            mainmethod.Statements.Add(expression2);
+            mainmethod.Statements.Add(expression3);
+
+            //now we will write it into a file named prog.cs
+            var csharp_provider = new CSharpCodeProvider();
+            var filename = "prog.cs";
+            var stream = new StreamWriter(filename);
+            var textwriter = new IndentedTextWriter(stream);
+
+            var options = new CodeGeneratorOptions();
+            options.BlankLinesBetweenMembers = true;
+
+            assembly_unit.Namespaces.Add(dynamic_namespace);
+
+            //write into prog.cs
+            csharp_provider.GenerateCodeFromCompileUnit(assembly_unit, textwriter, options);
+
+            textwriter.Close();
+            stream.Close();
+
+            //generate exe
+            var compilersettings = new CompilerParameters();
+            compilersettings.ReferencedAssemblies.Add("System.dll");
+            compilersettings.GenerateExecutable = true;
+            compilersettings.OutputAssembly = "Dummy.exe";  //any name you want to give your exe
+            compilersettings.GenerateInMemory = false;  
+                                                      
+            var result = csharp_provider.CompileAssemblyFromFile(compilersettings, "prog.cs");
+            if(result !=null)
+            {
+                Console.WriteLine("exe is created!");
+            }
+            Console.ReadKey();
+
+            System.Diagnostics.Process.Start("Dummy.exe");  //to run the new exe we created
+        }
+    }
+}
