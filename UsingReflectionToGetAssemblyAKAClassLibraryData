@@ -2,7 +2,8 @@
 //For this program the assembly I am using is Mathdll.dll which is an assembly (class library) I created
 //the location of where that dll is on my computer is saved in the variable assemblyPath in the code below
 //To run this code you must change the path to where you have saved the Mathdll.dll file
-//You need to have the Mathdll.dll file for this project, which is in the same Git repository as this file
+//You need to have the Mathdll.dll file for this project, which can be created by building the file 
+//named Mathdll in the same Git repository as this file
 
 using System;
 using System.Collections.Generic;
