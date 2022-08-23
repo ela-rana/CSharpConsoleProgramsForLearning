@@ -1,0 +1,76 @@
+//To practice using System.Reflection and dynamically getting assembly data
+//For this program the assembly I am using is Mathdll.dll which is an assembly (class library) I created
+//the location of where that dll is on my computer is saved in the variable assemblyPath in the code below
+//To run this code you must change the path to where you have saved the Mathdll.dll file
+//You need to have the Mathdll.dll file for this project, which is in the same Git repository as this file
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Reflection;    //
+
+namespace UsingReflectionToGetAssemblyAKAClassLibraryData
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string assemblyPath = @"C:\Users\Admin\source\repos\Mathdll\bin\Debug\Mathdll.dll";
+            Assembly assembly = Assembly.LoadFrom(assemblyPath);    //loads the Mathdll.dll
+                // assembly/class library and saves it to an Assembly variable named assembly
+
+            Console.WriteLine($"Assembly name is: {assembly.GetName()}");
+            //Console.WriteLine($"Assembly full name is: {assembly.FullName}");   //same result as line above it
+            //Console.WriteLine($"Assembly location is: {assembly.Location}");    //gives its path in GAC if in GAC
+            //Console.WriteLine($"Is assembly from GAC (Global Assembly Cache): {assembly.GlobalAssemblyCache}");
+
+            object[] parameters = { 3, 10 };
+            Type[] types = assembly.GetTypes();
+            Console.WriteLine($"\nAssembly types are: ");
+            foreach (Type t in types)
+            {
+                Console.WriteLine($"\n{t}");
+                //Console.WriteLine(t.Name);
+                //Console.WriteLine(t.FullName);
+                //Console.WriteLine(t.IsClass);
+                //Console.WriteLine(t.IsPrimitive);
+                MethodInfo[] methods = t.GetMethods();
+                Console.WriteLine("\nThe methods of this type are: ");
+                foreach(MethodInfo m in methods)
+                {
+                    if (m.Name == "Equals")
+                        break;
+                    Console.WriteLine(m);
+                    //Console.WriteLine(m.Name);
+                    //Console.WriteLine(m.GetType());
+                    if (!m.IsStatic)
+                    {
+                        //create an object to invoke methods dynamically
+                        var dynamic_obj = Activator.CreateInstance(t);
+                        
+                        var result = t.InvokeMember(m.Name, BindingFlags.InvokeMethod, null, dynamic_obj, parameters);
+                        //binder is passed as null because you don't need binder since it is still in the managed code category
+                        //and so we do not require any type casting or anything
+                        
+                        Console.WriteLine($"Result with params 3,10 is: {result}");
+                    }
+                }
+            }
+
+
+            Console.ReadLine();
+        }
+    }
+}
+
+
+//static binding an assembly:
+//adding Mathdll to the project references, then putting "using Mathdll;" on top and then accessing
+//the library's classes in the program
+//For example: Mathcls mathcls = new Mathcls(); //Mathcls is a class inside the Mathdll file
+
+//dynamic binding an assembly:
+//what we did in this program by using System.Reflection classes, methods to access the assembly
+//we don't even have to add it to references for this type of binding
