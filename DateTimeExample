@@ -11,6 +11,9 @@ namespace DateTimeExample
     {
         static void Main(string[] args)
         {
+            //Displays current date and time in my own personalized format
+            Console.WriteLine(DateTime.Now.ToString("yyyy''MM''dd'_'hhmmtt"));  //example output: 20220520_0843AM
+            
             //Get current date and time
             DateTime d = DateTime.Now;
             Console.WriteLine("Date and time for now is: {0}", d);
