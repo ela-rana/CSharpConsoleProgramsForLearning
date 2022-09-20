@@ -1,0 +1,31 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Reflection.Emit;
+
+namespace regexphonenum
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string pattern = @"^(\d{10})$|^((\d{3}\-){2}\d{4})$";
+            //"^(\d{10})$" matches 4445556666
+            //"^((\d{3}\-){2}\d{4})$" matches 444-555-6666
+            //our pattern puts both these subpatterns with a | (OR) in the middle to allow both patterns
+            string userinput;
+        againLabel:
+            Console.WriteLine("Enter phone num: ");
+            userinput = Console.ReadLine();
+            Console.WriteLine(Regex.IsMatch(userinput, pattern));
+            goto againLabel;  //NOTE: this label makes this program an endless loop. It was placed here for 
+                //the purpose of testing multiple phone number values against the pattern
+                //You must manually terminate the program to break out of the endless loop
+
+            Console.ReadLine();
+        }
+    }
+}
