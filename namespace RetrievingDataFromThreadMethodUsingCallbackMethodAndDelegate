@@ -1,0 +1,57 @@
+using System;
+using System.Threading;
+
+namespace RetrievingDataFromThreadMethodUsingCallbackMethodAndDelegate
+{   
+    //Callback delegate
+    public delegate void CubeOfNumberCallbackDelegate(int CubeOfNum);
+
+    class Program
+    {
+        /// <summary>
+        /// Callback Method
+        /// </summary>
+        /// <param name="Cube"></param>
+        public static void DisplayCubeOfNumber(int Cube)
+        {
+            Console.WriteLine($"Cube of the number is: {Cube}"); 
+        }
+        static void Main(string[] args)
+        {
+            int numberToCube = 10;
+            CubeOfNumberCallbackDelegate _callback = new CubeOfNumberCallbackDelegate(DisplayCubeOfNumber);
+            CubeOfNumberHelperClass helper = new CubeOfNumberHelperClass(numberToCube, _callback);
+            ThreadStart ts = new ThreadStart(helper.CubeOfNumber);
+            Thread t = new Thread(ts);
+            t.Start();
+
+            ApplicationEnd();
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+
+    class CubeOfNumberHelperClass
+    {
+        int _numberToCube;
+
+        CubeOfNumberCallbackDelegate _callbackDelegate;
+        public CubeOfNumberHelperClass(int numberToCube, CubeOfNumberCallbackDelegate callbackDelegate)
+        {
+            _numberToCube = numberToCube;
+            _callbackDelegate = callbackDelegate;
+        }
+        public void CubeOfNumber()
+        {
+            int cube = _numberToCube * _numberToCube * _numberToCube;
+
+            if(_callbackDelegate != null)
+            {
+                _callbackDelegate(cube);
+            }
+        }
+    }
+}
