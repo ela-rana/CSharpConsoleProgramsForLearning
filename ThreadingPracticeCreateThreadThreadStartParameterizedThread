@@ -1,0 +1,203 @@
+using System;
+using System.Threading;
+
+namespace ThreadingPractice
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //CurrentThreadPropertyPractice();
+
+            //MultithreadingPractice();
+
+            //ThreadStartPractice();
+            //ParameterizedThreadStartPractice();
+
+            //You can use ThreadStart for no parameter method or ParameterizedThread for obj parameter method.
+            //But what if you need to create a thread for a method that takes a parameter, but it is not an
+            //obj type? Like for example, an int parameter?
+            //Solution: Create a helper class and make your method a void type method within it.
+            //See example ThreadStartWithParametersUsingHelperClass() below.
+            //This method is type-safe unlike ParameterizedThread where the wrong type could be passed to the obj
+            //type parameter.
+            //ThreadStartWithParametersUsingHelperClass();
+
+            ApplicationEnd();
+        }
+
+        static void ThreadStartWithParametersUsingHelperClass()
+        {
+
+            NumberHelper numberHelper = new NumberHelper(4);
+            ThreadStart ts = new ThreadStart(numberHelper.MethodHelper);
+            Thread t = new Thread(ts);
+            t.Start();
+
+        }
+        static void ParameterizedThreadStartPractice()
+        {
+            ParameterizedThreadStart threadStart1 = new ParameterizedThreadStart(Method5);
+            Thread t4 = new Thread(threadStart1);
+            t4.Start(4); //here we pass the value for the obj parameter
+            //t4.Start("gjh"); //entering non integer value to test error handling
+
+            // ParameterizedThreadStart: delegate that represents the method that executes on a System.Threading.Thread.
+            // Parameters: obj: An object that contains data for the thread procedure.
+            // public delegate void ParameterizedThreadStart(object obj);
+        }
+        static void ThreadStartPractice()
+        {
+            Thread t1 = new Thread(Method1);
+            t1.Start();
+
+            ThreadStart threadStart1 = () => Method2();
+            Thread t2 = new Thread(threadStart1);
+            t2.Start();
+
+            ThreadStart threadStart2 = delegate () { Method3(); };
+            Thread t3 = new Thread(threadStart2);
+            t3.Start();
+
+            ThreadStart threadStart3 = new ThreadStart(Method4);
+            Thread t4 = new Thread(threadStart3);
+            t4.Start();
+
+            //ThreadStart: delegate that represents the method that executes on a System.Threading.Thread.
+        }
+        static void CurrentThreadPropertyPractice()
+        {
+            Console.WriteLine("current thread name is: {0}", Thread.CurrentThread.Name);
+
+            Thread t = Thread.CurrentThread;
+            t.Name = "main one";
+            Console.WriteLine("current thread name is: {0}", Thread.CurrentThread.Name);
+            Console.WriteLine("current thread name is: {0}", t.Name);
+        }
+        static void MultithreadingPractice()
+        {
+            Thread T1 = new Thread(Method1) { Name = "Thread1" };
+            Thread T2 = new Thread(Method2) { Name = "Thread2" };
+            Thread T3 = new Thread(Method3) { Name = "Thread3" };
+            Thread T4 = new Thread(Method4) { Name = "Thread4" };
+
+            T1.Start();
+            T2.Start();
+            T3.Start();
+            T4.Start();
+        }
+        static void Method1()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"METHOD 1 START! THREAD: {Thread.CurrentThread.Name}");
+            int lastIteration = 3;
+            for (int i = 1; i <= lastIteration; i++)
+            {
+                Thread.Sleep(1000);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Method 1 Iteration: {i} of {lastIteration}");
+            }
+            Console.WriteLine($"METHOD 1 END! THREAD: {Thread.CurrentThread.Name}");
+        }
+        static void Method2()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"METHOD 2 START! THREAD: {Thread.CurrentThread.Name}");
+            int lastIteration = 7;
+            for (int i = 1; i <= lastIteration; i++)
+            {
+                Thread.Sleep(1000);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Method 2 Iteration: {i} of {lastIteration}");
+            }
+            Console.WriteLine($"METHOD 2 END! THREAD: {Thread.CurrentThread.Name}");
+        }
+        static void Method3()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"METHOD 3 START! THREAD: {Thread.CurrentThread.Name}");
+            int lastIteration = 5;
+            for (int i = 1; i <= lastIteration; i++)
+            {
+                Thread.Sleep(1000);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Method 3 Iteration: {i} of {lastIteration}");
+            }
+            Console.WriteLine($"METHOD 3 END! THREAD: {Thread.CurrentThread.Name}");
+        }
+        static void Method4()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"METHOD 4 START! THREAD: {Thread.CurrentThread.Name}");
+            int lastIteration = 2;
+            for (int i = 1; i <= lastIteration; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Thread.Sleep(1000);
+                Console.WriteLine($"Method 4 Iteration: {i} of {lastIteration}");
+            }
+            Console.WriteLine($"METHOD 4 END! THREAD: {Thread.CurrentThread.Name}");
+        }
+
+        static void Method5(object maxNum)
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"METHOD 5 START! THREAD: {Thread.CurrentThread.Name}");
+            int lastIteration = 0;
+            try
+            {
+                lastIteration = Convert.ToInt32(maxNum);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Value passed was not an integer. Default value zero will be used");
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                for (int i = 1; i <= lastIteration; i++)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Thread.Sleep(1000);
+                    Console.WriteLine($"Method 5 Iteration: {i} of {lastIteration}");
+                }
+                Console.WriteLine($"METHOD 5 END! THREAD: {Thread.CurrentThread.Name}");
+            }
+        }
+
+        static void ApplicationEnd()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+
+    /// <summary>
+    /// Helper class to take integer parameter for method for thread.
+    /// </summary>
+    public class NumberHelper
+    {
+        private int _Number;
+
+        public NumberHelper(int number)
+        {
+            _Number = number;
+        }
+        public void MethodHelper()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine($"METHOD START");
+            int lastIteration = _Number;
+            for (int i = 1; i <= lastIteration; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Thread.Sleep(1000);
+                Console.WriteLine($"Iteration: {i} of {lastIteration}");
+            }
+            Console.WriteLine($"METHOD END!");
+        }
+    }
+}
+
+// Thread.Sleep(5000); //Pause this thread for 5000 milliseconds (5 seconds)
