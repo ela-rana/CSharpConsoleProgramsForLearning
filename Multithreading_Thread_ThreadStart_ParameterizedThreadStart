@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Threading_Thread_ThreadStart_ParameterizedThreadStart
+namespace Multithreading_Thread_ThreadStart_ParameterizedThreadStart
 {
     class Program
     {
