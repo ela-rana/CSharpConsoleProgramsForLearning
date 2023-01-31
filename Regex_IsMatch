@@ -1,0 +1,30 @@
+using System;
+using System.Text.RegularExpressions;
+
+namespace Regex_IsMatch
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            String x = "TestFile_20220506-05-26-29_Unstarted.xml";
+            string patt = "TestFile_20220506-05-26-29_Unstarted.xml";
+            Console.WriteLine(Regex.IsMatch(x, patt));
+
+            x = "TestFile_20220506-05-26-29_Unstarted.xml";
+            patt = @"^TestFile_" + "[0-9-]{17}" + "_Unstarted.xml$";
+            Console.WriteLine(Regex.IsMatch(x, patt));
+
+            x = "TestFile_20220506-05-26-29_Unstarted.xml";
+            patt = @"^TestFile_";
+            Console.WriteLine(Regex.IsMatch(x, patt));
+
+            x = "C:\SCFSSFSCF\MyLogs\TestFile_20230120-16-59-04_.xml";
+            patt = @"^TestFile_";
+            Console.WriteLine(Regex.IsMatch(x, patt));
+
+
+            Console.ReadLine();
+        }
+    }
+}
