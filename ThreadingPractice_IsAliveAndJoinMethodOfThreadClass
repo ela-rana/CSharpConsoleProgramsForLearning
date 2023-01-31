@@ -1,0 +1,89 @@
+using System;
+using System.Threading;
+
+namespace ThreadingPractice_IsAliveAndJoinMethodOfThreadClass
+{   
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("----MAIN METHOD START----");
+
+            Thread t1 = new Thread(Program.Method1);
+            t1.Start();
+            Thread t2 = new Thread(Program.Method2);
+            t2.Start();
+            Thread t3 = new Thread(Program.Method3);
+            t3.Start();
+
+            t1.Join(); //t1 is a child thread and Main is the parent thread. This Join() means
+                       //that Main has to wait for t1 to finish before continuing with statements
+                       //below this line
+
+            t2.Join(2000); //Main has to wait 2 seconds for t2 to execute. If t2 doesn't finish by 
+                           //then, then main can stop waiting and continue execution
+
+            if (t3.Join(1000))
+            {
+                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Method3 executed completely before the timeout");
+                Console.ResetColor();
+            }
+
+            if (t3.IsAlive)
+            {
+                Console.BackgroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Method3 is still alive");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine("----MAIN METHOD END----");
+            ApplicationEnd();
+        }
+
+        static void Method1()
+        {
+            Console.WriteLine("METHOD 1 START____");
+            Thread.Sleep(2000);
+            Console.WriteLine("METHOD 1 END____");
+        }
+
+        static void Method2()
+        {
+            Console.WriteLine("**METHOD 2 START*");
+            Thread.Sleep(6000);
+            Console.WriteLine("**METHOD 2 END*");
+        }
+        static void Method3()
+        {
+            Console.WriteLine("METHOD 3 START*");
+            Thread.Sleep(7000); //since it is executing for a long time, it will
+                                //make "if(t3.Join(1000))" false & isAlive true
+
+            //Thread.Sleep(500); //If you comment the 7000 sleep and uncomment this line,
+                                 //then since it is executing for a short time, it will
+                                 //make "if(t3.Join(1000))" true & isAlive false
+
+            Console.WriteLine("METHOD 3 END*");
+        }
+
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+/*
+- Join() method allows a thread to wait until another thread completes its execution.
+- If t is a Thread object that is currently executing, then t.Join() makes the current
+thread pause until the thread it joins completes its execution.
+- Join() has an overload where we can specify the Timeout (in milliseconds)
+- If we don't specify the timeout, the calling thread waits indefinitely, until the thread on 
+which the join is invoked completes.
+- Join(Timeout) has a bool return type. Returns true when thread has terminated, else false
+- Join is useful when we need to wait and collect a result from a thread execution, or if 
+cleanup is needed after thread completes 
+- IsAlive returns bool True if thread is still executing, else False.
+*/
