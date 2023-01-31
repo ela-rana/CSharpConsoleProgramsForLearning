@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Threading_Join_IsAlive
+namespace Multithreading_Join_IsAlive
 {   
     class Program
     {
