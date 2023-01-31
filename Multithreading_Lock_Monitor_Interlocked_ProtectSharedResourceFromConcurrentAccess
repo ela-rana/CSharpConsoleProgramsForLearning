@@ -1,0 +1,135 @@
+using System;
+using System.Threading;
+using System.Diagnostics; //for Stopwatch (to count efficiency time
+
+namespace Multithreading_Lock_Monitor_Interlocked_ProtectSharedResourceFromConcurrentAccess
+{   
+    class Program  
+    {
+        public static int Sum = 0; //this is the shared resource
+        static void Main(string[] args)
+        {
+            Stopwatch watch = Stopwatch.StartNew(); //to keep track of time taken to complete the block
+                                                    //of code following it, till it is stopped
+
+            Thread t1 = new Thread(Add);
+            Thread t2 = new Thread(Add);
+            Thread t3 = new Thread(Add);
+            t1.Start();
+            t2.Start();
+            t3.Start();
+
+            t1.Join();
+            t2.Join();
+            t3.Join();
+
+            Console.WriteLine($"Sum is: {Sum}");
+            watch.Stop();
+            Console.WriteLine(
+               $"Total elapsed time is: {watch.ElapsedMilliseconds} millisecs or {watch.ElapsedTicks} ticks."); 
+            //ticks is more accurate than msecs because its value is more precise by 4 more digits
+            //Eg: 4181 msecs is 41818806 ticks
+
+            ApplicationEnd();
+        }
+
+        public static object _lock = new object();
+        static void Add()
+        {
+            int max = 1000000;
+            for(int i = 1; i<=max; i++)
+            {
+                //METHOD 1: NO METHOD
+
+                //Sum++;
+
+                //Here if we increment sum without any locks, the 3 threads access sum at the
+                //same time so there is an error. Everytime you run the application it will have
+                //a different sum.
+                //--------------------------------------------------------------------------------
+
+
+                //METHOD 2: USING INTERLOCKED.INCREMENT()
+
+                //Interlocked.Increment(ref Sum);
+
+                //This prevents the shared resource access error. Thus everytime you run the code,
+                //you get the same result which in this case is 3 times max, since the loop is run
+                //by 3 threads thrice.
+                //
+                //For the shared resource that needs to be incremented, this is the most efficient
+                //locking option. If you run this application and check the efficiency of the task
+                //using the stopwatch for this versus a lock block, you will find that this is more
+                //efficient. However, on the downside, Interlocked only works for some actions, like
+                //Increment, Decrement, Add, CompareExchange, and Exchange
+                //--------------------------------------------------------------------------------
+
+
+                //METHOD 3: USING lock
+
+                //lock (_lock)
+                //{
+                //    Sum++;
+                //}
+
+                //Same as method 2 but slightly slower. But more versatile for type of operations to
+                //conduct, since code in block could be anything. 
+                //--------------------------------------------------------------------------------
+
+
+                //METHOD 4: USING Monitor
+
+                //Monitor.Enter(_lock);
+                //try 
+                //{ 
+                //    Sum++; 
+                //}
+                //finally 
+                //{ 
+                //    Monitor.Exit(_lock); 
+                //}
+
+                //Monitor allows more control over the lock. It has methods like TryEnter for error
+                //handling, Pulse to check for change in locked object's state, IsEntered to check
+                //if you entered the lock, Wait, PulseAll etc.
+                //--------------------------------------------------------------------------------
+
+
+                //METHOD 5: Using Monitor and checking if the lock was taken
+
+                bool lockTaken = false;
+                Monitor.Enter(_lock, ref lockTaken);
+                try
+                {
+                    Sum++;
+                }
+                finally
+                {
+                    if (lockTaken) //you only have to exit the lock if the lock was taken in the first place
+                    {
+                        Monitor.Exit(_lock);
+                    }
+                }
+
+            }
+        }
+
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+/*
+- Shared resource can be a variable, method, etc.
+- lock and Monitor help ensure only one thread accesses the critical portion of the code at a time
+- prevents functional breaking of the code
+
+Lock vs Monitor
+- lock is the shortcut for Monitor.Enter with try and finally
+- So lock provides basic functionality to acquire an exclusive lock on a synchronized object
+- But if you want more control to implement advanced multithreading solutions using TryEnter(), Pulse(),
+  PulseAll(), etc. then the Monitor class is your option.
+*/
