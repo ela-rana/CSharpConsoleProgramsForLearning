@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace RetrievingDataFromThreadMethodUsingCallbackMethodAndDelegate
+namespace Threading_RetrieveDataFromThreadUsing_CallbackMethod_CallbackDelegate
 {   
     //Callback delegate
     public delegate void CubeOfNumberCallbackDelegate(int CubeOfNum);
