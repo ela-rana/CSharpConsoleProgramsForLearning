@@ -1,0 +1,43 @@
+using System;
+using System.Threading;
+
+namespace Multithreading_Semaphore_ManagedThreadID
+{
+    class Program  
+    {
+        public static Semaphore _event = new Semaphore(2,2);
+        static void Main(string[] args)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                new Thread(Write).Start();
+            }
+
+            ApplicationEnd();
+        }
+        static void Write()
+        {
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Starting");
+            _event.WaitOne();
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Running");
+            Thread.Sleep(4000);
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Complete");
+            _event.Release();
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+/*
+* The Semaphore in C# is used to limit the number of threads that can have access to a shared 
+  resource concurrently.
+* In other words, we can say that Semaphore allows one or more threads to enter into the critical 
+  section and execute the task concurrently with thread safety.
+* Semaphore s = new Semaphore(initialCount, maximumCount);
+* initialCount must be <= maximumCount, else runtime error will occur
+* Semaphore(2,2) means 2 threads can run initially and max 2 threads can run at a time
+*/
