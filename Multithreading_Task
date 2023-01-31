@@ -1,28 +1,28 @@
 //A program to demonstrate how to do multithreading in C#
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;   //for multithreading:  Task class usage
 using System.Threading; //for multithreading: Thread class
 
-namespace MultithreadingTasks
+namespace Multithreading_Task
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             //STYLE 1 to create a task
-            Task longMethodTask = new Task(LongMethod); //Task takes action parameter, action delegate,
-                                                        //action delegate can point to any method that performs an action, and has no parameters and returns nothing
+            Task longMethodTask = new Task(LongMethod);
+            //Task takes action parameter, action delegate,action delegate can point
+            //to any method that performs an action, and has no parameters and
+            //returns nothing
 
             //STYLE 2: Same thing alternate way
             Task longMethodTask2 = new Task(new Action(LongMethod));
 
             //STYLE 3: Alternate way using lambda expression
-            //"() =>" means "this goes to" the () is an anonymous method. Since delegate points to a method we created it as an
-            //anonymous method for the delegate to point to
+            //"() =>" means "this goes to" the () is an anonymous method. Since
+            //delegate points to a method we created it as an anonymous method for
+            //the delegate to point to
             Task longMethodTask3 = new Task(() => { LongMethod(); });
 
             longMethodTask.Start();
@@ -36,14 +36,13 @@ namespace MultithreadingTasks
         static void LongMethod()
         {
             Console.WriteLine("LongMethod Start");
-            Thread.Sleep(5000); //sleep (suspend) the thread for 5000 milliseconds (5 secs)
+            Thread.Sleep(5000); //sleep (suspend) thread for 5000 milliseconds (5 sec)
             Console.WriteLine("LongMethod Complete");
         }
     }
 }
 
-//synchronous program: when tasks occur in sequence one after the other
-//asynchronous program: when tasks can occur concurrently
-//async keyword
-//await keyword
-//Task class
+//synchronous program: when tasks occur in sequence one after the other (like in
+//procedural programming)
+
+//asynchronous program: when tasks can occur concurrently (like in mulithreading)
