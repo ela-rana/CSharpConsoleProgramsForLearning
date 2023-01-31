@@ -1,0 +1,43 @@
+using System;
+using System.Threading;
+
+namespace Multithreading_ManualResetEvent
+{
+    class Program  
+    {
+        public static ManualResetEvent _mre = new ManualResetEvent(false);
+        static void Main(string[] args)
+        {
+            Thread t1 = new Thread(Write);
+            t1.Start();
+
+            for(int i = 0; i < 5; i++)
+            {
+                new Thread(Read).Start();
+            }
+
+            ApplicationEnd();
+        }
+        static void Write()
+        {
+            Console.WriteLine("Write Running");
+            _mre.Reset();
+            Thread.Sleep(4000);
+            Console.WriteLine("Write Complete"); //all these lines of the Write() will run
+            _mre.Set(); //then finally here the Set method signals one or more waiting threads
+                        //to resume (in this case all 5 read methods)
+        }
+        static void Read()
+        {
+            Console.WriteLine("Read Waiting"); //All 5 read threads will run this line
+            _mre.WaitOne(); //then all 5 of them will go into a wait
+            Console.WriteLine("Read Complete"); //once the _mre.Set() line executes on Write,
+                                                //then finally this method continues executing
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
