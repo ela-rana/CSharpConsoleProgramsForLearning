@@ -1,0 +1,43 @@
+using System;
+using System.Threading;
+
+namespace Multithreading_AutoResetEvent
+{
+    class Program  
+    {
+        public static AutoResetEvent _event = new AutoResetEvent(true);
+        static void Main(string[] args)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                new Thread(Write).Start();
+            }
+            ApplicationEnd();
+        }
+        static void Write()
+        {
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Starting");
+            _event.WaitOne();
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Running");
+            Thread.Sleep(3000);
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Complete");
+            _event.Set();
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+/*
+* AutoResetEvent is used to send signals between two threads
+* Both threads share the same AutoResetEvent object. Thread can enter into a wait state by 
+  calling WaitOne() method of AutoResetEvent object. When second thread calls the Set() method 
+  it unblocks the waiting thread (similar to ManualResetEvent).
+* AutoResetEvent maintains a boolean variable in memory. If the bool is false then it blocks 
+  the thread, if true unblocks the thread (similar to ManualResetEvent).
+* When we instantiate an AutoResetEvent object, we pass the default bool value. Ex:
+  AutoResetEvent autoResetEvent = new AutoResetEvent(false);
+*/
