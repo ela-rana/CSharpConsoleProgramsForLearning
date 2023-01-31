@@ -1,0 +1,43 @@
+using System;
+using System.Threading;
+
+namespace Multithreading_Mutex
+{
+    class Program  
+    {
+        public static Mutex _event = new Mutex();
+        static void Main(string[] args)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                new Thread(Write).Start();
+            }
+
+            //Thread.Sleep(3000);
+            //_event.ReleaseMutex(); //this will cause runtime error, because main (unsynchronized)
+                                   //thread is trying to release mutex of child (synchronized) thread 
+            //System.ApplicationException: 'Object synchronization method was called from an
+            //unsynchronized block of code.'
+
+            //This error occurs for AutoResetEvent as well but the runtime erro is not caught so
+            //if we do this in the case of an AutoResetEvent object we will get result that is not
+            //occuring one thread after the other like its supposed to here because of the wait 
+
+            ApplicationEnd();
+        }
+        static void Write()
+        {
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Starting");
+            _event.WaitOne();
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Running");
+            Thread.Sleep(3000);
+            Console.WriteLine($"Thread: {Thread.CurrentThread.ManagedThreadId}  Write Complete");
+            _event.ReleaseMutex();
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
