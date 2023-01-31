@@ -1,0 +1,50 @@
+//The following file demonstrates various types of data structures in Visual Studio.
+//Hover over each structure to see what icon Visual Studio uses for each type of structure
+//and what symbol is placed at the bottom right of each icon to indicate the access modifier 
+//for that structure.
+
+using System;
+
+namespace VisualStudioDataStructureIcons
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double myPi = Math.PI;
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+
+    public class Class1
+    { 
+        int privateField;
+        protected int protectedField;
+        internal int internalField;
+        public int publicField;
+        protected internal int protectedInternalField;
+        private protected int privateProtectedField;
+
+        private class PrivateClass { } //a class within a namespace can't be private
+                                       //but a class within another class can
+        class IAmPrivateTooClass { } //fields, properties declared within a class are
+                                     //private by default
+        protected class ProtectedClass { }
+        internal class InternalClass { } 
+        public class PublicClass { }
+
+        public enum PublicEnum { }
+        public struct PublicStruct { }
+        public int PublicProperty { get; set; }
+        public interface PublicInterface { }
+        public void PublicMethod() { }
+        
+        public const int PublicConstant = 2;
+    }
+
+    //private class PrivClass { }  //this statement will cause following error
+    //Elements defined in a namespace cannot be explicitly declared as private,
+    //protected, protected internal or private protected
+
+}
