@@ -1,0 +1,119 @@
+using System;
+using System.Threading;
+
+namespace Multithreading_Monitor_Pulse_Wait_PulseAll
+{
+    class Program  
+    {    
+        public static object _lock = new object();
+        static void Main(string[] args)
+        {
+            //Thread t1 = new Thread(ReadWithoutMonitor);
+            //Thread t2 = new Thread(WriteWithoutMonitor);
+            
+            Thread t1 = new Thread(ReadWithMonitor);
+            Thread t2 = new Thread(WriteWithMonitor);
+            //Thread t3 = new Thread(EatWithMonitor);
+            //If you add a 3rd thread this won't work. It only shares between two threads this way.
+
+            t1.Start();
+            t2.Start();
+            //t3.Start();
+
+            t1.Join();
+            t2.Join();
+            //t3.Join();
+
+            ApplicationEnd();
+        }
+        static void ReadWithoutMonitor()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine($"Read iteration: {i}");
+            }
+        }
+        static void WriteWithoutMonitor()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine($"Write iteration: {i}");
+            }
+        }
+        static void ReadWithMonitor()
+        {
+            Monitor.Enter(_lock); 
+            for (int i = 0; i < 5; i++)
+            {
+                Monitor.Pulse(_lock); //Hey I'm in the lock, I'm working
+                Console.WriteLine($"Read iteration: {i}");
+                Monitor.Wait(_lock); //I'm going to pause and wait, whoever's next
+                                     //can take the lock. I'll wait for someone else
+                                     //to go into a Wait() so it can be my turn again
+            }
+        }
+        static void WriteWithMonitor()
+        {
+            Monitor.Enter(_lock);
+            for (int i = 0; i < 5; i++)
+            {
+                Monitor.Pulse(_lock);
+                Console.WriteLine($"Write iteration: {i}");
+                Monitor.Wait(_lock);
+            }
+        }
+        static void EatWithMonitor()
+        {
+            Monitor.Enter(_lock);
+            for (int i = 0; i < 5; i++)
+            {
+                Monitor.Pulse(_lock);
+                Console.WriteLine($"Eat iteration: {i}");
+                Monitor.Wait(_lock);
+            }
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+/*
+OUTPUT WITHOUT MONITOR:
+Read iteration: 0
+Read iteration: 1
+Read iteration: 2
+Read iteration: 3
+Read iteration: 4
+Write iteration: 0
+Write iteration: 1
+Write iteration: 2
+Write iteration: 3
+Write iteration: 4
+
+OUTPUT WITH MONITOR:
+Read iteration: 0
+Write iteration: 0
+Read iteration: 1
+Write iteration: 1
+Read iteration: 2
+Write iteration: 2
+Read iteration: 3
+Write iteration: 3
+Read iteration: 4
+Write iteration: 4
+
+* Monitor is also a locking mechanism that will ensure one thread is executing a piece of code at a time.
+* Monitor is similar to lock but the Monitor class provides more control over the synchronization of 
+  various threads trying to access the same code.
+* Monitor locks objects. While you can pass a value type to Enter and Exit, it is boxed separately for
+  each call.
+* Monitor has a signalling mechanism, like wait, pulse and pulseall methods for signalling/communication
+  between threads.
+* Monitor.Wait(): thread waits for other threads to notify.
+* Monitor.Pulse(): thread notifies another thread.
+* Monitor.PulseAll(): thread notifies all other threads within a process.
+
+*/
