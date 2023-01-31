@@ -5,12 +5,25 @@
 
 using System;
 
-namespace DateTimeExample
+namespace DateTime
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            string reportTimeStamp;
+            reportTimeStamp = DateTime.Now.ToString("yyyy-MM-ddTHH-mm-ss");
+            Console.WriteLine(reportTimeStamp);
+            reportTimeStamp = DateTime.Now.ToString("test_yyyy-MM-ddTHH-mm-ss");
+            Console.WriteLine(reportTimeStamp);
+            reportTimeStamp = DateTime.Now.ToString("Con__D-yyyy-MM-dd__T-HH-mm-ss");
+            Console.WriteLine(reportTimeStamp);
+            reportTimeStamp = DateTime.Now.ToString("Da-yyyy-MM-dd_Ti-HH-mm-ss");
+            Console.WriteLine(reportTimeStamp);
+            
+			DateTime StartDate = new DateTime(2019, 9, 1);
+
+        
             //Displays current date and time in my own personalized format
             Console.WriteLine(DateTime.Now.ToString("yyyy''MM''dd'_'hhmmtt"));  //example output: 20220520_0843AM
             
