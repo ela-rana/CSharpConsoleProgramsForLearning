@@ -1,0 +1,51 @@
+using System;
+using System.Threading;
+
+namespace Multithreading_ThreadPool
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("MAIN START");
+            for(int i = 0; i < 5; i++)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(ThreadPoolMethod));
+            }
+
+            ApplicationEnd();
+        }
+        static void ThreadPoolMethod(object obj)
+        {
+            Thread thread = Thread.CurrentThread;
+            string message = $"Background: {thread.IsBackground}, Thread Pool: {thread.IsThreadPoolThread}, Thread ID: {thread.ManagedThreadId}";
+            Console.WriteLine(message);
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+/*
+- Thread pooling is the process of creating a collection of threads during initializaton
+  of a multithreaded application, and then reusing those threads for new tasks when 
+  required, instead of creating new threads.
+- Then every process has a fixed number of threads depending on amount of memory available, 
+  and the needs of the app. We have the freedom to increase the number of threads if needed.
+
+- When a request comes, it goes to the thread pool and checks for free threads available. 
+  If available, then it takes the thread object from the thread pool and executes the task.
+- Once the thread completes its task then it again sent back to the thread pool so that 
+  it can reuse. This reusability avoids an application to create the number of threads 
+  and this enables less memory consumption.
+
+- Usually, the thread pool is needed when we have a number of tasks. THe tasks for the thread
+  pool is organized as a queue.
+- Typically we have more tasks than threads. As soon as a thread completes its task, it will 
+  request the next task from the queue till all tasks have been completed.
+- The thread can then terminate, or sleep until there are new tasks available.
+
+*/
