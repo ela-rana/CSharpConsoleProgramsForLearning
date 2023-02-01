@@ -1,0 +1,183 @@
+using System;
+using System.Threading;
+
+namespace Multithreading_Deadlock_WaysToResolveDeadlock_MonitorTryEnter
+{
+    class Program
+    {
+        public static Semaphore _event = new Semaphore(2, 2);
+        static void Main(string[] args)
+        {
+            Console.WriteLine("MAIN START");
+
+            ATMDetails details1 = new ATMDetails(501, 5000);
+            ATMDetails details2 = new ATMDetails(502, 6500);
+
+            ATMSystem system1 = new ATMSystem(details1, details2, 1000);
+            ATMSystem system2 = new ATMSystem(details2, details1, 1500);
+
+            //Thread T1 = new Thread(system1.Transfer_DeadlockedVersion);
+            //Thread T2 = new Thread(system2.Transfer_DeadlockedVersion);
+
+            //Thread T1 = new Thread(system1.Transfer_ExitDeadlockUsingMonitorTryEnter);
+            //Thread T2 = new Thread(system2.Transfer_ExitDeadlockUsingMonitorTryEnter);
+
+            Thread T1 = new Thread(system1.Transfer_FixDeadlockUsingLocalVariablesAndOrdering);
+            Thread T2 = new Thread(system2.Transfer_FixDeadlockUsingLocalVariablesAndOrdering);
+
+            T1.Name = "T1";
+            T2.Name = "T2";
+            T1.Start();
+            T2.Start();
+            T1.Join();
+            T2.Join();
+
+            ApplicationEnd();
+        }
+
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+    public class ATMDetails
+    {
+        double balance;
+        int id;
+        public ATMDetails(int id, double balance)
+        {
+            this.id = id;
+            this.balance = balance;
+        }
+        public int ID
+        {
+            get { return id; }
+        }
+        public void Withdraw(double amount)
+        {
+            balance -= amount;
+        }
+        public void Deposit(double amount)
+        {
+            balance += amount;
+        }
+    }
+    public class ATMSystem
+    {
+        ATMDetails fromATM;
+        ATMDetails toATM;
+        double amountToTransfer;
+        public ATMSystem(ATMDetails fromATM, ATMDetails toATM, double amtToTransfer)
+        {
+            this.fromATM = fromATM;
+            this.toATM = toATM;
+            this.amountToTransfer = amtToTransfer;
+        }
+        public void Transfer_DeadlockedVersion()
+        {
+            Console.WriteLine($"Thread: {Thread.CurrentThread.Name} is now trying to access ID: {fromATM.ID}");
+            lock (fromATM)
+            {
+                Console.WriteLine($"Thread: {Thread.CurrentThread.Name} has locked ID: {fromATM.ID}");
+                Thread.Sleep(1000);
+
+                Console.WriteLine($"Thread: {Thread.CurrentThread.Name} is now trying to access ID: {toATM.ID}");
+                lock (toATM)
+                {
+                    Console.WriteLine($"Thread: {Thread.CurrentThread.Name} has locked ID: {toATM.ID}");
+                    fromATM.Withdraw(amountToTransfer);
+                    toATM.Deposit(amountToTransfer);
+                }
+            }
+        }
+        public void Transfer_ExitDeadlockUsingMonitorTryEnter()
+        {
+            Console.WriteLine($"Thread: {Thread.CurrentThread.Name} is now trying to access ID: {fromATM.ID}");
+            lock (fromATM)
+            {
+                Console.WriteLine($"Thread: {Thread.CurrentThread.Name} has locked ID: {fromATM.ID}");
+                Thread.Sleep(1000);
+                Console.WriteLine($"Thread: {Thread.CurrentThread.Name} is now trying to access ID: {toATM.ID}");
+
+                if(Monitor.TryEnter(toATM,3000))
+                {
+                    Console.WriteLine($"Thread: {Thread.CurrentThread.Name} has locked ID: {toATM.ID}");
+                    try
+                    {
+                        fromATM.Withdraw(amountToTransfer);
+                        toATM.Deposit(amountToTransfer);
+                    }
+                    finally
+                    {
+                        Monitor.Exit(toATM);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Thread: {Thread.CurrentThread.Name} could not acquire lock on ID: {toATM.ID}. {Thread.CurrentThread.Name} exiting..");
+                }
+            }
+        }
+        public void Transfer_FixDeadlockUsingLocalVariablesAndOrdering()
+        {
+            Console.WriteLine($"Thread: {Thread.CurrentThread.Name} is now trying to access ID: {fromATM.ID}");
+
+            object lock1, lock2;
+            if(fromATM.ID<toATM.ID)
+            {
+                lock1 = fromATM;
+                lock2 = toATM;
+            }
+            else
+            {
+                lock1 = toATM;
+                lock2 = fromATM;
+            }
+
+            lock (lock1)
+            {
+                Console.WriteLine($"Thread: {Thread.CurrentThread.Name} has locked ID: {((ATMDetails)lock1).ID}");
+                Thread.Sleep(1000);
+
+                Console.WriteLine($"Thread: {Thread.CurrentThread.Name} is now trying to access ID: {toATM.ID} if it has not already locked it");
+                lock (lock2)
+                {
+                    Console.WriteLine($"Thread: {Thread.CurrentThread.Name} has locked ID: {((ATMDetails)lock2).ID}");
+                    fromATM.Withdraw(amountToTransfer);
+                    toATM.Deposit(amountToTransfer);
+                    Console.WriteLine($"Transfer complete for thread: {Thread.CurrentThread.Name}");
+                }
+            }
+        }
+    }
+}
+
+/*
+* Deadlock in C# is a situation where two or more threads are unmoving or frozen in their execution 
+  because they are waiting for each other to finish.
+* Example: Thread1 has resource1 and is waiting for resource2. Only after it has both it will finish 
+  execution and release both. Meanwhile, Thread2 has resource2 and is waiting for resource1. Only 
+  after it has both it will finish execution and release both. So both are waiting for each other and 
+  get deadlocked.
+
+* IN THIS CODE: when t1 and t2 with the Transfer_DeadlockedVersion start, t1 locks details1 as fromATM 
+  and t2 locks details2 as fromATM. Now t1 waits on details2 while t2 waits on details1 both for their 
+  toATM. Thus both stay deadlocked waiting on each other.
+* When we run this code, the code stays frozen forever because they are waiting on each other.
+
+* We can resolve deadlock by different ways:
+  - By acquiring locks in a specific order
+  - Using Monitor.TryEnter()
+  - Using Mutex
+
+* IN THIS CODE: 
+  - Transfer_FixDeadlockUsingLocalVariablesAndOrdering fixes the issue of deadlock using the 
+    "acquiring locks in a specific order" method. They do this by using local lock objects and assigning 
+    them the resource to lock in a specific manner.This completely removes the deadlock.
+  - Transfer_ExitDeadlockUsingMonitorTryEnter uses Monitor.TryEnter with a timeout of 3 seconds. If the 
+    resource needed cannot be accessed by the timeout, it no longer tries to lock the resource and exits 
+    the wait. Thus this method helps exit the deadlock, but it doesn't fully resolve the issue in this 
+    code to ensure transfer fully executes either.
+
+*/
