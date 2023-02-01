@@ -5,7 +5,6 @@ namespace Multithreading_Deadlock_WaysToResolveDeadlock_MonitorTryEnter
 {
     class Program
     {
-        public static Semaphore _event = new Semaphore(2, 2);
         static void Main(string[] args)
         {
             Console.WriteLine("MAIN START");
