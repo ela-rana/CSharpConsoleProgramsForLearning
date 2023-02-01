@@ -1,0 +1,81 @@
+//Performance testing the difference between single and multithreaded processes
+//We see in the result that multithreading is faster that single thread
+
+using System; //for Console, Environment
+using System.Threading;  //for Thread, ThreadPool
+using System.Diagnostics; //for Stopwatch to count run time
+
+namespace Multithreading_PerformanceTesting_MultithreadedVsSinglethreaded
+{ 
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("This computer has {0} processors.", Environment.ProcessorCount);
+
+            //SINGLE THREADED
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            EvenNumbersSum();
+            OddNumbersSum();
+            watch.Stop();
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine($"SINGLE THREADED: this task took {watch.ElapsedMilliseconds} millisecs");
+            Console.ResetColor();
+            watch.Reset();
+
+            //MULTITHREADED
+            watch.Start();
+            Thread t1 = new Thread(EvenNumbersSum);
+            Thread t2 = new Thread(OddNumbersSum);
+            t1.Start();
+            t2.Start();
+            t1.Join();
+            t2.Join();
+            watch.Stop();
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine($"MULTITHREADED: this task took {watch.ElapsedMilliseconds} millisecs");
+            Console.ResetColor();
+
+            ApplicationEnd();
+        }
+        static void EvenNumbersSum()
+        {
+            double Sum = 0;
+            int minNum = 1;
+            int maxNum = 500000000;
+            for (int i = minNum; i <= maxNum; i++)
+            {
+                if (i % 2 == 0)
+                    Sum += i;
+            }
+            Console.WriteLine($"Sum of all even numbers from {minNum} to {maxNum} is: {Sum}");
+        }
+        static void OddNumbersSum()
+        {
+            double Sum = 0;
+            int minNum = 1;
+            int maxNum = 500000000;
+            for (int i = minNum; i <= maxNum; i++)
+            {
+                if (i % 2 != 0)
+                    Sum += i;
+            }
+            Console.WriteLine($"Sum of all odd numbers from {minNum} to {maxNum} is: {Sum}");
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+/*
+Ways to find out how many processors you have on your machine?
+•Using Task Manager: Click Performance, then CPU
+•Using msinfo32 Command on Run (Click Windows+R to open Run window)
+•Using C# .NET: Environment.ProcessorCount returns # of processors
+•Using command prompt: On cmd, type the following code and press enter:
+  echo %NUMBER_OF_PROCESSORS%
+*/
