@@ -1,0 +1,65 @@
+//Performance testing threads with and without using ThreadPool
+
+using System; //for Console
+using System.Threading;  //for Thread, ThreadPool
+using System.Diagnostics; //for Stopwatch to count run time
+
+namespace Multithreading_PerformanceTesting_ThreadPool_Efficiency
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                MethodWithThread();
+                MethodWithThreadPool();
+            }
+
+            Stopwatch stopwatch = new Stopwatch();
+
+            Console.WriteLine("execution using thread");
+            stopwatch.Start();
+            MethodWithThread();
+            stopwatch.Stop();
+            Console.WriteLine("Ticks elapsed: {0}", stopwatch.ElapsedTicks);
+            stopwatch.Reset();
+
+            Console.WriteLine("execution using threadpool");
+            stopwatch.Start();
+            MethodWithThreadPool();
+            stopwatch.Stop();
+            Console.WriteLine("Ticks elapsed: {0}", stopwatch.ElapsedTicks);
+
+            ApplicationEnd();
+        }
+        static void MethodWithThread()
+        {
+            for(int i=0; i<5; i++)
+            {
+                Thread thread = new Thread(Test);
+            }
+        }
+        static void MethodWithThreadPool()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Test));
+            }
+        }
+        static void Test(object obj)
+        {
+
+        }
+        static void ApplicationEnd()
+        {
+            Console.WriteLine("Application terminated. Press any key to exit..");
+            Console.ReadLine();
+        }
+    }
+}
+
+//This is an example of setting up performance testing to see if threadpools are more efficient than 
+//simply creating new threads everytime.
+//It didn't work as it should have. Threadpools are supposed to be more efficient than threads in real life.
+//But here when I ran the application the results were random and not accurate enough.
